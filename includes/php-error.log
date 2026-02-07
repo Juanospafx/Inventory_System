@@ -1,0 +1,286 @@
+[18-Dec-2025 11:12:10 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/includes/upload.php on line 141
+[18-Dec-2025 12:23:49 America/New_York] PHP Fatal error:  Uncaught Error: Call to undefined function find_product_by_barcode() in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/ajax.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/ajax.php on line 7
+[18-Dec-2025 18:40:51 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\session.php on line 2
+[18-Dec-2025 18:40:55 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 18:41:03 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\session.php on line 2
+[18-Dec-2025 18:41:08 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 18:41:29 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\session.php on line 2
+[18-Dec-2025 18:41:31 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\Users\pablo\Downloads\Sistema de Inventario (3)\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 18:57:14 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 19:01:50 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 19:13:37 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 19:14:16 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[18-Dec-2025 19:26:40 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:38:39 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:41:04 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:41:43 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:48:59 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:49:05 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:49:14 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:49:34 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:49:55 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:50:05 Europe/Berlin] PHP Warning:  mysqli_connect(): (HY000/2002): No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 15:52:34 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:52:36 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:53:55 Europe/Berlin] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\vendor\composer\platform_check.php on line 24
+[19-Dec-2025 15:54:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:58:29 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:58:31 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:58:31 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:58:31 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 15:59:10 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:02:42 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:02:44 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:28:27 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:28:40 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:31:40 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:31:41 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 16:31:48 Europe/Berlin] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.0". You are running 8.0.30. in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\vendor\composer\platform_check.php on line 24
+[19-Dec-2025 17:10:39 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:18
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(18): mysqli_connect('127.0.0.1', 'root', Object(SensitiveParameterValue), 'brightro_bright...', 3307)
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(10): MySqli_DB->db_connect()
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(106): MySqli_DB->__construct()
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\load.php(27): require_once('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\auth.php(1): include_once('C:\\xampp\\htdocs...')
+#5 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 18
+[19-Dec-2025 17:12:10 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(266): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:12:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_product.php on line 119
+[19-Dec-2025 17:12:18 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(266): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:12:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_product.php on line 119
+[19-Dec-2025 17:12:30 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 17:12:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT DISTINCT...')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT DISTINCT...')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_movement.php(14): find_by_sql('SELECT DISTINCT...')
+#3 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:12:40 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(266): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:12:46 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(345): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:13:23 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(345): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:18:13 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(345): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:18:32 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 17:20:18 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 17:20:22 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_product.php on line 119
+[19-Dec-2025 17:20:24 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(266): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:20:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(345): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:28:23 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_product.php on line 119
+[19-Dec-2025 17:28:24 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\categorie.php on line 74
+[19-Dec-2025 17:28:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.categories' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(266): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 209
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Deprecated:  mysqli::real_escape_string(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 90
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 219
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 33
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 34
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 34
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 38
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 62
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 66
+[19-Dec-2025 17:37:53 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 70
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 209
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Deprecated:  mysqli::real_escape_string(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 90
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 219
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 33
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 34
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 34
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 38
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 62
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 66
+[19-Dec-2025 17:37:56 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 70
+[19-Dec-2025 10:39:50 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 17:40:04 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT DISTINCT...')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT DISTINCT...')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_movement.php(14): find_by_sql('SELECT DISTINCT...')
+#3 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:50:35 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 89
+[19-Dec-2025 17:50:42 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query('SELECT DISTINCT...')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT DISTINCT...')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_movement.php(15): find_by_sql('SELECT DISTINCT...')
+#3 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 17:50:50 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 89
+[19-Dec-2025 10:51:38 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 10:52:11 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 17:55:26 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'p.color' in 'field list' in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:46
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(46): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(339): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 46
+[19-Dec-2025 10:55:42 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 10:59:42 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 17:59:49 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 123
+[19-Dec-2025 17:59:49 Europe/Berlin] PHP Warning:  Undefined array key "color" in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 137
+[19-Dec-2025 17:59:49 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 137
+[19-Dec-2025 18:00:01 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 123
+[19-Dec-2025 18:00:01 Europe/Berlin] PHP Warning:  Undefined array key "color" in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 137
+[19-Dec-2025 18:00:01 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\edit_product.php on line 137
+[19-Dec-2025 11:02:07 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 18:07:24 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\session.php on line 2
+[19-Dec-2025 11:10:01 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 11:11:16 America/Mexico_City] PHP Warning:  Undefined property: MySqli_DB::$insert_id in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\upload.php on line 141
+[19-Dec-2025 18:12:55 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(48): mysqli->query('SELECT DISTINCT...')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT DISTINCT...')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\add_movement.php(15): find_by_sql('SELECT DISTINCT...')
+#3 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 48
+[19-Dec-2025 18:12:59 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'p.color' in 'field list' in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(48): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(339): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(14): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 48
+[19-Dec-2025 18:18:31 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'p.color' in 'field list' in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(48): mysqli->query(' SELECT p.id,p....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query(' SELECT p.id,p....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(339): find_by_sql(' SELECT p.id,p....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(14): find_recent_product_added('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 48
+[19-Dec-2025 18:20:36 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(48): mysqli->query('SELECT s.id, s....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT s.id, s....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(416): find_by_sql('SELECT s.id, s....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_movements('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 48
+[19-Dec-2025 18:21:00 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.sales' doesn't exist in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php(48): mysqli->query('SELECT s.id, s....')
+#1 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(20): MySqli_DB->query('SELECT s.id, s....')
+#2 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php(416): find_by_sql('SELECT s.id, s....')
+#3 C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\admin.php(15): find_recent_movements('5')
+#4 {main}
+  thrown in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 48
+[19-Dec-2025 18:42:43 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\session.php on line 2
+[19-Dec-2025 18:43:29 Europe/Berlin] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\session.php on line 2
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 209
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Deprecated:  mysqli::real_escape_string(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 95
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 219
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 36
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 37
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 37
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 41
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 65
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 69
+[19-Dec-2025 18:48:51 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 73
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 209
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Deprecated:  mysqli::real_escape_string(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\database.php on line 95
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\sql.php on line 219
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 36
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 37
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 37
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 41
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 65
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 69
+[19-Dec-2025 18:48:52 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\layouts\header.php on line 73
+[19-Dec-2025 18:52:38 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 18:52:58 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 18:53:18 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 18:58:05 Europe/Berlin] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 28
+[19-Dec-2025 18:58:30 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 18:58:48 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:14:59 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:02 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:02 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:02 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:02 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:02 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:04 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:04 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:04 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:04 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:05 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:05 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:05 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:05 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:05 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 19:15:06 Europe/Berlin] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Sistema de Inventario\Sistema de Inventario\includes\functions.php on line 19
+[19-Dec-2025 14:09:40 America/New_York] PHP Warning:  Undefined array key "note" in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/product.php on line 64
+[19-Dec-2025 14:09:40 America/New_York] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/includes/functions.php on line 19
+[19-Dec-2025 14:10:40 America/New_York] PHP Warning:  Undefined array key "note" in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/product.php on line 64
+[19-Dec-2025 14:10:40 America/New_York] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/includes/functions.php on line 19
+[19-Dec-2025 14:10:49 America/New_York] PHP Warning:  Undefined array key "note" in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/product.php on line 64
+[19-Dec-2025 14:10:49 America/New_York] PHP Deprecated:  nl2br(): Passing null to parameter #1 ($string) of type string is deprecated in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/includes/functions.php on line 19
+[19-Dec-2025 14:12:55 America/New_York] PHP Warning:  Undefined array key "note" in /home/brightro/domains/sistemadeinventario.brightronix.net/public_html/Sistema de Inventario/product.php on line 64
