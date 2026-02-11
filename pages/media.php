@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   $page_title = 'Images list';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -29,7 +29,7 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading clearfix">
-            <span class="glyphicon glyphicon-camera"></span>
+            <i class="fa-solid fa-camera"></i>
             <span>Image list</span>
             <div class="pull-right">
               <form class="form-inline" action="media.php" method="POST" enctype="multipart/form-data">
@@ -71,10 +71,10 @@
                 </td>
                 <td class="text-center">
                   <a href="edit_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-warning btn-xs"  title="Edit">
-                    <span class="glyphicon glyphicon-edit"></span>
+                    <i class="fa-solid fa-pencil"></i>
                   </a>
                   <a href="delete_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-danger btn-xs"  title="Delete">
-                    <span class="glyphicon glyphicon-trash"></span>
+                    <i class="fa-solid fa-trash-can"></i>
                   </a>
                 </td>
                </tr>
@@ -87,5 +87,3 @@
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-

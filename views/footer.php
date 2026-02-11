@@ -1,16 +1,18 @@
 ﻿</div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
+<!-- Eliminado jQuery y Bootstrap 3 JS. Se reemplaza con el bundle de Bootstrap 5 que incluye Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<!-- El archivo functions.js ha sido reescrito en Vanilla JS para eliminar la dependencia de jQuery -->
 <script type="text/javascript" src="<?php echo base_url('libs/js/functions.js'); ?>"></script>
 <script>
-  $(document).ready(function () {
-
+  // La lógica del reloj se reescribe en Vanilla JS, eliminando la dependencia de jQuery.
+  document.addEventListener('DOMContentLoaded', function() {
     function updateTime() {
       var date = new Date();
       var options = { timeZone: 'America/New_York', hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
-      $('#time').text(date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US', options));
+      var timeEl = document.getElementById('time');
+      if(timeEl) timeEl.textContent = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US', options);
     }
 
     setInterval(updateTime, 1000);
@@ -25,4 +27,3 @@
 <?php if (isset($db)) {
   $db->db_disconnect();
 } ?>
-

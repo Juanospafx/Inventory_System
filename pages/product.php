@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Items list';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
@@ -72,11 +72,11 @@ $products = join_product_table();
                     <div class="btn-group">
                       <a href="edit_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-info btn-xs"
                         title="Edit" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <i class="fa-solid fa-pencil"></i>
                       </a>
                       <a href="delete_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-danger btn-xs"
                         title="Delete" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <i class="fa-solid fa-trash-can"></i>
                       </a>
                     </div>
                   </td>
@@ -91,4 +91,3 @@ $products = join_product_table();
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

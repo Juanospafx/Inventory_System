@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   $page_title = 'Edit account';
   require_once(__DIR__ . '/../includes/load.php');
    page_require_level(3);
@@ -51,7 +51,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-heading clearfix">
-            <span class="glyphicon glyphicon-camera"></span>
+            <i class="fa-solid fa-camera"></i>
             <span>Change my photo</span>
           </div>
         </div>
@@ -78,7 +78,7 @@
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
-        <span class="glyphicon glyphicon-edit"></span>
+        <i class="fa-solid fa-pencil"></i>
         <span>Edit my account</span>
       </div>
       <div class="panel-body">
@@ -103,5 +103,3 @@
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-

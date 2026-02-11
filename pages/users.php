@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Users list';
 require_once(__DIR__ . '/../includes/load.php');
 ?>
@@ -19,7 +19,7 @@ $all_users = find_all_user();
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-users"></i>
           <span>Users</span>
         </strong>
         <a href="add_user.php" class="btn btn-info pull-right">Add users</a>
@@ -60,11 +60,11 @@ $all_users = find_all_user();
                   <div class="btn-group">
                     <a href="edit_user.php?id=<?php echo (int) $a_user['id']; ?>" class="btn btn-xs btn-warning"
                       data-toggle="tooltip" title="Edit">
-                      <i class="glyphicon glyphicon-pencil"></i>
+                      <i class="fa-solid fa-pencil"></i>
                     </a>
                     <a href="delete_user.php?id=<?php echo (int) $a_user['id']; ?>" class="btn btn-xs btn-danger"
                       data-toggle="tooltip" title="Delete">
-                      <i class="glyphicon glyphicon-remove"></i>
+                      <i class="fa-solid fa-trash-can"></i>
                     </a>
                   </div>
                 </td>
@@ -88,4 +88,3 @@ $all_users = find_all_user();
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

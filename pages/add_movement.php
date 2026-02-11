@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -110,7 +110,7 @@ if (isset($_SESSION['form_data'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-plus"></i>
           <span>Add input/output/Return</span>
         </strong>
       </div>
@@ -323,4 +323,3 @@ if (isset($_SESSION['form_data'])) {
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

@@ -31,12 +31,6 @@ a {
     margin-bottom: 10px;
 }
 
-.box {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #f2f2f2;
-}
-
 .page {
     position: relative;
     display: block;
@@ -65,54 +59,6 @@ a {
     background-color: #FF7857;
 }
 
-.panel-default>.panel-heading {
-    background-color: #f5f5f5;
-    border-bottom: 2px solid #3498DB;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-    padding: 15px;
-}
-
-.panel-box {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    border: none;
-}
-
-.panel-value {
-    width: 60%;
-}
-
-.panel-icon {
-    padding: 30px;
-    width: 40%;
-    border-radius: 0;
-}
-
-.panel-icon {
-    -webkit-border-radius: 3px 0 0 3px;
-    -moz-border-radius: 3px 0 0 3px;
-    border-radius: 3px 0 0 3px;
-}
-
-.panel-value {
-    -webkit-border-radius: 0 3px 3px 0;
-    -moz-border-radius: 0 3px 3px 0;
-    border-radius: 0 3px 3px 0;
-}
-
-.panel-value h2 {
-    margin-top: 30px;
-}
-
-.panel-icon i {
-    line-height: 65px;
-    font-size: 40px;
-    color: #fff;
-}
-
 #header {
     position: relative;
     z-index: 99;
@@ -122,8 +68,6 @@ a {
     width: 100%;
     height: 70px;
     line-height: 70px;
-    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 10px 30px rgba(20, 35, 60, 0.08);
 }
 
@@ -177,9 +121,6 @@ header>.logo {
     margin-top: 4px;
     border-color: #fefefe;
     border-radius: 0;
-    box-shadow: 0px 0px 5px rgba(86, 96, 117, 0.15);
-    -moz-box-shadow: 0px 0px 5px rgba(86, 96, 117, 0.15);
-    -webkit-box-shadow: 0px 0px 5px rgba(86, 96, 117, 0.15);
 }
 
 .dropdown-menu li {
@@ -229,11 +170,6 @@ header>.logo {
     left: -250px;
 }
 
-.sidebar ul li:hover,
-.submenu ul li:hover {
-    -webkit-transition: all .2s ease-in-out;
-    transition: all .2s ease-in-out;
-}
 
 .sidebar ul {
     list-style: none;
@@ -245,10 +181,6 @@ header>.logo {
     display: block;
 }
 
-.sidebar ul li:hover,
-ul.submenu {
-    background-color: #35404d;
-}
 
 .sidebar ul li a:hover {
     color: white;
@@ -282,36 +214,6 @@ ul.submenu li a {
 ul.submenu {
     display: none;
     position: relative;
-}
-
-ul.submenu li a:hover {
-    background-color: #35404d;
-}
-
-ul.submenu li a {
-    padding-left: 45px;
-}
-
-ul.submenu li:before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: 1;
-    left: 25px;
-    top: 0;
-    bottom: 0;
-    border: 1px dotted #d7d7d7;
-    border-width: 0 0 0 1px;
-}
-
-ul.submenu li a:before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    width: 7px;
-    left: 25px;
-    top: 18px;
-    border-top: 1px dotted #d7d7d7;
 }
 
 .sale_report_header {
@@ -439,25 +341,6 @@ table {
         display: none;
     }
 
-    .panel-icon {
-        width: 100%;
-        display: block;
-        float: none;
-        border-radius: 3px 3px 0 0;
-    }
-
-    .panel-value {
-        width: 100%;
-        display: block;
-        float: none;
-        border-radius: 0 0 3px 3px;
-    }
-
-    .panel-value h2 {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
     .table-responsive {
         border: none;
     }
@@ -483,7 +366,7 @@ table {
 }
 
 .header-content .sidebar-toggle {
-    float: left;
+    float: left; /* Mantener para compatibilidad con la estructura actual */
     position: relative;
     z-index: 1040;
     /* Higher than sidebar (1030) */
@@ -502,13 +385,6 @@ table {
     }
 }
 
-.table-responsive {
-    width: 100%;
-    margin-bottom: 15px;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
-}
 
 .img-avatar {
     width: 50px;
@@ -516,7 +392,7 @@ table {
     object-fit: cover;
 }
 
-/* Modern layout + dynamic sidebar */
+/* === Modern layout + dynamic sidebar === */
 :root {
     --sidebar-width: 260px;
     --sidebar-collapsed: 72px;
@@ -528,18 +404,45 @@ table {
     --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
-.panel,
-.panel-default {
+/* Reemplazo de .panel por .card de Bootstrap 5 */
+.card {
     border-radius: 14px;
     box-shadow: var(--shadow-soft);
     border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
-.panel-default>.panel-heading {
+.card-header {
     background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
     border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 1rem 1.25rem;
 }
 
+/* Nuevos estilos para las tarjetas de estadísticas, usando flexbox */
+.card-box .card-body {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.card-box .card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    padding: 20px;
+    border-radius: 14px 0 0 14px;
+}
+
+.card-box .card-icon i {
+    font-size: 36px;
+    color: #fff;
+}
+
+
+/* Estilos de la barra lateral (Sidebar) */
 .sidebar ul li a {
     display: flex;
     align-items: center;
@@ -548,6 +451,7 @@ table {
     padding: 12px 18px;
     font-weight: 500;
     letter-spacing: 0.2px;
+    transition: all .2s ease-in-out;
 }
 
 .sidebar ul li a i {
@@ -577,6 +481,7 @@ table {
     padding-left: 52px;
     font-size: 13px;
     color: #cbd5f5;
+    transition: all .2s ease-in-out;
 }
 
 .sidebar-overlay {
@@ -614,6 +519,10 @@ body.sidebar-collapsed .submenu {
     display: none !important;
 }
 
+body.sidebar-collapsed .sidebar ul li a {
+    justify-content: center;
+}
+
 @media screen and (max-width: 991px) {
     body.sidebar-collapsed .page {
         padding-left: 20px;
@@ -632,5 +541,16 @@ body.sidebar-collapsed .submenu {
     }
     body.sidebar-collapsed header>.logo {
         width: 100%;
+    }
+
+    .card-box .card-body {
+        flex-direction: column;
+    }
+    .card-box .card-icon {
+        width: 100%;
+        border-radius: 14px 14px 0 0;
+    }
+    .card-box .card-value {
+        padding: 15px;
     }
 }

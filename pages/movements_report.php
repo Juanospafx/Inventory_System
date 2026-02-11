@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Inputs/outputs Report';
 require_once(__DIR__ . '/../includes/load.php');
 // Verificar que el usuario tenga permiso para ver esta p??gina
@@ -23,7 +23,7 @@ page_require_level(3);
             <div class="input-group">
               <input type="text" class="datepicker form-control" name="start-date" placeholder="Desde">
               <span class="input-group-addon">
-                <i class="glyphicon glyphicon-menu-right"></i>
+                <i class="fa-solid fa-arrow-right"></i>
               </span>
               <input type="text" class="datepicker form-control" name="end-date" placeholder="Hasta">
             </div>
@@ -37,4 +37,3 @@ page_require_level(3);
   </div>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Edit inputs/outputs';
 require_once(__DIR__ . '/../includes/load.php');
 // Verifica el nivel de usuario
@@ -136,7 +136,7 @@ if (isset($_POST['update_movement'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-pencil"></i>
           <span>Edit Input/output/Return</span>
         </strong>
       </div>
@@ -239,4 +239,3 @@ if (isset($_POST['update_movement'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

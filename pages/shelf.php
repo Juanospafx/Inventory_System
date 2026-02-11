@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Depot';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -39,7 +39,7 @@ if (isset($_POST['add_shelf'])) {
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>
-                    <span class="glyphicon glyphicon-th"></span>
+                    <i class="fa-solid fa-plus"></i>
                     <span>Add Shelf</span>
                 </strong>
             </div>
@@ -58,7 +58,7 @@ if (isset($_POST['add_shelf'])) {
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong>
-                    <span class="glyphicon glyphicon-th"></span>
+                    <i class="fa-solid fa-shelves"></i>
                     <span>Depot</span>
                 </strong>
             </div>
@@ -84,11 +84,11 @@ if (isset($_POST['add_shelf'])) {
                                     <div class="btn-group">
                                         <a href="edit_shelf.php?id=<?php echo (int) $shelf['id']; ?>"
                                             class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
-                                            <span class="glyphicon glyphicon-edit"></span>
+                                            <i class="fa-solid fa-pencil"></i>
                                         </a>
                                         <a href="delete_shelf.php?id=<?php echo (int) $shelf['id']; ?>"
                                             class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete">
-                                            <span class="glyphicon glyphicon-trash"></span>
+                                            <i class="fa-solid fa-trash-can"></i>
                                         </a>
                                     </div>
                                 </td>
@@ -103,4 +103,3 @@ if (isset($_POST['add_shelf'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
