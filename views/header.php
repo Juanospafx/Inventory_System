@@ -12,13 +12,14 @@
     echo "Brigtronix- INVI"; ?>
   </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
   <link rel="stylesheet" href="<?php echo base_url('libs/css/main.css'); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>
+<body data-base-url="<?php echo base_url(''); ?>">
   <?php if ($session->isUserLoggedIn()): ?>
     <header id="header">
       <div class="logo pull-left"> Brigtronix- Inventory </div>
@@ -77,6 +78,7 @@
       <?php endif; ?>
 
     </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <?php endif; ?>
 
   <div class="page">

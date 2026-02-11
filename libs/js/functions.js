@@ -8,7 +8,7 @@ function suggetion() {
             // Procesa el formulario vía AJAX
             $.ajax({
                 type: 'POST',
-                url: 'ajax.php',
+                url: (window.APP_BASE_URL || '') + '/api/ajax.php',
                 data: formData,
                 dataType: 'json',
                 encode: true
@@ -37,9 +37,9 @@ $('#sug-form').submit(function (e) {
         'p_name': $('input[name=title]').val()
     };
     // Procesa el formulario vía AJAX
-    $.ajax({
+$.ajax({
         type: 'POST',
-        url: 'ajax.php',
+        url: (window.APP_BASE_URL || '') + '/api/ajax.php',
         data: formData,
         dataType: 'json',
         encode: true
@@ -117,12 +117,18 @@ function filterUsers() {
 }
 
 $(document).ready(function () {
+    var baseUrl = $('body').data('base-url') || '';
+    window.APP_BASE_URL = baseUrl;
+
     // Inicializa tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
     // Toggle de submenús
-    $('.submenu-toggle').click(function () {
-        $(this).parent().children('ul.submenu').toggle(200);
+    $('.submenu-toggle').click(function (e) {
+        e.preventDefault();
+        var $parent = $(this).parent();
+        $parent.children('ul.submenu').slideToggle(200);
+        $(this).attr('aria-expanded', $parent.children('ul.submenu').is(':visible'));
     });
 
     // Inicializa la sugerencia de productos vía AJAX
@@ -153,11 +159,43 @@ $(document).ready(function () {
     // Inicializa el filtrado de usuarios
     filterUsers();
 
-    // Sidebar toggle
+    function setSidebarState(isCollapsed) {
+        if (isCollapsed) {
+            $('body').addClass('sidebar-collapsed');
+        } else {
+            $('body').removeClass('sidebar-collapsed');
+        }
+        localStorage.setItem('sidebar-collapsed', isCollapsed ? '1' : '0');
+    }
+
+    function setMobileSidebar(isOpen) {
+        if (isOpen) {
+            $('body').addClass('sidebar-open');
+        } else {
+            $('body').removeClass('sidebar-open');
+        }
+    }
+
+    var collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+    setSidebarState(collapsed);
+
+    // Sidebar toggle (desktop collapse + mobile open)
     $('.sidebar-toggle-btn').click(function (e) {
         e.preventDefault();
-        $('.sidebar').toggleClass('toggled');
-        $('.page').toggleClass('toggled');
+        if (window.innerWidth <= 767) {
+            setMobileSidebar(!$('body').hasClass('sidebar-open'));
+            return;
+        }
+        setSidebarState(!$('body').hasClass('sidebar-collapsed'));
+    });
+
+    $('#sidebarOverlay').on('click', function () {
+        setMobileSidebar(false);
+    });
+
+    $(window).on('resize', function () {
+        if (window.innerWidth > 767) {
+            setMobileSidebar(false);
+        }
     });
 });
-
