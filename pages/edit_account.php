@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Edit account';
   require_once(__DIR__ . '/../includes/load.php');
    page_require_level(3);
@@ -30,10 +30,10 @@
             $sql = "UPDATE users SET name ='{$name}', username ='{$username}' WHERE id='{$id}'";
     $result = $db->query($sql);
           if($result && $db->affected_rows() === 1){
-            $session->msg('s',"Cuenta actualizada. ");
+            $session->msg('s',"Account updated.");
             redirect('edit_account.php', false);
           } else {
-            $session->msg('d',' Lo siento, actualizaci??n fall??.');
+            $session->msg('d','Sorry, update failed.');
             redirect('edit_account.php', false);
           }
     } else {
@@ -52,7 +52,7 @@
         <div class="panel-heading">
           <div class="panel-heading clearfix">
             <span class="glyphicon glyphicon-camera"></span>
-            <span>Cambiar mi foto</span>
+            <span>Change my photo</span>
           </div>
         </div>
         <div class="panel-body">
@@ -67,7 +67,7 @@
               </div>
               <div class="form-group">
                 <input type="hidden" name="user_id" value="<?php echo $user['id'];?>">
-                 <button type="submit" name="submit" class="btn btn-warning">Cambiar</button>
+                 <button type="submit" name="submit" class="btn btn-warning">Change</button>
               </div>
              </form>
             </div>
@@ -79,21 +79,21 @@
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <span class="glyphicon glyphicon-edit"></span>
-        <span>Editar mi cuenta</span>
+        <span>Edit my account</span>
       </div>
       <div class="panel-body">
           <form method="post" action="edit_account.php?id=<?php echo (int)$user['id'];?>" class="clearfix">
             <div class="form-group">
-                  <label for="name" class="control-label">Nombres</label>
+                  <label for="name" class="control-label">Name</label>
                   <input type="name" class="form-control" name="name" value="<?php echo remove_junk(ucwords($user['name'])); ?>">
             </div>
             <div class="form-group">
-                  <label for="username" class="control-label">Usuario</label>
+                  <label for="username" class="control-label">User</label>
                   <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($user['username'])); ?>">
             </div>
             <div class="form-group clearfix">
-                    <a href="change_password.php" title="change password" class="btn btn-danger pull-right">Cambiar contrase??a</a>
-                    <button type="submit" name="update" class="btn btn-info">Actualizar</button>
+                    <a href="<?php echo base_url('pages/change_password.php'); ?>" title="change password" class="btn btn-danger pull-right">Change password</a>
+                    <button type="submit" name="update" class="btn btn-info">Update</button>
             </div>
         </form>
       </div>
@@ -103,4 +103,5 @@
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

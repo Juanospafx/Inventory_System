@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -22,9 +22,9 @@ if (isset($_POST['add_movement'])) {
     // Recoger y convertir datos
     $p_id = (int) $db->escape($_POST['product_id']);
     $s_qty = (int) $db->escape($_POST['quantity']);
-    $s_status = (int) $db->escape($_POST['status']); // 1: Entrada, 0: Salida, 2: Devoluci??n
+    $s_status = (int) $db->escape($_POST['status']); // 1: Input, 0: Output, 2: Devoluci??n
 
-    // Si es admin y se seleccion?? un usuario para Salida/Retorno, usar ese. Si no, el actual.
+    // Si es admin y se seleccion?? un usuario para Output/Retorno, usar ese. Si no, el actual.
     $current_user = current_user();
     if ($current_user['user_level'] == 1 && ($s_status === 0 || $s_status === 2) && !empty($_POST['user_id'])) {
       $user_id = (int) $_POST['user_id'];
@@ -36,7 +36,7 @@ if (isset($_POST['add_movement'])) {
     $s_note = $db->escape($_POST['note']);
 
     // Validaciones seg??n el tipo de movimiento
-    if ($s_status === 0) { // Salida
+    if ($s_status === 0) { // Output
       // Verificar que no se retire m??s de lo que hay en stock
       $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
       $result_stock = $db->query($sql_check_stock);
@@ -158,7 +158,7 @@ if (isset($_SESSION['form_data'])) {
                 <div class="col-md-6">
                   <label for="project_id">Select Project (Optional for Inputs)</label>
                   <select class="form-control select2" name="project_id" id="project_id">
-                    <option value="">Sin proyecto asignado</option>
+                    <option value="">No project assigned</option>
                     <?php foreach ($all_projects as $project): ?>
                       <option value="<?php echo (int) $project['id']; ?>">
                         <?php echo $project['name']; ?>
@@ -190,7 +190,7 @@ if (isset($_SESSION['form_data'])) {
               </div>
             </div>
 
-            <!-- Selecci??n de Usuario (Solo para Admin y Salida/Retorno) -->
+            <!-- Selecci??n de User (Solo para Admin y Output/Retorno) -->
             <?php $user_level = current_user()['user_level']; ?>
             <div class="form-group" id="user_selection_group"
               style="display: <?php echo ($user_level == 1 && isset($form_data['status']) && ($form_data['status'] == 0 || $form_data['status'] == 2)) ? 'block' : 'none'; ?>;">
@@ -323,3 +323,4 @@ if (isset($_SESSION['form_data'])) {
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

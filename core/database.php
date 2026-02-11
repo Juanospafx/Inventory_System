@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(__DIR__ . DIRECTORY_SEPARATOR . "config.php");
 
 class MySqli_DB {
@@ -50,7 +50,7 @@ public function query($sql)
       }
       if (!$this->query_id)
         // only for Develope mode
-              die("Error en esta consulta :<pre> " . $sql ."</pre>");
+              die("Error in this query :<pre> " . $sql ."</pre>");
        // For production mode
         //  die("Error on Query");
 
@@ -109,3 +109,4 @@ public function while_loop($loop){
 $db = new MySqli_DB();
 
 ?>
+

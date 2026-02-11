@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*--------------------------------------------------------------*/
 /* Function for find all database table rows by table name
@@ -18,19 +18,19 @@ function find_by_sql($sql)
   global $db;
   $result = $db->query($sql);
 
-  // Si la consulta falla, mostramos el error (mejor que pantalla en blanco)
+  // If the query fails, show the error (better than a blank screen)
   if ($result === false) {
-    die("Error en la consulta SQL: " . $db->error . " | Query: " . $sql);
+    die("SQL query error: " . $db->error . " | Query: " . $sql);
   }
 
-  // Si no es un SELECT, $result será true (bool), devolvemos un array vacío
+  // If it is not a SELECT, $result is true (bool), return an empty array
   if ($result === true) {
     return [];
   }
 
-  // Para SELECT sí tenemos un resultset
+  // For SELECT we have a resultset
   $result_set = $result->fetch_all(MYSQLI_ASSOC);
-  return $result_set ?: []; // Retorna un array vacío si no hay filas
+  return $result_set ?: []; // Return empty array if no rows
 }
 
 /*--------------------------------------------------------------*/
@@ -208,18 +208,18 @@ function page_require_level($require_level)
   $login_level = find_by_groupLevel($current_user['user_level']);
   //if user not login
   if (!$session->isUserLoggedIn()):
-    $session->msg('d', 'Por favor Iniciar sesión...');
-    redirect('index.php', false);
+    $session->msg('d', 'Please sign in...');
+    redirect(base_url('pages/index.php'), false);
     //if Group status Deactive
   elseif (isset($login_level['group_status']) && $login_level['group_status'] === '0'):
-    $session->msg('d', 'Este nivel de usaurio esta inactivo!');
-    redirect('home.php', false);
+    $session->msg('d', 'This user level is inactive!');
+    redirect(base_url('pages/home.php'), false);
     //cheackin log in User level and Require level is Less than or equal to
   elseif ($current_user['user_level'] <= (int) $require_level):
     return true;
   else:
-    $session->msg("d", "¡Lo siento!  no tienes permiso para ver la página.");
-    redirect('home.php', false);
+    $session->msg("d", "Sorry! You don't have permission to view this page.");
+    redirect(base_url('pages/home.php'), false);
   endif;
 
 }
@@ -284,15 +284,15 @@ function find_all_product_info_by_title($title)
 {
   global $db;
 
-  // Escapar la variable para evitar inyección SQL
+  // Escapar la variable para evitar inyecciÃ³n SQL
   $title = $db->escape($title);
 
-  // Búsqueda exacta:
+  // BÃºsqueda exacta:
   $sql = "SELECT * FROM products ";
   $sql .= "WHERE name = '{$title}' ";
   $sql .= "LIMIT 1";
 
-  // Si prefieres una búsqueda parcial, puedes usar:
+  // Si prefieres una bÃºsqueda parcial, puedes usar:
   // $sql  = "SELECT * FROM products WHERE name LIKE '%{$title}%' LIMIT 1";
 
   return find_by_sql($sql);
@@ -308,13 +308,13 @@ function update_product_qty($qty, $p_id, $status)
   $id = (int) $p_id;
 
   if ($status === 1 || $status === 2) {
-    // Entrada y Devolución: se suman items al stock
+    // Input y DevoluciÃ³n: se suman items al stock
     $sql = "UPDATE products SET quantity = quantity + '{$qty}' WHERE id = '{$id}'";
   } elseif ($status === 0) {
-    // Salida: se restan items del stock
+    // Output: se restan items del stock
     $sql = "UPDATE products SET quantity = quantity - '{$qty}' WHERE id = '{$id}'";
   } else {
-    return false; // Estado no válido
+    return false; // Estado no vÃ¡lido
   }
 
   $result = $db->query($sql);
@@ -360,7 +360,7 @@ function find_all_movements($product_name = '', $user_name = '', $note = '')
   $sql = "SELECT s.id, s.quantity, s.date, s.status, s.note, ";
   $sql .= "p.name AS product_name, ";
   $sql .= "u.name AS user_name, ";
-  $sql .= "IFNULL(b.name, 'Sin proyecto asignado') AS project_name ";
+  $sql .= "IFNULL(b.name, 'No project assigned') AS project_name ";
   $sql .= "FROM movements s ";
   $sql .= "LEFT JOIN products p ON s.product_id = p.id ";
   $sql .= "LEFT JOIN users u ON s.user_id = u.id ";
@@ -419,7 +419,7 @@ function find_recent_movements($limit)
 /*--------------------------------------------------------------*/
 /* Function for Generate movements report by two dates
 /*--------------------------------------------------------------*/
-// Ejemplo de cómo luciría tu query en find_movements_by_dates()
+// Ejemplo de cÃ³mo lucirÃ­a tu query en find_movements_by_dates()
 function find_movements_by_dates($start_date, $end_date)
 {
   global $db;
@@ -429,7 +429,7 @@ function find_movements_by_dates($start_date, $end_date)
   $sql .= "WHEN 0 THEN 'Output' ";
   $sql .= "WHEN 2 THEN 'Return' ";
   $sql .= "ELSE 'Desconocido' END AS status, ";
-  $sql .= "s.note, IFNULL(pr.name, 'Sin proyecto asignado') AS project_name ";
+  $sql .= "s.note, IFNULL(pr.name, 'No project assigned') AS project_name ";
   $sql .= "FROM movements s ";
   $sql .= "LEFT JOIN products p ON s.product_id = p.id ";
   $sql .= "LEFT JOIN users u ON s.user_id = u.id ";
@@ -462,7 +462,7 @@ function daily_movements($year, $month)
   $sql .= "ORDER BY s.date DESC";
 
   $movements = find_by_sql($sql);
-  return $movements ?: []; // Retorna un array vacío si no hay resultados
+  return $movements ?: []; // Retorna un array vacÃ­o si no hay resultados
 }
 
 /*--------------------------------------------------------------*/
@@ -484,5 +484,6 @@ function monthly_movements($year)
   $sql .= "ORDER BY s.date DESC";
 
   $movements = find_by_sql($sql);
-  return $movements ?: []; // Retorna un array vacío si no hay resultados
+  return $movements ?: []; // Retorna un array vacÃ­o si no hay resultados
 }
+

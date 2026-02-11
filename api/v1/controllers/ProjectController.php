@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once(__DIR__ . '/../../../core/services/ProjectService.php');
 
@@ -47,3 +47,4 @@ class ProjectController
 }
 
 ?>
+

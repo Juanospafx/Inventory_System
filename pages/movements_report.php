@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Inputs/outputs Report';
 require_once(__DIR__ . '/../includes/load.php');
 // Verificar que el usuario tenga permiso para ver esta p??gina
@@ -37,3 +37,4 @@ page_require_level(3);
   </div>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

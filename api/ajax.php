@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 require_once(__DIR__ . '/../core/bootstrap.php');
 require_once(__DIR__ . '/../core/services/ProductService.php');
 
-// Manejar la búsqueda de productos por código QR
+// Manejar la bÃºsqueda de productos por cÃ³digo QR
 if (isset($_GET['qr_code'])) {
     $qr_code = remove_junk($db->escape($_GET['qr_code']));
     $product = ProductService::findByQrOrCode($qr_code);
@@ -17,7 +17,7 @@ if (isset($_GET['qr_code'])) {
     return; // Terminar el script para evitar otros bloques
 }
 
-// Manejar la búsqueda de productos por nombre
+// Manejar la bÃºsqueda de productos por nombre
 if (isset($_GET['product_name']) && strlen($_GET['product_name'])) {
     $product_name = remove_junk($db->escape($_GET['product_name']));
     $html = '';
@@ -46,7 +46,7 @@ if (isset($_GET['product_name']) && strlen($_GET['product_name'])) {
     return;
 }
 
-// Manejar la búsqueda de productos por ubicación
+// Manejar la bÃºsqueda de productos por ubicaciÃ³n
 if (isset($_GET['location']) && strlen($_GET['location'])) {
     $location = remove_junk($db->escape($_GET['location']));
     $products = ProductService::findByLocation($location);
@@ -55,3 +55,4 @@ if (isset($_GET['location']) && strlen($_GET['location'])) {
     return;
 }
 ?>
+

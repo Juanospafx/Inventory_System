@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'funciones' . DIRECTORY_SEPARATOR . 'pure.php');
 
 $errors = array();
@@ -22,7 +22,7 @@ function validate_fields($var)
   foreach ($var as $field) {
     $val = remove_junk($_POST[$field]);
     if (isset($val) && $val == '') {
-      $errors = $field . " No puede estar en blanco.";
+      $errors = $field . " cannot be blank.";
       return $errors;
     }
   }
@@ -104,3 +104,4 @@ function find_by_qr_code($qr_code)
 
 
 ?>
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Edit items';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -56,10 +56,10 @@ if (isset($_POST['product'])) {
           $db->query("UPDATE products SET media_id='{$first_id}' WHERE id='{$product_id}'");
         }
       }
-      $session->msg('s', "Producto ha sido actualizado. ");
+      $session->msg('s', "Product updated.");
       redirect('product.php', false);
     } else {
-      $session->msg('d', ' Lo siento, actualizaci??n fall??.');
+      $session->msg('d', 'Sorry, update failed.');
       redirect('edit_product.php?id=' . $product['id'], false);
     }
 
@@ -153,3 +153,4 @@ if (isset($_POST['product'])) {
   </div>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

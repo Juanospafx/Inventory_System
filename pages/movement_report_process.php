@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Inputs/outputs Report';
 require_once(__DIR__ . '/../includes/load.php');
 // Verificar que el usuario tenga permiso para ver esta p??gina
@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     // Aseg??rate de que la funci??n find_movements_by_dates seleccione tambi??n la columna 'location'
     $results = find_movements_by_dates($start_date, $end_date);
   } else {
-    $session->msg("d", "Error en la selecci??n de fechas.");
+    $session->msg("d", "Date selection error.");
     redirect('movements_report.php', false);
   }
 }
@@ -147,7 +147,7 @@ if (isset($_POST['submit'])) {
               <td class="text-right"><?php echo remove_junk($result['user_name']); ?></td>
               <!-- Mostrar el proyecto -->
               <td class="text-center"><?php echo remove_junk($result['project_name']); ?></td>
-              <!-- Tipo (Entrada/Salida/Devoluci??n) con la etiqueta correspondiente -->
+              <!-- Tipo (Input/Output/Devoluci??n) con la etiqueta correspondiente -->
               <td class="text-center">
                 <span class="label label-<?php echo $status_label; ?>">
                   <?php echo remove_junk($status_text); ?>
@@ -169,3 +169,4 @@ if (isset($_POST['submit'])) {
 <?php if (isset($db)) {
   $db->db_disconnect();
 } ?>
+

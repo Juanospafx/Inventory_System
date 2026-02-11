@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Edit Media';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
@@ -69,4 +69,5 @@ include_once(__DIR__ . '/../views/header.php');
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

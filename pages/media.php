@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Images list';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -10,7 +10,7 @@
   $photo = new Media();
   $photo->upload($_FILES['file_upload']);
     if($photo->process_media()){
-        $session->msg('s','Imagen subida al servidor.');
+        $session->msg('s','Image uploaded to the server.');
         redirect('media.php');
     } else{
       $session->msg('d',join($photo->errors));
@@ -70,10 +70,10 @@
                   <?php echo $media_file['file_type'];?>
                 </td>
                 <td class="text-center">
-                  <a href="edit_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-warning btn-xs"  title="Editar">
+                  <a href="edit_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-warning btn-xs"  title="Edit">
                     <span class="glyphicon glyphicon-edit"></span>
                   </a>
-                  <a href="delete_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-danger btn-xs"  title="Eliminar">
+                  <a href="delete_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-danger btn-xs"  title="Delete">
                     <span class="glyphicon glyphicon-trash"></span>
                   </a>
                 </td>
@@ -87,4 +87,5 @@
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

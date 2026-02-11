@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once(__DIR__ . '/../../../core/services/ProductService.php');
 
@@ -24,3 +24,4 @@ class ProductController
 }
 
 ?>
+

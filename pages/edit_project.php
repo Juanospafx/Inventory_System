@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Edit Projects';
 require_once(__DIR__ . '/../includes/load.php');
 require_once(__DIR__ . '/../core/services/ProjectService.php');
@@ -62,3 +62,4 @@ if (isset($_POST['edit_project'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

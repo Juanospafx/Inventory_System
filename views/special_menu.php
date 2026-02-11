@@ -1,4 +1,4 @@
-<ul>
+﻿<ul>
   <li>
     <a href="<?php echo base_url('pages/home.php'); ?>">
       <i class="glyphicon glyphicon-home"></i>
@@ -28,3 +28,4 @@
     </a>
   </li>
 </ul>
+

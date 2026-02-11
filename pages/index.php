@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once(__DIR__ . '/../includes/load.php');
 ?>
 <!DOCTYPE html>
@@ -142,16 +142,16 @@ require_once(__DIR__ . '/../includes/load.php');
         <h1>Welcome</h1>
         <p>Login</p>
       </div>
-      <!-- Aqu?? puedes colocar tus mensajes de validaci??n si los necesitas -->
+      <!-- You can place your validation messages here if needed -->
 
       <form method="post" action="<?php echo base_url('api/auth.php'); ?>">
         <div class="form-group">
           <label for="username">User</label>
-          <input type="text" id="username" class="form-control" name="username" placeholder="Usuario">
+          <input type="text" id="username" class="form-control" name="username" placeholder="User">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" class="form-control" name="password" placeholder="Contrase??a">
+          <input type="password" id="password" class="form-control" name="password" placeholder="Password">
         </div>
         <div class="form-group">
           <button type="submit" class="btn-info">Access</button>
@@ -162,3 +162,4 @@ require_once(__DIR__ . '/../includes/load.php');
 </body>
 
 </html>
+

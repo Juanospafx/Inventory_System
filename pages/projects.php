@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Projects';
 require_once(__DIR__ . '/../includes/load.php');
 require_once(__DIR__ . '/../core/services/ProjectService.php');
@@ -77,11 +77,11 @@ if (isset($_POST['add_project'])) {
                 <td class="text-center">
                   <div class="btn-group">
                     <a href="edit_project.php?id=<?php echo (int) $project['id']; ?>" class="btn btn-xs btn-warning"
-                      data-toggle="tooltip" title="Editar">
+                      data-toggle="tooltip" title="Edit">
                       <span class="glyphicon glyphicon-edit"></span>
                     </a>
                     <a href="delete_project.php?id=<?php echo (int) $project['id']; ?>" class="btn btn-xs btn-danger"
-                      data-toggle="tooltip" title="Eliminar">
+                      data-toggle="tooltip" title="Delete">
                       <span class="glyphicon glyphicon-trash"></span>
                     </a>
                   </div>
@@ -109,3 +109,4 @@ if (isset($_POST['add_project'])) {
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

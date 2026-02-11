@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once(__DIR__ . '/../../core/bootstrap.php');
 require_once(__DIR__ . '/controllers/ProjectController.php');
@@ -49,3 +49,4 @@ switch ($resource) {
 }
 
 ?>
+

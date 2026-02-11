@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Add group';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -71,4 +71,5 @@
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

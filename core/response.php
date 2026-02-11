@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 function json_ok($data = null, $http_code = 200)
 {
@@ -34,3 +34,4 @@ function json_error($code, $message, $details = null, $http_code = 400)
 }
 
 ?>
+

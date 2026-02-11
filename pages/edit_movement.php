@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Edit inputs/outputs';
 require_once(__DIR__ . '/../includes/load.php');
 // Verifica el nivel de usuario
@@ -42,9 +42,9 @@ if (isset($_POST['update_movement'])) {
     $p_project = (!empty($_POST['project_id'])) ? (int) $db->escape($_POST['project_id']) : NULL;
 
     // Convertir el estado a n??mero:
-    // "Entrada"     => 1  
-    // "Salida"      => 0  
-    // "Devoluci??n"  => 2
+    // "Input"     => 1  
+    // "Output"      => 0  
+    // "Return"  => 2
     switch ($status_text) {
       case "Input":
         $s_status = 1;
@@ -61,7 +61,7 @@ if (isset($_POST['update_movement'])) {
     }
 
     // Validaciones seg??n el tipo de movimiento
-    if ($s_status === 0) { // Salida
+    if ($s_status === 0) { // Output
       // Obtener stock actual del producto
       $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
       $result_stock = $db->query($sql_check_stock);
@@ -71,7 +71,7 @@ if (isset($_POST['update_movement'])) {
         $session->msg('d', "Error: You cannot withdraw more than what is in stock. Available stock: " . $product_stock['quantity']);
         redirect('edit_movement.php?id=' . (int) $sale['id'], false);
       }
-    } elseif ($s_status === 2) { // Devoluci??n
+    } elseif ($s_status === 2) { // Return
       /* 
         Para la devoluci??n se debe comprobar que la cantidad a devolver no exceda lo que se
         sac?? previamente. Se excluye el registro que se est?? editando para obtener los totales actuales.
@@ -164,7 +164,7 @@ if (isset($_POST['update_movement'])) {
           <div class="form-group">
             <label for="project_id">Select Project</label>
             <select class="form-control" name="project_id">
-              <option value="">Sin proyecto asignado</option>
+              <option value="">No project assigned</option>
               <?php
               $all_projects = find_all('projects');
               foreach ($all_projects as $project):
@@ -184,15 +184,15 @@ if (isset($_POST['update_movement'])) {
               required>
           </div>
 
-          <!-- Estado (Entrada, Salida, Devoluci??n) -->
+          <!-- Estado (Input, Output, Devoluci??n) -->
           <div class="form-group">
             <label for="status">Status</label>
             <select class="form-control" name="status" required>
-              <option value="Entrada" <?php if ($sale['status'] == 1)
+              <option value="Input" <?php if ($sale['status'] == 1)
                 echo "selected"; ?>>Input</option>
-              <option value="Salida" <?php if ($sale['status'] == 0)
+              <option value="Output" <?php if ($sale['status'] == 0)
                 echo "selected"; ?>>Output</option>
-              <option value="Devoluci??n" <?php if ($sale['status'] == 2)
+          <option value="Return" <?php if ($sale['status'] == 2)
                 echo "selected"; ?>>Return</option>
             </select>
           </div>
@@ -211,7 +211,7 @@ if (isset($_POST['update_movement'])) {
               placeholder="Optional note"><?php echo isset($sale['note']) ? htmlspecialchars($sale['note']) : ''; ?></textarea>
           </div>
 
-          <!-- Selecci??n de Usuario (Solo para Admin) -->
+          <!-- Selecci??n de User (Solo para Admin) -->
           <?php if (current_user()['user_level'] == 1): ?>
             <div class="form-group">
               <label for="user_id">Associated User (Admin only)</label>
@@ -239,3 +239,4 @@ if (isset($_POST['update_movement'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

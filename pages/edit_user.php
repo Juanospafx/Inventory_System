@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Edit users';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -30,7 +30,7 @@
             $session->msg('s',"Acount Updated ");
             redirect('edit_user.php?id='.(int)$e_user['id'], false);
           } else {
-            $session->msg('d',' Lo siento no se actualiz?? los datos.');
+            $session->msg('d','Sorry, the data was not updated.');
             redirect('edit_user.php?id='.(int)$e_user['id'], false);
           }
     } else {
@@ -51,10 +51,10 @@ if(isset($_POST['update-pass'])) {
           $sql = "UPDATE users SET password='{$h_pass}' WHERE id='{$db->escape($id)}'";
        $result = $db->query($sql);
         if($result && $db->affected_rows() === 1){
-          $session->msg('s',"Se ha actualizado la contrase??a del usuario. ");
+          $session->msg('s',"User password updated.");
           redirect('edit_user.php?id='.(int)$e_user['id'], false);
         } else {
-          $session->msg('d','No se pudo actualizar la contrase??a de usuario..');
+          $session->msg('d','Failed to update user password.');
           redirect('edit_user.php?id='.(int)$e_user['id'], false);
         }
   } else {
@@ -78,15 +78,15 @@ if(isset($_POST['update-pass'])) {
        <div class="panel-body">
           <form method="post" action="edit_user.php?id=<?php echo (int)$e_user['id'];?>" class="clearfix">
             <div class="form-group">
-                  <label for="name" class="control-label">Names</label>
+                  <label for="name" class="control-label">Name</label>
                   <input type="name" class="form-control" name="name" value="<?php echo remove_junk(ucwords($e_user['name'])); ?>">
             </div>
             <div class="form-group">
-                  <label for="username" class="control-label">Users</label>
+                  <label for="username" class="control-label">User</label>
                   <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($e_user['username'])); ?>">
             </div>
             <div class="form-group">
-              <label for="level">Users rol</label>
+              <label for="level">User role</label>
                 <select class="form-control" name="level">
                   <?php foreach ($groups as $group ):?>
                    <option <?php if($group['group_level'] === $e_user['user_level']) echo 'selected="selected"';?> value="<?php echo $group['group_level'];?>"><?php echo ucwords($group['group_name']);?></option>
@@ -101,7 +101,7 @@ if(isset($_POST['update-pass'])) {
                 </select>
             </div>
             <div class="form-group clearfix">
-                    <button type="submit" name="update" class="btn btn-info">Actualizar</button>
+                    <button type="submit" name="update" class="btn btn-info">Update</button>
             </div>
         </form>
        </div>
@@ -120,7 +120,7 @@ if(isset($_POST['update-pass'])) {
         <form action="edit_user.php?id=<?php echo (int)$e_user['id'];?>" method="post" class="clearfix">
           <div class="form-group">
                 <label for="password" class="control-label">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Ingresa la nueva contrase??a" required>
+                <input type="password" class="form-control" name="password" placeholder="Enter the new password" required>
           </div>
           <div class="form-group clearfix">
                   <button type="submit" name="update-pass" class="btn btn-danger pull-right">Change</button>
@@ -132,4 +132,5 @@ if(isset($_POST['update-pass'])) {
 
  </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

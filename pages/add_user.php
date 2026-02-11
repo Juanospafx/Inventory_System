@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Add users';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -24,11 +24,11 @@
         $query .=")";
         if($db->query($query)){
           //sucess
-          $session->msg('s'," Cuenta de usuario ha sido creada");
+          $session->msg('s',"User account has been created");
           redirect('add_user.php', false);
         } else {
           //failed
-          $session->msg('d',' No se pudo crear la cuenta.');
+          $session->msg('d','Failed to create the account.');
           redirect('add_user.php', false);
         }
    } else {
@@ -63,7 +63,7 @@
                 <input type="password" class="form-control" name ="password"  placeholder="Tamales 01">
             </div>
             <div class="form-group">
-              <label for="level">User rol</label>
+              <label for="level">User role</label>
                 <select class="form-control" name="level">
                   <?php foreach ($groups as $group ):?>
                    <option value="<?php echo $group['group_level'];?>"><?php echo ucwords($group['group_name']);?></option>
@@ -82,4 +82,5 @@
   </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

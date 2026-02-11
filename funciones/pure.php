@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /*--------------------------------------------------------------*/
 /* Function for Remove html characters
@@ -79,3 +79,4 @@ function base_url($path = '')
 }
 
 ?>
+

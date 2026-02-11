@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Add item';
 require_once(__DIR__ . '/../includes/load.php');
 require_once(__DIR__ . '/../vendor/autoload.php');
@@ -58,10 +58,10 @@ if (isset($_POST['add_product'])) {
         }
       }
 
-      $session->msg('s', "Producto agregado exitosamente. El c??digo QR ha sido generado.");
+      $session->msg('s', "Product added successfully. The QR code has been generated.");
       redirect('add_product.php', false);
     } else {
-      $session->msg('d', 'Error al agregar el producto: ' . $db->error);
+      $session->msg('d', 'Error adding the product: ' . $db->error);
       $_SESSION['form_data'] = $_POST;
       redirect('add_product.php', false);
     }
@@ -159,3 +159,4 @@ if (isset($_SESSION['form_data'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

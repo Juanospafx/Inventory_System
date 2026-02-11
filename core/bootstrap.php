@@ -1,4 +1,4 @@
-
+﻿
 <?php
 // -----------------------------------------------------------------------
 // DEFINE SEPERATOR ALIASES
@@ -42,3 +42,4 @@ require_once(LIB_PATH_INC . 'sql.php');
 require_once(LIB_PATH_INC . 'response.php');
 
 ?>
+

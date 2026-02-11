@@ -1,4 +1,4 @@
-<ul>
+﻿<ul>
   <li>
     <a href="<?php echo base_url('pages/admin.php'); ?>">
       <i class="glyphicon glyphicon-home"></i>
@@ -67,3 +67,4 @@
     </ul>
   </li>
 </ul>
+

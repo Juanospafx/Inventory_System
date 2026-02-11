@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Admin home page';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -167,7 +167,7 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
             <a class="list-group-item clearfix" href="edit_product.php?id=<?php echo (int) $recent_product['id']; ?>">
               <div class="pull-left" style="margin-right: 10px;">
                 <?php if (empty($recent_product['image'])): ?>
-                  <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Sin imagen">
+                  <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="No image">
                 <?php else: ?>
                   <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/' . $recent_product['image']); ?>"
                     alt="" />
@@ -187,3 +187,4 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
   </div>
 
   <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

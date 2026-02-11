@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Items list';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
@@ -51,10 +51,10 @@ $products = join_product_table();
                   <td class="text-center"><?php echo $i++; ?></td>
                   <td>
                     <?php if (empty($product['image'])): ?>
-                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Sin imagen">
+                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="No image">
                     <?php else: ?>
                       <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/' . $product['image']); ?>"
-                        alt="Imagen del producto">
+                        alt="Product image">
                     <?php endif; ?>
                   </td>
                   <td><?php echo remove_junk($product['name']); ?></td>
@@ -71,11 +71,11 @@ $products = join_product_table();
                   <td class="text-center">
                     <div class="btn-group">
                       <a href="edit_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-info btn-xs"
-                        title="Editar" data-toggle="tooltip">
+                        title="Edit" data-toggle="tooltip">
                         <span class="glyphicon glyphicon-edit"></span>
                       </a>
                       <a href="delete_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-danger btn-xs"
-                        title="Eliminar" data-toggle="tooltip">
+                        title="Delete" data-toggle="tooltip">
                         <span class="glyphicon glyphicon-trash"></span>
                       </a>
                     </div>
@@ -91,3 +91,4 @@ $products = join_product_table();
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

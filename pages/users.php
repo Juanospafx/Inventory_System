@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Users list';
 require_once(__DIR__ . '/../includes/load.php');
 ?>
@@ -59,11 +59,11 @@ $all_users = find_all_user();
                 <td class="text-center">
                   <div class="btn-group">
                     <a href="edit_user.php?id=<?php echo (int) $a_user['id']; ?>" class="btn btn-xs btn-warning"
-                      data-toggle="tooltip" title="Editar">
+                      data-toggle="tooltip" title="Edit">
                       <i class="glyphicon glyphicon-pencil"></i>
                     </a>
                     <a href="delete_user.php?id=<?php echo (int) $a_user['id']; ?>" class="btn btn-xs btn-danger"
-                      data-toggle="tooltip" title="Eliminar">
+                      data-toggle="tooltip" title="Delete">
                       <i class="glyphicon glyphicon-remove"></i>
                     </a>
                   </div>
@@ -88,3 +88,4 @@ $all_users = find_all_user();
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

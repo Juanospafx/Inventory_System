@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class AuthService
 {
@@ -14,3 +14,4 @@ class AuthService
 }
 
 ?>
+

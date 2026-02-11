@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Home Page';
   require_once(__DIR__ . '/../includes/load.php');
   if (!$session->isUserLoggedIn(true)) { redirect('index.php', false);}
@@ -18,4 +18,5 @@
  </div>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 

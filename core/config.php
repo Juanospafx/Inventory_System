@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /*
 |--------------------------------------------------------------------------
 |
@@ -13,3 +13,4 @@ define('DB_PASS', 'rootadmin01');             // Set database password
 define('DB_NAME', 'brightro_brightronix_inv');        // Set database name
 
 ?>
+

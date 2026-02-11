@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Month report';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -58,3 +58,4 @@ $movements = monthly_movements($year); // Nueva funci??n para movimientos mensua
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

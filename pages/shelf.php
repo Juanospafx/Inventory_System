@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Depot';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -15,10 +15,10 @@ if (isset($_POST['add_shelf'])) {
         $sql = "INSERT INTO shelves (name)";
         $sql .= " VALUES ('{$shelf_name}')";
         if ($db->query($sql)) {
-            $session->msg("s", "Anaquel agregado exitosamente.");
+            $session->msg("s", "Shelf added successfully.");
             redirect('shelf.php', false);
         } else {
-            $session->msg("d", "Lo siento, registro fall??");
+            $session->msg("d", "Sorry, registration failed.");
             redirect('shelf.php', false);
         }
     } else {
@@ -46,7 +46,7 @@ if (isset($_POST['add_shelf'])) {
             <div class="panel-body">
                 <form method="post" action="shelf.php">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="shelf-name" placeholder="Nombre del anaquel"
+                        <input type="text" class="form-control" name="shelf-name" placeholder="Shelf name"
                             required>
                     </div>
                     <button type="submit" name="add_shelf" class="btn btn-primary">Add Shelf</button>
@@ -83,11 +83,11 @@ if (isset($_POST['add_shelf'])) {
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <a href="edit_shelf.php?id=<?php echo (int) $shelf['id']; ?>"
-                                            class="btn btn-xs btn-warning" data-toggle="tooltip" title="Editar">
+                                            class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>
                                         <a href="delete_shelf.php?id=<?php echo (int) $shelf['id']; ?>"
-                                            class="btn btn-xs btn-danger" data-toggle="tooltip" title="Eliminar">
+                                            class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </a>
                                     </div>
@@ -103,3 +103,4 @@ if (isset($_POST['add_shelf'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

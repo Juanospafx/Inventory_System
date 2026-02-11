@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $page_title = 'Edit shelf';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -23,10 +23,10 @@ if (isset($_POST['edit_shelf'])) {
         $sql .= " WHERE id='{$shelf['id']}'";
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
-            $session->msg("s", "Anaquel actualizado con ??xito.");
+            $session->msg("s", "Shelf updated successfully.");
             redirect('shelf.php', false);
         } else {
-            $session->msg("d", "Lo siento, actualizaci??n fall??.");
+            $session->msg("d", "Sorry, update failed.");
             redirect('shelf.php', false);
         }
     } else {
@@ -55,7 +55,7 @@ if (isset($_POST['edit_shelf'])) {
                         <input type="text" class="form-control" name="shelf-name"
                             value="<?php echo remove_junk(ucfirst($shelf['name'])); ?>">
                     </div>
-                    <button type="submit" name="edit_shelf" class="btn btn-primary">Actualizar anaquel</button>
+                    <button type="submit" name="edit_shelf" class="btn btn-primary">Update shelf</button>
                 </form>
             </div>
         </div>
@@ -65,3 +65,4 @@ if (isset($_POST['edit_shelf'])) {
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+

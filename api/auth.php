@@ -1,4 +1,4 @@
-<?php include_once(__DIR__ . '/../core/bootstrap.php'); ?>
+﻿<?php include_once(__DIR__ . '/../core/bootstrap.php'); ?>
 <?php require_once(__DIR__ . '/../core/services/AuthService.php'); ?>
 <?php
 $req_fields = array('username','password' );
@@ -27,3 +27,4 @@ if(empty($errors)){
 }
 
 ?>
+

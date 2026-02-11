@@ -1,4 +1,4 @@
-<?php
+﻿<?php
  session_start();
 
 class Session {
@@ -57,3 +57,4 @@ $session = new Session();
 $msg = $session->msg();
 
 ?>
+

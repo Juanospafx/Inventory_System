@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class Media
 {
 
@@ -7,7 +7,7 @@ class Media
     public $fileType;
     public $fileTempPath;
 
-    // Rutas de destino
+    // Destination paths
     public $userPath = SITE_ROOT . DS . '..' . DS . 'uploads/users';
     public $productPath = SITE_ROOT . DS . '..' . DS . 'uploads/products';
 
@@ -17,20 +17,20 @@ class Media
         1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
         2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
         3 => 'The uploaded file was only partially uploaded',
-        4 => 'Ningún archivo fue subido',
+        4 => 'No file was uploaded',
         6 => 'Missing a temporary folder',
         7 => 'Failed to write file to disk.',
         8 => 'A PHP extension stopped the file upload.'
     ];
 
-    // Extensiones permitidas
+    // Allowed extensions
     public $upload_extensions = ['gif', 'jpg', 'jpeg', 'png'];
 
-    // Para guardar el ID insertado
+    // Store the inserted ID
     public $id;
 
     /**
-     * Comprueba si la extensión es válida
+     * Check if the extension is valid
      */
     public function file_ext($filename)
     {
@@ -39,17 +39,17 @@ class Media
     }
 
     /**
-     * Valida y prepara un solo archivo de $_FILES
+     * Validate and prepare a single file from $_FILES
      */
     public function upload($file)
     {
         $this->errors = [];
         if (!$file || !is_array($file) || $file['error'] !== UPLOAD_ERR_OK) {
-            $this->errors[] = $this->upload_errors[$file['error']] ?? "Ningún archivo subido.";
+            $this->errors[] = $this->upload_errors[$file['error']] ?? "No file uploaded.";
             return false;
         }
         if (!$this->file_ext($file['name'])) {
-            $this->errors[] = 'Formato de archivo incorrecto';
+            $this->errors[] = 'Invalid file format';
             return false;
         }
         $this->imageInfo = getimagesize($file['tmp_name']);
@@ -60,27 +60,27 @@ class Media
     }
 
     /**
-     * Comprobaciones antes de mover un solo archivo a products
+     * Checks before moving a single file to products
      */
     public function process()
     {
         if (!empty($this->errors)) {
             return false;
         } elseif (empty($this->fileName) || empty($this->fileTempPath)) {
-            $this->errors[] = "La ubicación del archivo no está disponible.";
+            $this->errors[] = "File location is not available.";
             return false;
         } elseif (!is_writable($this->productPath)) {
-            $this->errors[] = "{$this->productPath} debe tener permisos de escritura.";
+            $this->errors[] = "{$this->productPath} must have write permissions.";
             return false;
         } elseif (file_exists("{$this->productPath}/{$this->fileName}")) {
-            $this->errors[] = "El archivo {$this->fileName} ya existe.";
+            $this->errors[] = "The file {$this->fileName} already exists.";
             return false;
         }
         return true;
     }
 
     /**
-     * Procesa una sola imagen (legacy)
+     * Process a single image (legacy)
      */
     public function process_media()
     {
@@ -90,7 +90,7 @@ class Media
             empty($this->fileTempPath) ||
             !is_writable($this->productPath)
         ) {
-            $this->errors[] = "Error previo al mover el archivo.";
+            $this->errors[] = "Error before moving the file.";
             return false;
         }
         $ext = strtolower(pathinfo($this->fileName, PATHINFO_EXTENSION));
@@ -105,15 +105,15 @@ class Media
                 unset($this->fileTempPath);
                 return true;
             }
-            $this->errors[] = "Error al insertar la imagen en la base de datos.";
+            $this->errors[] = "Error inserting image into the database.";
         } else {
-            $this->errors[] = "Error al mover el archivo a la carpeta de destino.";
+            $this->errors[] = "Error moving the file to the destination folder.";
         }
         return false;
     }
 
     /**
-     * Inserta registro en media (con descripción opcional)
+     * Insert media record (with optional description)
      */
     private function insert_media($description = null)
     {
@@ -129,8 +129,8 @@ class Media
     }
 
     /**
-     * Procesa una sola imagen para múltiple subida,
-     * permite conservar nombre original y añadir descripción.
+     * Process a single image for multiple upload,
+     * allows keeping the original name and adding a description.
      */
     protected function process_media_multi($description, $preserveOriginalName = false)
     {
@@ -151,20 +151,20 @@ class Media
                 unset($this->fileTempPath);
                 return true;
             }
-            $this->errors[] = "Error al insertar la imagen en la base de datos.";
+            $this->errors[] = "Error inserting image into the database.";
         } else {
-            $this->errors[] = "Error al mover el archivo a la carpeta de destino.";
+            $this->errors[] = "Error moving the file to the destination folder.";
         }
         return false;
     }
 
     /**
-     * Sube múltiples imágenes de $_FILES['campo']
+     * Upload multiple images from $_FILES['field']
      *
-     * @param array $files Estructura de $_FILES['campo']
-     * @param array $descriptions Descripciones opcionales
-     * @param bool $preserveOriginalName Conservar nombre original
-     * @return array Resultados por cada índice: ['id'=>..., 'fileName'=>...] o ['error'=>[...] ]
+     * @param array $files Structure of $_FILES['field']
+     * @param array $descriptions Optional descriptions
+     * @param bool $preserveOriginalName Preserve original name
+     * @return array Results per index: ['id'=>..., 'fileName'=>...] or ['error'=>[...] ]
      */
     public function uploadMultiple($files, $descriptions = [], $preserveOriginalName = false)
     {
@@ -194,7 +194,7 @@ class Media
     }
 
     /**
-     * Procesa imagen de usuario (similar a legacy process_user)
+     * Process user image (similar to legacy process_user)
      */
     public function process_user($id)
     {
@@ -205,7 +205,7 @@ class Media
             !is_writable($this->userPath) ||
             !$id
         ) {
-            $this->errors[] = "Error en datos o permisos.";
+            $this->errors[] = "Invalid data or permissions.";
             return false;
         }
         $ext = pathinfo($this->fileName, PATHINFO_EXTENSION);
@@ -220,7 +220,7 @@ class Media
             unset($this->fileTempPath);
             return true;
         }
-        $this->errors[] = "Error al actualizar la imagen de usuario.";
+        $this->errors[] = "Error updating user image.";
         return false;
     }
 
@@ -236,7 +236,7 @@ class Media
     }
 
     /**
-     * Elimina imagen anterior de usuario
+     * Delete previous user image
      */
     public function user_image_destroy($id)
     {
@@ -251,13 +251,13 @@ class Media
     }
 
     /**
-     * Elimina media de tabla y fichero físico
+     * Delete media record and physical file
      */
     public function media_destroy($id, $file_name)
     {
         $this->fileName = $file_name;
         if (!$id || empty($this->fileName)) {
-            $this->errors[] = "Faltan datos para eliminación.";
+            $this->errors[] = "Missing data for deletion.";
             return false;
         }
         if (delete_by_id('media', $id)) {
@@ -266,7 +266,7 @@ class Media
                 unlink($path);
             return true;
         }
-        $this->errors[] = "Error al eliminar la entrada de media.";
+        $this->errors[] = "Error deleting media record.";
         return false;
     }
 

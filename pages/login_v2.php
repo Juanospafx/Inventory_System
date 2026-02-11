@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   ob_start();
   require_once(__DIR__ . '/../includes/load.php');
   if ($session->isUserLoggedIn(true)) { 
@@ -65,5 +65,6 @@
 
 </body>
 </html>
+
 
 

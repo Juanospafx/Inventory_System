@@ -1,4 +1,4 @@
-<?php
+﻿<?php
   $page_title = 'Change password';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -14,8 +14,8 @@
     if(empty($errors)){
 
              if(sha1($_POST['old-password']) !== current_user()['password'] ){
-               $session->msg('d', "Tu antigua contrase??a no coincide");
-               redirect('change_password.php',false);
+               $session->msg('d', "Your old password does not match.");
+               redirect(base_url('pages/change_password.php'), false);
              }
 
             $id = (int)$_POST['id'];
@@ -24,15 +24,15 @@
             $result = $db->query($sql);
                 if($result && $db->affected_rows() === 1):
                   $session->logout();
-                  $session->msg('s',"Inicia sesi??n con tu nueva contrase??a.");
-                  redirect('index.php', false);
+                  $session->msg('s',"Sign in with your new password.");
+                  redirect(base_url('pages/index.php'), false);
                 else:
-                  $session->msg('d',' Lo siento, actualizaci??n fall??.');
-                  redirect('change_password.php', false);
+                  $session->msg('d','Sorry, update failed.');
+                  redirect(base_url('pages/change_password.php'), false);
                 endif;
     } else {
       $session->msg("d", $errors);
-      redirect('change_password.php',false);
+      redirect(base_url('pages/change_password.php'), false);
     }
   }
 ?>
@@ -42,14 +42,14 @@
        <h3>Change password</h3>
      </div>
      <?php echo display_msg($msg); ?>
-      <form method="post" action="change_password.php" class="clearfix">
+      <form method="post" action="<?php echo base_url('pages/change_password.php'); ?>" class="clearfix">
         <div class="form-group">
               <label for="newPassword" class="control-label">New password</label>
-              <input type="password" class="form-control" name="new-password" placeholder="Nueva contrase??a">
+              <input type="password" class="form-control" name="new-password" placeholder="New password">
         </div>
         <div class="form-group">
               <label for="oldPassword" class="control-label">Used password</label>
-              <input type="password" class="form-control" name="old-password" placeholder="Antigua contrase??a">
+              <input type="password" class="form-control" name="old-password" placeholder="Old password">
         </div>
         <div class="form-group clearfix">
                <input type="hidden" name="id" value="<?php echo (int)$user['id'];?>">
@@ -58,4 +58,5 @@
     </form>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
+
 
