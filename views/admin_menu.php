@@ -2,13 +2,13 @@
 <ul>
   <li>
     <a href="<?php echo base_url('pages/admin.php'); ?>">
-      <i class="fa-solid fa-house"></i>
+      <i class="fa-solid fa-house text-blue"></i>
       <span>Control panel</span>
     </a>
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="fa-solid fa-users"></i>
+      <i class="fa-solid fa-users-gear text-green"></i>
       <span>Accesses</span>
     </a>
     <ul class="submenu">
@@ -18,37 +18,37 @@
   </li>
   <li>
     <a href="<?php echo base_url('pages/shelf.php'); ?>">
-      <i class="fa-solid fa-shelves"></i>
+      <i class="fa-solid fa-warehouse text-yellow"></i>
       <span>Shelves</span>
     </a>
   </li>
 
   <li>
     <a href="<?php echo base_url('pages/projects.php'); ?>">
-      <i class="fa-solid fa-diagram-project"></i>
+      <i class="fa-solid fa-briefcase text-purple"></i>
       <span>Projects</span>
     </a>
   </li>
 
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="fa-solid fa-box-open"></i>
+      <i class="fa-solid fa-boxes-stacked text-orange"></i>
       <span>Items</span>
     </a>
     <ul class="submenu">
-      <li><a href="<?php echo base_url('pages/product.php'); ?>">Manage Items</a> </li>
-      <li><a href="<?php echo base_url('pages/add_product.php'); ?>">Add Items</a> </li>
+      <li><a href="<?php echo base_url('pages/product.php'); ?>">Manage Items</a></li>
+      <li><a href="<?php echo base_url('pages/add_product.php'); ?>">Add Items</a></li>
     </ul>
   </li>
   <li>
     <a href="<?php echo base_url('pages/media.php'); ?>">
-      <i class="fa-solid fa-image"></i>
+      <i class="fa-solid fa-images text-blue"></i>
       <span>Media</span>
     </a>
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="fa-solid fa-dolly"></i>
+      <i class="fa-solid fa-exchange-alt text-green"></i>
       <span>Input/Output</span>
     </a>
     <ul class="submenu">
@@ -58,7 +58,7 @@
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="fa-solid fa-chart-line"></i>
+      <i class="fa-solid fa-file-invoice-dollar text-yellow"></i>
       <span>Repo. Input/Output</span>
     </a>
     <ul class="submenu">

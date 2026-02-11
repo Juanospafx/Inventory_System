@@ -67,7 +67,7 @@
               </div>
               <div class="form-group">
                 <input type="hidden" name="user_id" value="<?php echo $user['id'];?>">
-                 <button type="submit" name="submit" class="btn btn-warning">Change</button>
+                 <button type="submit" name="submit" class="btn btn-primary">Change</button>
               </div>
              </form>
             </div>
@@ -92,8 +92,8 @@
                   <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($user['username'])); ?>">
             </div>
             <div class="form-group clearfix">
-                    <a href="<?php echo base_url('pages/change_password.php'); ?>" title="change password" class="btn btn-danger pull-right">Change password</a>
-                    <button type="submit" name="update" class="btn btn-info">Update</button>
+                    <a href="<?php echo base_url('pages/change_password.php'); ?>" title="change password" class="btn btn-primary pull-right">Change password</a>
+                    <button type="submit" name="update" class="btn btn-primary">Update</button>
             </div>
         </form>
       </div>

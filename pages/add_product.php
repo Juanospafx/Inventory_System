@@ -73,6 +73,19 @@ if (isset($_POST['add_product'])) {
 }
 
 $all_shelves = find_all('shelves');
+
+// Lógica para filtrar anaqueles si viene del mapa
+if (isset($_GET['shelf_filter'])) {
+    $filter = strtoupper($_GET['shelf_filter']);
+    $filtered_shelves = [];
+    foreach ($all_shelves as $shelf) {
+        // Verifica si el nombre del anaquel comienza con la letra del filtro (ej: 'A' coincide con 'A1', 'A2', etc.)
+        if (strpos(strtoupper($shelf['name']), $filter) === 0) {
+            $filtered_shelves[] = $shelf;
+        }
+    }
+    $all_shelves = $filtered_shelves;
+}
 ?>
 
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
@@ -150,7 +163,7 @@ if (isset($_SESSION['form_data'])) {
 
 
 
-            <button type="submit" name="add_product" class="btn btn-danger">Add item</button>
+            <button type="submit" name="add_product" class="btn btn-primary">Add item</button>
           </form>
         </div>
       </div>

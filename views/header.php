@@ -4,6 +4,10 @@
 
 <head>
   <meta charset="UTF-8">
+  <!-- CSS Crítico: Define el fondo oscuro inmediatamente para evitar el parpadeo blanco -->
+  <style>html, body { background-color: #1b212d !important; }</style>
+  <!-- Meta etiqueta para colorear la barra del navegador en móviles -->
+  <meta name="theme-color" content="#1b212d">
   <title><?php if (!empty($page_title))
     echo remove_junk($page_title);
   elseif (!empty($user))
@@ -14,7 +18,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Añadida la fuente Poppins para un estilo más moderno -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
   <!-- Migrando de Bootstrap 3.3.4 a Bootstrap 5.3.3 para modernizar la interfaz -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="<?php echo base_url('libs/css/main.css'); ?>" />
@@ -24,7 +29,12 @@
 <body data-base-url="<?php echo base_url(''); ?>">
   <?php if ($session->isUserLoggedIn()): ?>
     <header id="header">
-      <div class="logo float-start"> Brigtronix- Inventory </div>
+      <div class="logo float-start">
+        <div class="logo-container">
+           <img src="<?php echo base_url('libs/images/logo-text.png'); ?>" alt="Brigtronix Logo" class="logo-full">
+           <span class="app-subtitle">Inventory System</span>
+        </div>
+      </div>
       <div class="header-content">
         <div class="sidebar-toggle">
           <a href="#" class="sidebar-toggle-btn"><i class="fa fa-bars"></i></a>
@@ -32,8 +42,8 @@
         <div class="header-date float-start">
           <strong><span id="time"></span></strong>
         </div>
-        <div class="float-end clearfix">
-          <ul class="info-menu list-inline list-unstyled mb-0">
+        <div class="float-end clearfix me-3">
+          <ul class="info-menu list-inline list-unstyled mb-0 d-flex align-items-center">
             <li class="profile">
               <!-- Actualizado para el dropdown de Bootstrap 5 -->
               <a href="#" data-bs-toggle="dropdown" class="toggle" aria-expanded="false">

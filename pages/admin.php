@@ -44,7 +44,7 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
     <div class="card card-box">
       <div class="card-body">
         <div class="card-icon bg-red">
-          <i class="fa-solid fa-shelves"></i>
+          <i class="fa-solid fa-cubes"></i>
         </div>
         <div class="card-value flex-grow-1 text-end p-3">
           <h2 class="mb-1"> <?php echo $c_shelf['total']; ?> </h2>

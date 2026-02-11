@@ -225,7 +225,7 @@ if (isset($_SESSION['form_data'])) {
               </div>
             </div>
 
-            <button type="submit" name="add_movement" class="btn btn-danger">Add movement</button>
+            <button type="submit" name="add_movement" class="btn btn-primary">Add movement</button>
           </form>
         </div>
       </div>

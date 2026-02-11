@@ -22,7 +22,7 @@ $all_users = find_all_user();
           <i class="fa-solid fa-users"></i>
           <span>Users</span>
         </strong>
-        <a href="add_user.php" class="btn btn-info pull-right">Add users</a>
+        <a href="add_user.php" class="btn btn-primary pull-right">Add users</a>
       </div>
       <div class="panel-body">
         <!-- Search Filter -->
