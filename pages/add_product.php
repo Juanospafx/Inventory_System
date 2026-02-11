@@ -1,4 +1,4 @@
-﻿﻿<?php
+﻿<?php
 $page_title = 'Add item';
 require_once(__DIR__ . '/../includes/load.php');
 require_once(__DIR__ . '/../vendor/autoload.php');
