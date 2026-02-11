@@ -1,7 +1,0 @@
-<?php
-require_once('includes/load.php');
-$result = $db->query("SHOW TABLES");
-while ($row = $result->fetch_array()) {
-    echo $row[0] . "\n";
-}
-?>
