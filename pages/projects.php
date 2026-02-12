@@ -44,7 +44,7 @@ if (isset($_POST['add_project'])) {
       </div>
       <div class="panel-body">
         <form method="post" action="projects.php">
-          <div class="form-group">
+          <div class="mb-3">
             <input type="text" class="form-control" name="project-name" placeholder="Project name" required>
           </div>
           <button type="submit" name="add_project" class="btn btn-primary">Add Project</button>

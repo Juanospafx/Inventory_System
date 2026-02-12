@@ -15,19 +15,17 @@
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
 <div class="row">
    <div class="col-md-4">
-       <div class="panel profile">
-         <div class="jumbotron text-center bg-red">
-            <img class="img-circle img-size-2" src="<?php echo base_url('uploads/users/' . $user_p['image']); ?>" alt="">
-           <h3><?php echo first_character($user_p['name']); ?></h3>
+       <div class="card profile">
+         <div class="card-body text-center bg-red">
+            <img class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;" src="<?php echo base_url('uploads/users/' . $user_p['image']); ?>" alt="">
+           <h3 class="text-white mt-3"><?php echo first_character($user_p['name']); ?></h3>
          </div>
         <?php if( $user_p['id'] === $user['id']):?>
-         <ul class="nav nav-pills nav-stacked">
-          <li><a href="edit_account.php"> <i class="glyphicon glyphicon-edit"></i> Edit profile</a></li>
+         <ul class="list-group list-group-flush">
+          <li class="list-group-item"><a href="edit_account.php"> <i class="fa-solid fa-pencil"></i> Edit profile</a></li>
          </ul>
        <?php endif;?>
        </div>
    </div>
 </div>
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-

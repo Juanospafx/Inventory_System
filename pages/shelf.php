@@ -45,7 +45,7 @@ if (isset($_POST['add_shelf'])) {
             </div>
             <div class="panel-body">
                 <form method="post" action="shelf.php">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <input type="text" class="form-control" name="shelf-name" placeholder="Shelf name"
                             required>
                     </div>
@@ -64,7 +64,7 @@ if (isset($_POST['add_shelf'])) {
             </div>
             <div class="panel-body">
                 <!-- Search Filter -->
-                <div class="form-group">
+                <div class="mb-3">
                     <input type="text" id="shelfSearch" class="form-control" placeholder="Search Depot...">
                 </div>
                 <table id="shelfTable" class="table table-bordered table-striped table-hover">

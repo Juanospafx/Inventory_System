@@ -8,7 +8,20 @@ require_once(__DIR__ . '/../includes/load.php');
 page_require_level(3);
 
 // Listado de productos
-$all_products = find_all('products');
+$all_products = join_product_table();
+
+// Filtrar productos si se especifica un anaquel
+if (isset($_GET['shelf_filter'])) {
+    $filter = strtoupper($_GET['shelf_filter']);
+    $filtered_products = [];
+    foreach ($all_products as $product) {
+        if (isset($product['shelf']) && strpos(strtoupper($product['shelf']), $filter) === 0) {
+            $filtered_products[] = $product;
+        }
+    }
+    $all_products = $filtered_products;
+}
+
 // Listado de usuarios (si lo requieres)
 $all_users = find_all('users');
 $all_projects = find_all('projects');
@@ -118,7 +131,7 @@ if (isset($_SESSION['form_data'])) {
         <div class="col-md-12">
           <form method="post" action="add_movement.php" class="clearfix">
             <!-- Fila para QR Code y selecci??n de producto -->
-            <div class="form-group">
+            <div class="mb-3">
               <div class="row">
                 <!-- Campo de c??digo QR -->
                 <div class="col-md-6">
@@ -131,21 +144,26 @@ if (isset($_SESSION['form_data'])) {
                 <!-- Bot??n para iniciar el escaneo -->
                 <div class="col-md-6">
                   <label>&nbsp;</label>
-                  <button id="start-scan" type="button" class="btn btn-info btn-block">Scan QR Code</button>
+                  <button id="start-scan" type="button" class="btn btn-info w-100">Scan QR Code</button>
                 </div>
               </div>
             </div>
 
             <!-- Contenedor para mostrar la c??mara al escanear -->
-            <div class="form-group" id="scanner-container" style="display:none;">
+            <div class="mb-3" id="scanner-container" style="display:none;">
               <div id="reader" style="width:100%; max-width:400px; margin: 0 auto;"></div>
             </div>
 
             <!-- Producto y Proyecto -->
-            <div class="form-group">
+            <div class="mb-3">
               <div class="row">
                 <div class="col-md-6">
                   <label for="product_id">Select item</label>
+                  <?php if(isset($_GET['shelf_filter'])): ?>
+                    <span class="badge bg-info text-dark mb-2">
+                      Filtered by Shelf: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
+                    </span>
+                  <?php endif; ?>
                   <select class="form-control select2" name="product_id" id="product_id" required>
                     <option value="">Select an item</option>
                     <?php foreach ($all_products as $product): ?>
@@ -170,7 +188,7 @@ if (isset($_SESSION['form_data'])) {
             </div>
 
             <!-- Cantidad -->
-            <div class="form-group">
+            <div class="mb-3">
               <div class="row">
                 <div class="col-md-6">
                   <label for="quantity">Quantity</label>
@@ -192,7 +210,7 @@ if (isset($_SESSION['form_data'])) {
 
             <!-- Selecci??n de User (Solo para Admin y Output/Retorno) -->
             <?php $user_level = current_user()['user_level']; ?>
-            <div class="form-group" id="user_selection_group"
+            <div class="mb-3" id="user_selection_group"
               style="display: <?php echo ($user_level == 1 && isset($form_data['status']) && ($form_data['status'] == 0 || $form_data['status'] == 2)) ? 'block' : 'none'; ?>;">
               <div class="row">
                 <div class="col-md-6">
@@ -210,7 +228,7 @@ if (isset($_SESSION['form_data'])) {
             </div>
 
             <!-- Fecha y Ubicaci??n -->
-            <div class="form-group">
+            <div class="mb-3">
               <div class="row">
                 <div class="col-md-6">
                   <label for="date">Date</label>

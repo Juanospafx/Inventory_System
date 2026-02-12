@@ -83,10 +83,27 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-12 mb-4">
+    <div class="card">
+      <div class="card-header">
+        <strong>
+          <i class="fa-solid fa-map"></i>
+          <span>Warehouse Map - Touch the shelf to add an item</span>
+        </strong>
+      </div>
+      <div class="card-body" style="position: relative; overflow-x: auto;">
+        
+        <?php include_once(__DIR__ . '/../views/map_view.php'); ?>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <!-- Item más usado -->
-  <div class="col-lg-4 mb-4">
+  <div class="col-lg-6 mb-4">
     <div class="card">
       <div class="card-header">
         <strong>
@@ -120,7 +137,7 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
   </div>
 
   <!-- Última entrada/salida -->
-  <div class="col-lg-4 mb-4">
+  <div class="col-lg-6 mb-4">
     <div class="card">
       <div class="card-header">
         <strong>
@@ -154,9 +171,11 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
       </div>
     </div>
   </div>
+</div>
 
+<div class="row">
   <!-- Items recientemente añadidos -->
-  <div class="col-lg-4 mb-4">
+  <div class="col-lg-12 mb-4">
     <div class="card">
       <div class="card-header">
         <strong>
@@ -165,7 +184,7 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
         </strong>
       </div>
       <div class="card-body">
-        <div class="list-group">
+        <div class="list-group" style="max-height: 300px; overflow-y: auto;">
           <?php foreach ($recent_products as $recent_product): ?>
             <a class="list-group-item list-group-item-action" href="edit_product.php?id=<?php echo (int) $recent_product['id']; ?>">
               <div class="d-flex w-100 justify-content-between">

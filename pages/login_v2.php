@@ -2,7 +2,7 @@
   ob_start();
   require_once(__DIR__ . '/../includes/load.php');
   if ($session->isUserLoggedIn(true)) { 
-      redirect('home.php', false);
+      redirect('admin.php', false);
   }
 ?>
 <!DOCTYPE html>

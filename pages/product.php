@@ -64,8 +64,8 @@ $products = join_product_table();
                   <td><?php echo isset($product['note']) ? remove_junk($product['note']) : ''; ?></td>
                   <td class="text-center">
                     <?php if (!empty($product['qr_code'])): ?>
-                      <img src="<?php echo $product['qr_code']; ?>" alt="QR Code" style="width: 100px;">
-                      <a href="<?php echo $product['qr_code']; ?>" class="btn btn-success btn-xs" download>Download</a>
+                      <img src="<?php echo base_url($product['qr_code']); ?>" alt="QR Code" style="width: 100px;">
+                      <a href="<?php echo base_url($product['qr_code']); ?>" class="btn btn-success btn-xs" download>Download</a>
                     <?php endif; ?>
                   </td>
                   <td class="text-center">

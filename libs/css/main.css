@@ -55,7 +55,7 @@ h2, .h2, h3, .h3 {
     position: relative;
     display: block;
     left: 0;
-    padding: 24px 20px 32px 304px; /* Ajustado para sidebar de 280px */
+    padding: 94px 20px 32px 320px; /* 24px original + 70px del header fijo */
     transition: padding-left 0.3s ease-in-out;
 }
 
@@ -86,8 +86,8 @@ a:hover {
 }
 
 #header {
-    position: relative;
-    z-index: 99;
+    position: fixed; /* Cambiado a fixed para que se mantenga arriba */
+    z-index: 1040; /* Aumentado para estar por encima de todo */
     top: 0;
     left: 0;
     background-color: var(--bg-panel);
@@ -159,10 +159,11 @@ header>.logo {
     font-size: 14px;
     color: var(--text-secondary);
     position: relative;
-    padding: 10px 10px 10px 0;
+    padding: 6px 15px 6px 5px;
     margin: 0;
-    background: var(--bg-input);
+    background: transparent;
     border-radius: 30px;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .info-menu li.profile a img {
@@ -170,33 +171,52 @@ header>.logo {
     height: 30px;
 }
 
+.profile a.toggle:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
 .dropdown-menu {
-    margin-top: 4px;
+    margin-top: 10px;
     border: 1px solid var(--border-subtle);
-    border-radius: 0.75rem;
+    border-radius: 1rem;
     background-color: var(--bg-panel);
     box-shadow: var(--shadow-card);
+    padding: 0.5rem 0;
+    min-width: 240px;
 }
 
 .dropdown-menu li {
     margin: 0;
     padding: 0;
     display: block;
-    line-height: 35px;
 }
 
 .dropdown-menu li a {
     text-decoration: none;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 14px;
     position: relative;
-    line-height: 30px;
+    padding: 8px 20px;
     width: 100%;
     border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu li a:hover {
+    background-color: var(--bg-input);
+    color: var(--accent-primary);
+    padding-left: 24px;
 }
 
 .dropdown-menu li a i {
-    margin-right: 5px;
+    margin-right: 0;
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
 }
 
 .dropdown-menu li.last a {
@@ -353,11 +373,10 @@ table {
 
 @media screen and (max-width: 767px) {
     .page {
-        padding: 20px 15px;
+        padding: 90px 15px 20px 15px; /* Ajustado padding superior para header fijo */
         position: relative;
-        z-index: 1050;
-        /* Higher than sidebar (1030) */
-        background: #fff;
+        z-index: 1; /* Reducido para que no tape el sidebar */
+        background-color: transparent;
     }
 
     .header-content {
@@ -383,8 +402,8 @@ table {
         position: fixed;
         left: -260px;
         top: 0;
-        padding-top: 110px;
-        z-index: 1030;
+        padding-top: 70px; /* Ajustado a la altura del header */
+        z-index: 2000; /* Aumentado para asegurar que se superponga a todo */
         transition: left 0.3s ease-in-out;
     }
 
@@ -612,17 +631,30 @@ table {
 }
 
 .submenu {
-    background: var(--bg-input);
+    background: transparent;
+    margin: 5px 0 10px 26px; /* Indentación alineada */
+    padding: 0;
+    border-left: 2px solid var(--border-subtle); /* Línea guía vertical elegante */
+}
+
+.submenu li {
+    margin: 0 !important; /* Eliminar márgenes grandes heredados */
 }
 
 .submenu li a {
-    padding: 8px 10px 8px 52px; /* Reducido padding vertical */
-    font-size: 0.85rem; /* Texto más pequeño */
+    padding: 8px 0 8px 15px;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     font-weight: 400;
     transition: all .2s ease-in-out;
+    background: transparent !important;
 }
 
+.submenu li a:hover {
+    color: var(--accent-primary);
+    transform: translateX(5px);
+    background: transparent !important;
+}
 .sidebar-overlay {
     position: fixed;
     inset: 0;
@@ -651,7 +683,7 @@ body.sidebar-collapsed .app-subtitle {
 }
 
 body.sidebar-collapsed .page {
-    padding-left: calc(96px + 24px);
+    padding: 94px 20px 32px calc(96px + 24px); /* Mantener padding superior */
 }
 
 body.sidebar-collapsed .sidebar ul li a span {
@@ -698,6 +730,73 @@ body.sidebar-collapsed .sidebar ul li a {
     }
 }
 
+/* --- BOTONES PRINCIPALES (Naranja) --- */
+/* Incluye btn-primary, btn-success y botones genéricos que no sean de alerta */
+.btn-primary, .btn-success, button.btn:not(.btn-danger):not(.btn-warning):not(.btn-info), a.btn-primary, a.btn-success {
+    background-color: #fb5a3a !important;
+    border-color: #fb5a3a !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover, .btn-success:hover, button.btn:not(.btn-danger):not(.btn-warning):not(.btn-info):hover, a.btn-primary:hover, a.btn-success:hover {
+    background-color: #e0482b !important; /* Un tono más oscuro del naranja */
+    border-color: #e0482b !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    filter: brightness(1.1);
+}
+
+/* --- BOTONES DE EDICIÓN (Amarillo / Azul) --- */
+.btn-warning, a.btn-warning {
+    background-color: #f59e0b !important; /* Amber-500 */
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+.btn-warning:hover, a.btn-warning:hover {
+    background-color: #d97706 !important; /* Amber-600 */
+    border-color: #d97706 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-info, a.btn-info {
+    background-color: #3b82f6 !important; /* Blue-500 */
+    border-color: #3b82f6 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+.btn-info:hover, a.btn-info:hover {
+    background-color: #2563eb !important; /* Blue-600 */
+    border-color: #2563eb !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* --- BOTONES DE ELIMINAR (Rojo) --- */
+.btn-danger, a.btn-danger {
+    background-color: #ef4444 !important; /* Red-500 */
+    border-color: #ef4444 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+.btn-danger:hover, a.btn-danger:hover {
+    background-color: #dc2626 !important; /* Red-600 */
+    border-color: #dc2626 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
 /* --- ZONAS FLOTANTES Y ELEMENTOS INCRUSTADOS (.drop-zone) --- */
 .drop-zone {
     background-color: rgba(0, 0, 0, 0.2); /* Fondo más oscuro (hundido) */
@@ -722,4 +821,41 @@ body.sidebar-collapsed .sidebar ul li a {
     border: none;
     padding: 0.5rem 1.5rem;
     margin-top: 1rem;
+}
+
+/* --- MAPA INTERACTIVO --- */
+.shelf-btn {
+    position: absolute;
+    display: block;
+    z-index: 10;
+    cursor: pointer;
+    /* Por defecto invisible pero clickable */
+    background-color: rgba(255, 255, 255, 0); 
+    color: transparent;
+    font-size: 0;
+    transition: all 0.2s ease; /* Animación suave */
+}
+
+.shelf-btn:hover {
+    background-color: rgba(251, 90, 58, 0.05); /* Fondo casi imperceptible */
+    border: none;
+}
+
+.shelf-btn.debug-visible {
+    background-color: rgba(255, 0, 0, 0.3); /* Rojo semitransparente para pruebas */
+    border: 1px solid red;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+
+/* Utility classes for Modal */
+.bg-panel {
+    background-color: var(--bg-panel) !important;
+}
+.border-subtle {
+    border: 1px solid var(--border-subtle) !important;
 }

@@ -1,4 +1,4 @@
-﻿<!-- Menú de navegación actualizado con iconos de Font Awesome en lugar de Glyphicons -->
+﻿﻿<!-- Menú de navegación actualizado con iconos de Font Awesome en lugar de Glyphicons -->
 <ul>
   <li>
     <a href="<?php echo base_url('pages/admin.php'); ?>">
@@ -31,14 +31,17 @@
   </li>
 
   <li>
-    <a href="#" class="submenu-toggle">
+    <a href="<?php echo base_url('pages/map.php'); ?>">
+      <i class="fa-solid fa-map text-orange"></i>
+      <span>Map</span>
+    </a>
+  </li>
+
+  <li>
+    <a href="<?php echo base_url('pages/product.php'); ?>">
       <i class="fa-solid fa-boxes-stacked text-orange"></i>
       <span>Items</span>
     </a>
-    <ul class="submenu">
-      <li><a href="<?php echo base_url('pages/product.php'); ?>">Manage Items</a></li>
-      <li><a href="<?php echo base_url('pages/add_product.php'); ?>">Add Items</a></li>
-    </ul>
   </li>
   <li>
     <a href="<?php echo base_url('pages/media.php'); ?>">
@@ -47,14 +50,10 @@
     </a>
   </li>
   <li>
-    <a href="#" class="submenu-toggle">
+    <a href="<?php echo base_url('pages/movements.php'); ?>">
       <i class="fa-solid fa-exchange-alt text-green"></i>
       <span>Input/Output</span>
     </a>
-    <ul class="submenu">
-      <li><a href="<?php echo base_url('pages/movements.php'); ?>">Manage Input/Output</a> </li>
-      <li><a href="<?php echo base_url('pages/add_movement.php'); ?>">Add Input/Output</a> </li>
-    </ul>
   </li>
   <li>
     <a href="#" class="submenu-toggle">

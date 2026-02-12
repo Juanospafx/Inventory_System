@@ -118,45 +118,53 @@ if (isset($_SESSION['form_data'])) {
         <div class="col-md-12">
           <form id="add-product-form" method="post" action="add_product.php" class="clearfix"
             enctype="multipart/form-data">
-            <!-- Nombre del producto -->
-            <div class="form-group">
-              <label>Item name:</label>
-              <input type="text" class="form-control" name="product-title" placeholder="Name" maxlength="50"
-                value="<?php echo isset($form_data['product-title']) ? htmlspecialchars($form_data['product-title'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            
+            <div class="row">
+              <!-- Nombre del producto -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Item name:</label>
+                <input type="text" class="form-control" name="product-title" placeholder="Name" maxlength="50"
+                  value="<?php echo isset($form_data['product-title']) ? htmlspecialchars($form_data['product-title'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              </div>
+
+              <!-- Selecci??n de Anaquel -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Shelf:</label>
+                <?php if(isset($_GET['shelf_filter'])): ?>
+                  <span class="badge bg-info text-dark mb-2">
+                    Filtered by: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
+                  </span>
+                <?php endif; ?>
+                <select class="form-control select2" name="product-shelf">
+                  <option value="">Select a Shelf</option>
+                  <?php foreach ($all_shelves as $shelf): ?>
+                    <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
+                    <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
+                      <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
             </div>
 
-            <!-- Formulario de subida de m??ltiples im??genes -->
-            <div class="form-group">
-              <label>Upload images:</label>
-              <input type="file" name="product-images[]" multiple class="form-control">
-            </div>
+            <div class="row">
+              <!-- Cantidad -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Quantity:</label>
+                <input type="number" class="form-control" name="product-quantity" placeholder="123..."
+                  value="<?php echo isset($form_data['product-quantity']) ? htmlspecialchars($form_data['product-quantity'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              </div>
 
-            <!-- Selecci??n de Anaquel -->
-            <div class="form-group">
-              <label>Shelf:</label>
-              <select class="form-control select2" name="product-shelf">
-                <option value="">Select a Shelf</option>
-                <?php foreach ($all_shelves as $shelf): ?>
-                  <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
-                  <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
-                    <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-
-
-
-            <!-- Cantidad -->
-            <div class="form-group">
-              <label>Quantity:</label>
-              <input type="number" class="form-control" name="product-quantity" placeholder="123..."
-                value="<?php echo isset($form_data['product-quantity']) ? htmlspecialchars($form_data['product-quantity'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              <!-- Formulario de subida de m??ltiples im??genes -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Upload images:</label>
+                <input type="file" name="product-images[]" multiple class="form-control">
+              </div>
             </div>
 
             <!-- Nota -->
-            <div class="form-group">
-              <label>Note:</label>
+            <div class="mb-3">
+              <label class="form-label">Note:</label>
               <textarea class="form-control" name="product-note" placeholder="Optional note"
                 rows="3"><?php echo isset($form_data['product-note']) ? htmlspecialchars($form_data['product-note'], ENT_QUOTES, 'UTF-8') : ''; ?></textarea>
             </div>

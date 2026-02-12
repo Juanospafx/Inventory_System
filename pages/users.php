@@ -22,11 +22,11 @@ $all_users = find_all_user();
           <i class="fa-solid fa-users"></i>
           <span>Users</span>
         </strong>
-        <a href="add_user.php" class="btn btn-primary pull-right">Add users</a>
+        <a href="add_user.php" class="btn btn-primary float-end">Add users</a>
       </div>
       <div class="panel-body">
         <!-- Search Filter -->
-        <div class="form-group">
+        <div class="mb-3">
           <input type="text" id="userSearch" class="form-control" placeholder="Search User...">
         </div>
         <table id="userTable" class="table table-bordered table-striped">

@@ -18,17 +18,17 @@ page_require_level(3);
       </div>
       <div class="panel-body">
         <form class="clearfix" method="post" action="movement_report_process.php">
-          <div class="form-group">
+          <div class="mb-3">
             <label class="form-label"> Date Range</label>
             <div class="input-group">
               <input type="text" class="datepicker form-control" name="start-date" placeholder="Desde">
-              <span class="input-group-addon">
+              <span class="input-group-text">
                 <i class="fa-solid fa-arrow-right"></i>
               </span>
               <input type="text" class="datepicker form-control" name="end-date" placeholder="Hasta">
             </div>
           </div>
-          <div class="form-group">
+          <div class="mb-3">
             <button type="submit" name="submit" class="btn btn-primary">Generate Report</button>
           </div>
         </form>
