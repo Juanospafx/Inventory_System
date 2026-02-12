@@ -1,4 +1,4 @@
-﻿﻿<?php
+﻿﻿﻿﻿<?php
 $page_title = 'Inputs/outputs Report';
 require_once(__DIR__ . '/../includes/load.php');
 // Verificar que el usuario tenga permiso para ver esta p??gina
@@ -21,11 +21,11 @@ page_require_level(3);
           <div class="mb-3">
             <label class="form-label"> Date Range</label>
             <div class="input-group">
-              <input type="text" class="datepicker form-control" name="start-date" placeholder="Desde">
+              <input type="date" class="form-control" name="start-date" placeholder="Desde">
               <span class="input-group-text">
                 <i class="fa-solid fa-arrow-right"></i>
               </span>
-              <input type="text" class="datepicker form-control" name="end-date" placeholder="Hasta">
+              <input type="date" class="form-control" name="end-date" placeholder="Hasta">
             </div>
           </div>
           <div class="mb-3">

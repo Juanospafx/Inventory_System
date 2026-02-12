@@ -1,4 +1,4 @@
-﻿﻿<!-- Menú de navegación actualizado con iconos de Font Awesome en lugar de Glyphicons -->
+﻿﻿﻿﻿<!-- Menú de navegación actualizado con iconos de Font Awesome en lugar de Glyphicons -->
 <ul>
   <li>
     <a href="<?php echo base_url('pages/admin.php'); ?>">
@@ -7,14 +7,10 @@
     </a>
   </li>
   <li>
-    <a href="#" class="submenu-toggle">
+    <a href="<?php echo base_url('pages/access.php'); ?>">
       <i class="fa-solid fa-users-gear text-green"></i>
       <span>Accesses</span>
     </a>
-    <ul class="submenu">
-      <li><a href="<?php echo base_url('pages/group.php'); ?>">Manage groups</a> </li>
-      <li><a href="<?php echo base_url('pages/users.php'); ?>">Manage users</a> </li>
-    </ul>
   </li>
   <li>
     <a href="<?php echo base_url('pages/shelf.php'); ?>">
@@ -56,14 +52,9 @@
     </a>
   </li>
   <li>
-    <a href="#" class="submenu-toggle">
+    <a href="<?php echo base_url('pages/reports.php'); ?>">
       <i class="fa-solid fa-file-invoice-dollar text-yellow"></i>
-      <span>Repo. Input/Output</span>
+      <span>Reports</span>
     </a>
-    <ul class="submenu">
-      <li><a href="<?php echo base_url('pages/movements_report.php'); ?>">Input/Output by dates </a></li>
-      <li><a href="<?php echo base_url('pages/monthly_movements.php'); ?>">Input/Output by month</a></li>
-      <li><a href="<?php echo base_url('pages/daily_movements.php'); ?>">Daily Input/Output </a> </li>
-    </ul>
   </li>
 </ul>
