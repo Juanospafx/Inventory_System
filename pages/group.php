@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   $page_title = 'Group lsit';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -16,10 +16,10 @@
     <div class="panel panel-default">
     <div class="panel-heading clearfix">
       <strong>
-        <span class="glyphicon glyphicon-th"></span>
+        <i class="fa-solid fa-layer-group"></i>
         <span>Groups</span>
      </strong>
-       <a href="add_group.php" class="btn btn-info pull-right btn-sm"> Add group</a>
+       <a href="add_group.php" class="btn btn-primary float-end btn-sm"> Add group</a>
     </div>
      <div class="panel-body">
       <table class="table table-bordered">
@@ -50,10 +50,10 @@
            <td class="text-center">
              <div class="btn-group">
                 <a href="edit_group.php?id=<?php echo (int)$a_group['id'];?>" class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
-                  <i class="glyphicon glyphicon-pencil"></i>
+                  <i class="fa-solid fa-pencil"></i>
                </a>
                 <a href="delete_group.php?id=<?php echo (int)$a_group['id'];?>" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Delete">
-                  <i class="glyphicon glyphicon-remove"></i>
+                  <i class="fa-solid fa-trash-can"></i>
                 </a>
                 </div>
            </td>
@@ -66,5 +66,3 @@
   </div>
 </div>
   <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-

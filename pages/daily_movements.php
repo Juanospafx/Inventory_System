@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Movimientos diarios';
 require_once(__DIR__ . '/../includes/load.php');
 // Checkin What level user has permission to view this page
@@ -24,7 +24,7 @@ $movements = daily_movements($year, $month); // Nueva funci??n para obtener movi
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-calendar-day"></i>
           <span>Movimientos diarios</span>
         </strong>
       </div>
@@ -59,4 +59,3 @@ $movements = daily_movements($year, $month); // Nueva funci??n para obtener movi
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

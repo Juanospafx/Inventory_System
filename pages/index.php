@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 require_once(__DIR__ . '/../includes/load.php');
 ?>
 <!DOCTYPE html>
@@ -7,6 +7,7 @@ require_once(__DIR__ . '/../includes/load.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1b212d">
   <title>Login</title>
   <style>
     /* 
@@ -18,8 +19,7 @@ require_once(__DIR__ . '/../includes/load.php');
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #f1f2f7;
-      /* Fondo gris claro */
+      background: #1b212d; /* Fondo oscuro */
       font-family: Arial, sans-serif;
     }
 
@@ -41,11 +41,11 @@ require_once(__DIR__ . '/../includes/load.php');
     .login-page {
       width: 350px;
       padding: 20px;
-      background-color: #f9f9f9;
-      /* Fondo blanco/gris muy claro */
-      border: 1px solid #f2f2f2;
-      /* Borde sutil */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #242a38; /* Panel oscuro */
+      border: 1px solid #2f384a; /* Borde sutil oscuro */
+      color: #ffffff;
+      
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
       /* Sombra ligera */
       border-radius: 5px;
       /* Esquinas redondeadas */
@@ -61,13 +61,13 @@ require_once(__DIR__ . '/../includes/load.php');
       margin-top: 0;
       margin-bottom: 5px;
       font-size: 28px;
-      color: #333;
+      color: #ffffff;
     }
 
     .login-page p {
       margin: 0 0 20px 0;
       font-size: 16px;
-      color: #777;
+      color: #8696af;
     }
 
     /*
@@ -84,7 +84,7 @@ require_once(__DIR__ . '/../includes/load.php');
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #333;
+      color: #ffffff;
     }
 
     .form-control {
@@ -92,9 +92,9 @@ require_once(__DIR__ . '/../includes/load.php');
       width: 100%;
       padding: 8px 12px;
       font-size: 14px;
-      color: #555;
-      background-color: #fff;
-      border: 1px solid #ccc;
+      color: #ffffff;
+      background-color: #151a23;
+      border: 1px solid #2f384a;
       border-radius: 4px;
       box-sizing: border-box;
     }
@@ -109,9 +109,9 @@ require_once(__DIR__ . '/../includes/load.php');
       padding: 10px 0;
       font-size: 16px;
       color: #fff;
-      background-color: #5bc0de;
+      background-color: #fb5a3a; /* Naranja Brigtronix (fallback) */
       /* Azul claro tipo "info" */
-      border: 1px solid #46b8da;
+      border: 1px solid #fb5a3a; 
       border-radius: 4px;
       cursor: pointer;
       text-decoration: none;
@@ -120,9 +120,9 @@ require_once(__DIR__ . '/../includes/load.php');
     }
 
     .btn-info:hover {
-      background-color: #31b0d5;
+      background-color: #e0482b;
       /* Efecto hover m??s oscuro */
-      border-color: #269abc;
+      border-color: #e0482b;
     }
 
     /* Media query for mobile */
@@ -162,4 +162,3 @@ require_once(__DIR__ . '/../includes/load.php');
 </body>
 
 </html>
-

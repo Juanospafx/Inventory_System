@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Inputs/outputs Report';
 require_once(__DIR__ . '/../includes/load.php');
 // Verificar que el usuario tenga permiso para ver esta p??gina
@@ -31,6 +31,10 @@ if (isset($_POST['submit'])) {
   <title>Report of Input/outputs</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <style>
+    body {
+      background-color: #1b212d;
+      color: #ffffff;
+    }
     @media print {
 
       html,
@@ -38,6 +42,8 @@ if (isset($_POST['submit'])) {
         font-size: 9.5pt;
         margin: 0;
         padding: 0;
+        background-color: #ffffff;
+        color: #000000;
       }
 
       .page-break {
@@ -92,13 +98,22 @@ if (isset($_POST['submit'])) {
     .sale-head h1,
     table thead tr th,
     table tfoot tr td {
-      background-color: #f8f8f8;
+      background-color: #1b212d;
     }
 
     tfoot {
       color: #000;
       text-transform: uppercase;
       font-weight: 500;
+    }
+    .alert-centered {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 300px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1050;
     }
   </style>
 </head>
@@ -159,9 +174,14 @@ if (isset($_POST['submit'])) {
       </table>
     </div>
   <?php else: ?>
-    <div class="alert alert-warning text-center">
+    <div class="alert alert-warning text-center alert-centered">
       <strong>No records were found between these dates.</strong>
     </div>
+    <script>
+      setTimeout(function() {
+        window.history.back();
+      }, 1500);
+    </script>
   <?php endif; ?>
 </body>
 
@@ -169,4 +189,3 @@ if (isset($_POST['submit'])) {
 <?php if (isset($db)) {
   $db->db_disconnect();
 } ?>
-

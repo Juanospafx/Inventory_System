@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Projects';
 require_once(__DIR__ . '/../includes/load.php');
 require_once(__DIR__ . '/../core/services/ProjectService.php');
@@ -38,13 +38,13 @@ if (isset($_POST['add_project'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-plus"></i>
           <span>Add Project</span>
         </strong>
       </div>
       <div class="panel-body">
         <form method="post" action="projects.php">
-          <div class="form-group">
+          <div class="mb-3">
             <input type="text" class="form-control" name="project-name" placeholder="Project name" required>
           </div>
           <button type="submit" name="add_project" class="btn btn-primary">Add Project</button>
@@ -56,7 +56,7 @@ if (isset($_POST['add_project'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-diagram-project"></i>
           <span>Projects List</span>
         </strong>
       </div>
@@ -78,11 +78,11 @@ if (isset($_POST['add_project'])) {
                   <div class="btn-group">
                     <a href="edit_project.php?id=<?php echo (int) $project['id']; ?>" class="btn btn-xs btn-warning"
                       data-toggle="tooltip" title="Edit">
-                      <span class="glyphicon glyphicon-edit"></span>
+                      <i class="fa-solid fa-pencil"></i>
                     </a>
                     <a href="delete_project.php?id=<?php echo (int) $project['id']; ?>" class="btn btn-xs btn-danger"
                       data-toggle="tooltip" title="Delete">
-                      <span class="glyphicon glyphicon-trash"></span>
+                      <i class="fa-solid fa-trash-can"></i>
                     </a>
                   </div>
                 </td>
@@ -109,4 +109,3 @@ if (isset($_POST['add_project'])) {
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

@@ -2,6 +2,9 @@ RewriteEngine On
 # Route site root to the login page under /pages
 RewriteRule ^$ pages/index.php [L,QSA]
 
+# Deshabilitar el listado de directorios por seguridad
+Options -Indexes
+
 # Proteger archivos sensibles
 <FilesMatch "(^.*\.ini|^.*\.log|^.*\.sql|^.*\.bak|^.*\.config)$">
     Order Allow,Deny

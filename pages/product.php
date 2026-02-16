@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Items list';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
@@ -64,19 +64,19 @@ $products = join_product_table();
                   <td><?php echo isset($product['note']) ? remove_junk($product['note']) : ''; ?></td>
                   <td class="text-center">
                     <?php if (!empty($product['qr_code'])): ?>
-                      <img src="<?php echo $product['qr_code']; ?>" alt="QR Code" style="width: 100px;">
-                      <a href="<?php echo $product['qr_code']; ?>" class="btn btn-success btn-xs" download>Download</a>
+                      <img src="<?php echo base_url($product['qr_code']); ?>" alt="QR Code" style="width: 100px;">
+                      <a href="<?php echo base_url($product['qr_code']); ?>" class="btn btn-success btn-xs" download>Download</a>
                     <?php endif; ?>
                   </td>
                   <td class="text-center">
                     <div class="btn-group">
                       <a href="edit_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-info btn-xs"
                         title="Edit" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <i class="fa-solid fa-pencil"></i>
                       </a>
                       <a href="delete_product.php?id=<?php echo (int) $product['id']; ?>" class="btn btn-danger btn-xs"
                         title="Delete" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <i class="fa-solid fa-trash-can"></i>
                       </a>
                     </div>
                   </td>
@@ -91,4 +91,3 @@ $products = join_product_table();
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

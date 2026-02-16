@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   $page_title = 'Edit account';
   require_once(__DIR__ . '/../includes/load.php');
    page_require_level(3);
@@ -51,23 +51,23 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="panel-heading clearfix">
-            <span class="glyphicon glyphicon-camera"></span>
+            <i class="fa-solid fa-camera"></i>
             <span>Change my photo</span>
           </div>
         </div>
         <div class="panel-body">
           <div class="row">
             <div class="col-md-4">
-                <img class="img-circle img-size-2" src="<?php echo base_url('uploads/users/' . $user['image']); ?>" alt="">
+                <img class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;" src="<?php echo base_url('uploads/users/' . $user['image']); ?>" alt="">
             </div>
             <div class="col-md-8">
               <form class="form" action="edit_account.php" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
-                <input type="file" name="file_upload" multiple="multiple" class="btn btn-default btn-file"/>
+              <div class="mb-3">
+                <input type="file" name="file_upload" multiple="multiple" class="form-control"/>
               </div>
-              <div class="form-group">
+              <div class="mb-3">
                 <input type="hidden" name="user_id" value="<?php echo $user['id'];?>">
-                 <button type="submit" name="submit" class="btn btn-warning">Change</button>
+                 <button type="submit" name="submit" class="btn btn-primary">Change</button>
               </div>
              </form>
             </div>
@@ -78,22 +78,22 @@
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
-        <span class="glyphicon glyphicon-edit"></span>
+        <i class="fa-solid fa-pencil"></i>
         <span>Edit my account</span>
       </div>
       <div class="panel-body">
           <form method="post" action="edit_account.php?id=<?php echo (int)$user['id'];?>" class="clearfix">
-            <div class="form-group">
+            <div class="mb-3">
                   <label for="name" class="control-label">Name</label>
                   <input type="name" class="form-control" name="name" value="<?php echo remove_junk(ucwords($user['name'])); ?>">
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                   <label for="username" class="control-label">User</label>
                   <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($user['username'])); ?>">
             </div>
-            <div class="form-group clearfix">
-                    <a href="<?php echo base_url('pages/change_password.php'); ?>" title="change password" class="btn btn-danger pull-right">Change password</a>
-                    <button type="submit" name="update" class="btn btn-info">Update</button>
+            <div class="mb-3 clearfix">
+                    <a href="<?php echo base_url('pages/change_password.php'); ?>" title="change password" class="btn btn-primary pull-right">Change password</a>
+                    <button type="submit" name="update" class="btn btn-primary">Update</button>
             </div>
         </form>
       </div>
@@ -103,5 +103,3 @@
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-

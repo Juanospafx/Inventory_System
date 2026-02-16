@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Input/output of items';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(3);
@@ -73,11 +73,11 @@ include_once(__DIR__ . '/../views/header.php');
                     <div class="btn-group">
                       <a href="edit_movement.php?id=<?php echo (int) $movement['id']; ?>" class="btn btn-info btn-xs"
                         title="Edit" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-edit"></span>
+                        <i class="fa-solid fa-pencil"></i>
                       </a>
                       <a href="delete_movement.php?id=<?php echo (int) $movement['id']; ?>" class="btn btn-danger btn-xs"
                         title="Delete" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-trash"></span>
+                        <i class="fa-solid fa-trash-can"></i>
                       </a>
                     </div>
                   </td>
@@ -94,4 +94,3 @@ include_once(__DIR__ . '/../views/header.php');
 
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

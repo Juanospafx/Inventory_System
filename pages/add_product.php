@@ -73,6 +73,19 @@ if (isset($_POST['add_product'])) {
 }
 
 $all_shelves = find_all('shelves');
+
+// Lógica para filtrar anaqueles si viene del mapa
+if (isset($_GET['shelf_filter'])) {
+    $filter = strtoupper($_GET['shelf_filter']);
+    $filtered_shelves = [];
+    foreach ($all_shelves as $shelf) {
+        // Verifica si el nombre del anaquel comienza con la letra del filtro (ej: 'A' coincide con 'A1', 'A2', etc.)
+        if (strpos(strtoupper($shelf['name']), $filter) === 0) {
+            $filtered_shelves[] = $shelf;
+        }
+    }
+    $all_shelves = $filtered_shelves;
+}
 ?>
 
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
@@ -97,7 +110,7 @@ if (isset($_SESSION['form_data'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-plus"></i>
           <span>Add Item</span>
         </strong>
       </div>
@@ -105,52 +118,60 @@ if (isset($_SESSION['form_data'])) {
         <div class="col-md-12">
           <form id="add-product-form" method="post" action="add_product.php" class="clearfix"
             enctype="multipart/form-data">
-            <!-- Nombre del producto -->
-            <div class="form-group">
-              <label>Item name:</label>
-              <input type="text" class="form-control" name="product-title" placeholder="Name" maxlength="50"
-                value="<?php echo isset($form_data['product-title']) ? htmlspecialchars($form_data['product-title'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+            
+            <div class="row">
+              <!-- Nombre del producto -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Item name:</label>
+                <input type="text" class="form-control" name="product-title" placeholder="Name" maxlength="50"
+                  value="<?php echo isset($form_data['product-title']) ? htmlspecialchars($form_data['product-title'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              </div>
+
+              <!-- Selecci??n de Anaquel -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Shelf:</label>
+                <?php if(isset($_GET['shelf_filter'])): ?>
+                  <span class="badge bg-info text-dark mb-2">
+                    Filtered by: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
+                  </span>
+                <?php endif; ?>
+                <select class="form-control select2" name="product-shelf">
+                  <option value="">Select a Shelf</option>
+                  <?php foreach ($all_shelves as $shelf): ?>
+                    <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
+                    <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
+                      <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
             </div>
 
-            <!-- Formulario de subida de m??ltiples im??genes -->
-            <div class="form-group">
-              <label>Upload images:</label>
-              <input type="file" name="product-images[]" multiple class="form-control">
-            </div>
+            <div class="row">
+              <!-- Cantidad -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Quantity:</label>
+                <input type="number" class="form-control" name="product-quantity" placeholder="123..."
+                  value="<?php echo isset($form_data['product-quantity']) ? htmlspecialchars($form_data['product-quantity'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              </div>
 
-            <!-- Selecci??n de Anaquel -->
-            <div class="form-group">
-              <label>Shelf:</label>
-              <select class="form-control select2" name="product-shelf">
-                <option value="">Select a Shelf</option>
-                <?php foreach ($all_shelves as $shelf): ?>
-                  <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
-                  <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
-                    <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-
-
-
-            <!-- Cantidad -->
-            <div class="form-group">
-              <label>Quantity:</label>
-              <input type="number" class="form-control" name="product-quantity" placeholder="123..."
-                value="<?php echo isset($form_data['product-quantity']) ? htmlspecialchars($form_data['product-quantity'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+              <!-- Formulario de subida de m??ltiples im??genes -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Upload images:</label>
+                <input type="file" name="product-images[]" multiple class="form-control">
+              </div>
             </div>
 
             <!-- Nota -->
-            <div class="form-group">
-              <label>Note:</label>
+            <div class="mb-3">
+              <label class="form-label">Note:</label>
               <textarea class="form-control" name="product-note" placeholder="Optional note"
                 rows="3"><?php echo isset($form_data['product-note']) ? htmlspecialchars($form_data['product-note'], ENT_QUOTES, 'UTF-8') : ''; ?></textarea>
             </div>
 
 
 
-            <button type="submit" name="add_product" class="btn btn-danger">Add item</button>
+            <button type="submit" name="add_product" class="btn btn-primary">Add item</button>
           </form>
         </div>
       </div>
@@ -159,4 +180,3 @@ if (isset($_SESSION['form_data'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

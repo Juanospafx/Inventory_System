@@ -1,8 +1,8 @@
-﻿<?php
+﻿﻿<?php
   ob_start();
   require_once(__DIR__ . '/../includes/load.php');
   if ($session->isUserLoggedIn(true)) { 
-      redirect('home.php', false);
+      redirect('admin.php', false);
   }
 ?>
 <!DOCTYPE html>
@@ -10,6 +10,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <style>html, body { background-color: #1b212d !important; }</style>
+    <meta name="theme-color" content="#1b212d">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
     <link rel="stylesheet" href="<?php echo base_url('libs/css/main.css'); ?>" />
@@ -22,15 +24,16 @@
             display: flex;
             align-items: center;
             justify-content: center ;
-            background: #f1f2f7;
+            background: #1b212d;
         }
         /* Centrando el login */
         .login-page {
             width: 350px;
             padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #f2f2f2;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #242a38;
+            border: 1px solid #2f384a;
+            color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
             border-radius: 5px;
             text-align: center;
         }
@@ -65,6 +68,3 @@
 
 </body>
 </html>
-
-
-

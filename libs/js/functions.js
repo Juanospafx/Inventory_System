@@ -1,199 +1,153 @@
-function suggetion() {
-    $('#sug_input').keyup(function (e) {
-        var formData = {
-            'product_name': $('input[name=title]').val()
-        };
+/*
+  Archivo de funciones reescrito en Vanilla JavaScript para eliminar la dependencia de jQuery.
+  Se han modernizado las llamadas AJAX con la API Fetch y se han adaptado los selectores y manejadores de eventos.
+*/
 
-        if (formData['product_name'].length >= 1) {
-            // Procesa el formulario vía AJAX
-            $.ajax({
-                type: 'POST',
-                url: (window.APP_BASE_URL || '') + '/api/ajax.php',
-                data: formData,
-                dataType: 'json',
-                encode: true
-            })
-                .done(function (data) {
-                    //console.log(data);
-                    $('#result').html(data).fadeIn();
-                    $('#result li').click(function () {
-                        $('#sug_input').val($(this).text());
-                        $('#result').fadeOut(500);
-                    });
+function suggestion() {
+    const sugInput = document.getElementById('sug_input');
+    if (!sugInput) return;
 
-                    $("#sug_input").blur(function () {
-                        $("#result").fadeOut(500);
+    sugInput.addEventListener('keyup', function (e) {
+        const productName = this.value;
+        const resultDiv = document.getElementById('result');
+
+        if (productName.length >= 1) {
+            fetch(`${window.APP_BASE_URL}/api/ajax.php?product_name=${encodeURIComponent(productName)}`)
+                .then(response => response.text())
+                .then(data => {
+                    resultDiv.innerHTML = data;
+                    resultDiv.style.display = 'block';
+
+                    resultDiv.querySelectorAll('li').forEach(li => {
+                        li.addEventListener('click', function () {
+                            sugInput.value = this.textContent.trim();
+                            resultDiv.style.display = 'none';
+                        });
                     });
-                });
+                }).catch(error => console.error('Error en la sugerencia:', error));
         } else {
-            $("#result").hide();
+            resultDiv.style.display = 'none';
         }
-        e.preventDefault();
+    });
+
+    sugInput.addEventListener('blur', function () {
+        // Pequeño retraso para permitir el click en la lista de resultados
+        setTimeout(() => {
+            const resultDiv = document.getElementById('result');
+            if (resultDiv) resultDiv.style.display = 'none';
+        }, 200);
     });
 }
 
-$('#sug-form').submit(function (e) {
-    var formData = {
-        'p_name': $('input[name=title]').val()
-    };
-    // Procesa el formulario vía AJAX
-$.ajax({
-        type: 'POST',
-        url: (window.APP_BASE_URL || '') + '/api/ajax.php',
-        data: formData,
-        dataType: 'json',
-        encode: true
-    })
-        .done(function (data) {
-            //console.log(data);
-            $('#product_info').html(data).show();
-            total();
-            $('.datePicker').datepicker('update', new Date());
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            $('#product_info').html("Ocurrió un error: " + textStatus).show();
-        });
-    e.preventDefault();
-});
+/**
+ * Función genérica para filtrar tablas en el lado del cliente.
+ * @param {string} inputId - El ID del campo de búsqueda.
+ * @param {string} tableId - El ID de la tabla a filtrar.
+ */
+function clientSideFilter(inputId, tableId) {
+    const searchInput = document.getElementById(inputId);
+    const table = document.getElementById(tableId);
+    if (!searchInput || !table) return;
 
-function total() {
-    $('#product_info input').change(function (e) {
-        var price = +$('input[name=price]').val() || 0;
-        var qty = +$('input[name=quantity]').val() || 0;
-        var total = qty * price;
-        $('input[name=total]').val(total.toFixed(2));
-    });
-}
+    searchInput.addEventListener('keyup', function () {
+        const filterValue = this.value.toLowerCase();
+        const rows = table.querySelectorAll('tbody tr');
 
-// Función para filtrar productos en la página (filtrado en el cliente)
-function filterProducts() {
-    $("#searchInput").on("keyup", function () {
-        // Obtiene el valor ingresado y lo convierte a minúsculas
-        var value = $(this).val().toLowerCase();
-        // Recorre cada fila del tbody de la tabla y muestra u oculta según el texto
-        $("#productsTable tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (rowText.includes(filterValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
         });
     });
 }
 
-// Nueva función para filtrar movimientos en la página (filtrado en el cliente)
-function filterMovements() {
-    $("#searchMovementsInput").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#movementsTable tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-}
-
-// Nueva función para filtrar anaqueles (shelves)
-function filterShelves() {
-    $("#shelfSearch").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#shelfTable tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-}
-
-// Nueva función para filtrar proyectos
-function filterProjects() {
-    $("#projectSearch").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#projectTable tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-}
-
-// Nueva función para filtrar usuarios
-function filterUsers() {
-    $("#userSearch").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#userTable tbody tr").filter(function () {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-    });
-}
-
-$(document).ready(function () {
-    var baseUrl = $('body').data('base-url') || '';
+document.addEventListener('DOMContentLoaded', function () {
+    // Establecer la URL base para la aplicación
+    const baseUrl = document.body.dataset.baseUrl || '';
     window.APP_BASE_URL = baseUrl;
 
-    // Inicializa tooltips
-    $('[data-toggle="tooltip"]').tooltip();
-
-    // Toggle de submenús
-    $('.submenu-toggle').click(function (e) {
-        e.preventDefault();
-        var $parent = $(this).parent();
-        $parent.children('ul.submenu').slideToggle(200);
-        $(this).attr('aria-expanded', $parent.children('ul.submenu').is(':visible'));
+    // Inicializar tooltips de Bootstrap 5
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    // Inicializa la sugerencia de productos vía AJAX
-    suggetion();
-
-    // Calcula totales
-    total();
-
-    // Inicializa datepicker
-    $('.datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-        todayHighlight: true,
-        autoclose: true
+    // Manejador para los submenús
+    document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const submenu = this.nextElementSibling;
+            if (submenu && submenu.classList.contains('submenu')) {
+                // Simple toggle, para animación se necesitaría más CSS
+                if (submenu.style.display === 'block') {
+                    submenu.style.display = 'none';
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    submenu.style.display = 'block';
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            }
+        });
     });
 
-    // Inicializa el filtrado de productos
-    filterProducts();
+    // Inicializar la función de sugerencias
+    suggestion();
 
-    // Inicializa el filtrado de movimientos
-    filterMovements();
+    // Inicializar filtros de tablas
+    clientSideFilter('searchInput', 'productsTable');
+    clientSideFilter('searchMovementsInput', 'movementsTable');
+    clientSideFilter('shelfSearch', 'shelfTable');
+    clientSideFilter('projectSearch', 'projectTable');
+    clientSideFilter('userSearch', 'userTable');
 
-    // Inicializa el filtrado de anaqueles
-    filterShelves();
-
-    // Inicializa el filtrado de proyectos
-    filterProjects();
-
-    // Inicializa el filtrado de usuarios
-    filterUsers();
-
+    // --- Lógica de la barra lateral (Sidebar) ---
     function setSidebarState(isCollapsed) {
+        const body = document.body;
         if (isCollapsed) {
-            $('body').addClass('sidebar-collapsed');
+            body.classList.add('sidebar-collapsed');
         } else {
-            $('body').removeClass('sidebar-collapsed');
+            body.classList.remove('sidebar-collapsed');
         }
         localStorage.setItem('sidebar-collapsed', isCollapsed ? '1' : '0');
     }
 
     function setMobileSidebar(isOpen) {
+        const body = document.body;
         if (isOpen) {
-            $('body').addClass('sidebar-open');
+            body.classList.add('sidebar-open');
         } else {
-            $('body').removeClass('sidebar-open');
+            body.classList.remove('sidebar-open');
         }
     }
 
-    var collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+    // Restaurar estado de la barra lateral al cargar la página
+    const collapsed = localStorage.getItem('sidebar-collapsed') === '1';
     setSidebarState(collapsed);
 
-    // Sidebar toggle (desktop collapse + mobile open)
-    $('.sidebar-toggle-btn').click(function (e) {
-        e.preventDefault();
-        if (window.innerWidth <= 767) {
-            setMobileSidebar(!$('body').hasClass('sidebar-open'));
-            return;
-        }
-        setSidebarState(!$('body').hasClass('sidebar-collapsed'));
-    });
+    // Manejador del botón para colapsar/mostrar la barra lateral
+    const toggleBtn = document.querySelector('.sidebar-toggle-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (window.innerWidth <= 767) {
+                setMobileSidebar(!document.body.classList.contains('sidebar-open'));
+            } else {
+                setSidebarState(!document.body.classList.contains('sidebar-collapsed'));
+            }
+        });
+    }
 
-    $('#sidebarOverlay').on('click', function () {
-        setMobileSidebar(false);
-    });
+    // Ocultar barra lateral móvil al hacer clic en el overlay
+    const overlay = document.getElementById('sidebarOverlay');
+    if (overlay) {
+        overlay.addEventListener('click', () => setMobileSidebar(false));
+    }
 
-    $(window).on('resize', function () {
+    // Ajustar la barra lateral en cambios de tamaño de ventana
+    window.addEventListener('resize', function () {
         if (window.innerWidth > 767) {
             setMobileSidebar(false);
         }

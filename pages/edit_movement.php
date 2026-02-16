@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 $page_title = 'Edit inputs/outputs';
 require_once(__DIR__ . '/../includes/load.php');
 // Verifica el nivel de usuario
@@ -136,96 +136,101 @@ if (isset($_POST['update_movement'])) {
     <div class="panel panel-default">
       <div class="panel-heading">
         <strong>
-          <span class="glyphicon glyphicon-th"></span>
+          <i class="fa-solid fa-pencil"></i>
           <span>Edit Input/output/Return</span>
         </strong>
       </div>
       <div class="panel-body">
         <form method="post" action="edit_movement.php?id=<?php echo (int) $sale['id']; ?>" class="clearfix">
 
-          <!-- Selecci??n de Producto -->
-          <div class="form-group">
-            <label for="product_id">Select Item</label>
-            <select class="form-control" name="product_id" required>
-              <option value="">Select an item</option>
-              <?php
-              $all_products = find_all('products');
-              foreach ($all_products as $prod):
-                ?>
-                <option value="<?php echo (int) $prod['id']; ?>" <?php if ($sale['product_id'] == $prod['id'])
-                      echo "selected"; ?>>
-                  <?php echo $prod['name']; ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-
-          <!-- Selecci??n de Proyecto -->
-          <div class="form-group">
-            <label for="project_id">Select Project</label>
-            <select class="form-control" name="project_id">
-              <option value="">No project assigned</option>
-              <?php
-              $all_projects = find_all('projects');
-              foreach ($all_projects as $project):
-                ?>
-                <option value="<?php echo (int) $project['id']; ?>" <?php if ($sale['project_id'] == $project['id'])
-                      echo "selected"; ?>>
-                  <?php echo $project['name']; ?>
-                </option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-
-          <!-- Cantidad -->
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" name="quantity" value="<?php echo (int) $sale['quantity']; ?>"
-              required>
-          </div>
-
-          <!-- Estado (Input, Output, Devoluci??n) -->
-          <div class="form-group">
-            <label for="status">Status</label>
-            <select class="form-control" name="status" required>
-              <option value="Input" <?php if ($sale['status'] == 1)
-                echo "selected"; ?>>Input</option>
-              <option value="Output" <?php if ($sale['status'] == 0)
-                echo "selected"; ?>>Output</option>
-          <option value="Return" <?php if ($sale['status'] == 2)
-                echo "selected"; ?>>Return</option>
-            </select>
-          </div>
-
-          <!-- Fecha -->
-          <div class="form-group">
-            <label for="date">Dates</label>
-            <input type="date" class="form-control" name="date" value="<?php echo remove_junk($sale['date']); ?>"
-              required>
-          </div>
-
-          <!-- Nota -->
-          <div class="form-group">
-            <label for="note">Note</label>
-            <textarea class="form-control" name="note"
-              placeholder="Optional note"><?php echo isset($sale['note']) ? htmlspecialchars($sale['note']) : ''; ?></textarea>
-          </div>
-
-          <!-- Selecci??n de User (Solo para Admin) -->
-          <?php if (current_user()['user_level'] == 1): ?>
-            <div class="form-group">
-              <label for="user_id">Associated User (Admin only)</label>
-              <select class="form-control" name="user_id">
-                <?php $all_users = find_all('users'); ?>
-                <?php foreach ($all_users as $user): ?>
-                  <option value="<?php echo (int) $user['id']; ?>" <?php if ($sale['user_id'] == $user['id'])
+          <div class="row">
+            <!-- Selecci??n de Producto -->
+            <div class="col-md-6 mb-3">
+              <label for="product_id" class="form-label">Select Item</label>
+              <select class="form-control" name="product_id" required>
+                <option value="">Select an item</option>
+                <?php
+                $all_products = find_all('products');
+                foreach ($all_products as $prod):
+                  ?>
+                  <option value="<?php echo (int) $prod['id']; ?>" <?php if ($sale['product_id'] == $prod['id'])
                         echo "selected"; ?>>
-                    <?php echo htmlspecialchars($user['name']); ?>
+                    <?php echo $prod['name']; ?>
                   </option>
                 <?php endforeach; ?>
               </select>
             </div>
-          <?php endif; ?>
+
+            <!-- Selecci??n de Proyecto -->
+            <div class="col-md-6 mb-3">
+              <label for="project_id" class="form-label">Select Project</label>
+              <select class="form-control" name="project_id">
+                <option value="">No project assigned</option>
+                <?php
+                $all_projects = find_all('projects');
+                foreach ($all_projects as $project):
+                  ?>
+                  <option value="<?php echo (int) $project['id']; ?>" <?php if ($sale['project_id'] == $project['id'])
+                        echo "selected"; ?>>
+                    <?php echo $project['name']; ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Cantidad -->
+            <div class="col-md-6 mb-3">
+              <label for="quantity" class="form-label">Quantity</label>
+              <input type="number" class="form-control" name="quantity" value="<?php echo (int) $sale['quantity']; ?>"
+                required>
+            </div>
+
+            <!-- Estado (Input, Output, Devoluci??n) -->
+            <div class="col-md-6 mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-control" name="status" required>
+                <option value="Input" <?php if ($sale['status'] == 1)
+                  echo "selected"; ?>>Input</option>
+                <option value="Output" <?php if ($sale['status'] == 0)
+                  echo "selected"; ?>>Output</option>
+                <option value="Return" <?php if ($sale['status'] == 2)
+                  echo "selected"; ?>>Return</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- Fecha -->
+            <div class="col-md-6 mb-3">
+              <label for="date" class="form-label">Dates</label>
+              <input type="date" class="form-control" name="date" value="<?php echo remove_junk($sale['date']); ?>"
+                required>
+            </div>
+            <!-- Selecci??n de User (Solo para Admin) -->
+            <?php if (current_user()['user_level'] == 1): ?>
+              <div class="col-md-6 mb-3">
+                <label for="user_id" class="form-label">Associated User (Admin only)</label>
+                <select class="form-control" name="user_id">
+                  <?php $all_users = find_all('users'); ?>
+                  <?php foreach ($all_users as $user): ?>
+                    <option value="<?php echo (int) $user['id']; ?>" <?php if ($sale['user_id'] == $user['id'])
+                          echo "selected"; ?>>
+                      <?php echo htmlspecialchars($user['name']); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+            <?php endif; ?>
+          </div>
+
+          <!-- Nota -->
+          <div class="mb-3">
+            <label for="note" class="form-label">Note</label>
+            <textarea class="form-control" name="note"
+              placeholder="Optional note"><?php echo isset($sale['note']) ? htmlspecialchars($sale['note']) : ''; ?></textarea>
+          </div>
 
           <!-- Bot??n de actualizaci??n -->
           <button type="submit" name="update_movement" class="btn btn-primary">
@@ -239,4 +244,3 @@ if (isset($_POST['update_movement'])) {
 </div>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-

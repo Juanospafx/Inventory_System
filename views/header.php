@@ -4,6 +4,10 @@
 
 <head>
   <meta charset="UTF-8">
+  <!-- CSS Crítico: Define el fondo oscuro inmediatamente para evitar el parpadeo blanco -->
+  <style>html, body { background-color: #1b212d !important; }</style>
+  <!-- Meta etiqueta para colorear la barra del navegador en móviles -->
+  <meta name="theme-color" content="#1b212d">
   <title><?php if (!empty($page_title))
     echo remove_junk($page_title);
   elseif (!empty($user))
@@ -12,9 +16,12 @@
     echo "Brigtronix- INVI"; ?>
   </title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Añadida la fuente Poppins para un estilo más moderno -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Migrando de Bootstrap 3.3.4 a Bootstrap 5.3.3 para modernizar la interfaz -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="<?php echo base_url('libs/css/main.css'); ?>" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -22,37 +29,43 @@
 <body data-base-url="<?php echo base_url(''); ?>">
   <?php if ($session->isUserLoggedIn()): ?>
     <header id="header">
-      <div class="logo pull-left"> Brigtronix- Inventory </div>
+      <div class="logo float-start">
+        <div class="logo-container">
+           <img src="<?php echo base_url('libs/images/logo-text.png'); ?>" alt="Brigtronix Logo" class="logo-full">
+           <span class="app-subtitle">Inventory System</span>
+        </div>
+      </div>
       <div class="header-content">
         <div class="sidebar-toggle">
-          <a href="#" class="sidebar-toggle-btn"><i class="fa fa-bars"></i></a>
+          <a href="#" class="sidebar-toggle-btn"><i class="fa fa-b<!--  -->ars"></i></a>
         </div>
-        <div class="header-date pull-left">
+        <div class="header-date float-start">
           <strong><span id="time"></span></strong>
         </div>
-        <div class="pull-right clearfix">
-          <ul class="info-menu list-inline list-unstyled">
+        <div class="float-end clearfix me-3">
+          <ul class="info-menu list-inline list-unstyled mb-0 d-flex align-items-center">
             <li class="profile">
-              <a href="#" data-toggle="dropdown" class="toggle" aria-expanded="false">
-                <img src="<?php echo base_url('uploads/users/' . $user['image']); ?>" alt="user-image" class="img-circle img-inline">
+              <!-- Actualizado para el dropdown de Bootstrap 5 -->
+              <a href="#" data-bs-toggle="dropdown" class="toggle" aria-expanded="false">
+                <img src="<?php echo base_url('uploads/users/' . $user['image']); ?>" alt="user-image" class="rounded-circle img-inline">
                 <span><?php echo remove_junk(ucfirst($user['name'])); ?> <i class="caret"></i></span>
               </a>
               <ul class="dropdown-menu">
                 <li>
                   <a href="<?php echo base_url('pages/profile.php?id=' . (int) $user['id']); ?>">
-                    <i class="glyphicon glyphicon-user"></i>
+                    <i class="fa-solid fa-user"></i>
                     Profile
                   </a>
                 </li>
                 <li>
                   <a href="<?php echo base_url('pages/edit_account.php'); ?>" title="edit account">
-                    <i class="glyphicon glyphicon-cog"></i>
+                    <i class="fa-solid fa-cog"></i>
                     Configuration
                   </a>
                 </li>
                 <li class="last">
                   <a href="<?php echo base_url('api/logout.php'); ?>">
-                    <i class="glyphicon glyphicon-off"></i>
+                    <i class="fa-solid fa-right-from-bracket"></i>
                     Logout
                   </a>
                 </li>
@@ -83,4 +96,3 @@
 
   <div class="page">
     <div class="container-fluid">
-

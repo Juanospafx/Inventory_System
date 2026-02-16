@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
   $page_title = 'Images list';
   require_once(__DIR__ . '/../includes/load.php');
   // Checkin What level user has permission to view this page
@@ -29,19 +29,14 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading clearfix">
-            <span class="glyphicon glyphicon-camera"></span>
+            <i class="fa-solid fa-camera"></i>
             <span>Image list</span>
-            <div class="pull-right">
-              <form class="form-inline" action="media.php" method="POST" enctype="multipart/form-data">
-              <div class="form-group">
+            <div class="float-end">
+              <form class="d-flex align-items-center" action="media.php" method="POST" enctype="multipart/form-data">
                 <div class="input-group">
-                  <span class="input-group-btn">
-                    <input type="file" name="file_upload" multiple="multiple" class="btn btn-primary btn-file"/>
-                 </span>
-
-                 <button type="submit" name="submit" class="btn btn-default">Upload</button>
-               </div>
-              </div>
+                  <input type="file" name="file_upload" multiple="multiple" class="form-control"/>
+                  <button type="submit" name="submit" class="btn btn-primary">Upload</button>
+                </div>
              </form>
             </div>
           </div>
@@ -61,7 +56,9 @@
                 <tr class="list-inline">
                  <td class="text-center"><?php echo count_id();?></td>
                   <td class="text-center">
-                      <img src="<?php echo base_url('uploads/products/' . $media_file['file_name']); ?>" class="img-thumbnail" />
+                      <img src="<?php echo base_url('uploads/products/' . $media_file['file_name']); ?>" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" 
+                           data-bs-toggle="modal" data-bs-target="#imagePreviewModal" 
+                           data-img-url="<?php echo base_url('uploads/products/' . $media_file['file_name']); ?>" alt="Thumbnail">
                   </td>
                 <td class="text-center">
                   <?php echo $media_file['description'];?>
@@ -71,21 +68,41 @@
                 </td>
                 <td class="text-center">
                   <a href="edit_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-warning btn-xs"  title="Edit">
-                    <span class="glyphicon glyphicon-edit"></span>
+                    <i class="fa-solid fa-pencil"></i>
                   </a>
                   <a href="delete_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-danger btn-xs"  title="Delete">
-                    <span class="glyphicon glyphicon-trash"></span>
+                    <i class="fa-solid fa-trash-can"></i>
                   </a>
                 </td>
                </tr>
               <?php endforeach;?>
             </tbody>
+            </table>
           </div>
         </div>
       </div>
 </div>
 
+<!-- Modal de Previsualización -->
+<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0 shadow-none">
+      <div class="modal-body text-center p-0">
+        <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+        <img id="modalImage" src="" class="img-fluid rounded shadow-lg" style="max-height: 90vh;" alt="Full Preview">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const imageModal = document.getElementById('imagePreviewModal');
+  imageModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget;
+    const imageUrl = button.getAttribute('data-img-url');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageUrl;
+  });
+</script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
-
-
