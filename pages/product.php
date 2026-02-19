@@ -34,6 +34,7 @@ $products = join_product_table();
                 <th class="text-center" style="width: 50px;">#</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th class="text-center" style="width: 12%;">Category</th>
                 <th class="text-center" style="width: 10%;">Shelf</th>
                 <th class="text-center" style="width: 10%;">Stock</th>
                 <th class="text-center" style="width: 10%;">Attache</th>
@@ -58,7 +59,8 @@ $products = join_product_table();
                     <?php endif; ?>
                   </td>
                   <td><?php echo remove_junk($product['name']); ?></td>
-                  <td class="text-center"><?php echo remove_junk($product['shelf']); ?></td>
+                  <td class="text-center"><?php echo remove_junk($product['category_name'] ?: $product['catalog_category']); ?></td>
+                  <td class="text-center"><?php echo remove_junk($product['shelf'] ?: '—'); ?></td>
                   <td class="text-center"><?php echo remove_junk($product['quantity']); ?></td>
                   <td class="text-center"><?php echo read_date($product['date']); ?></td>
                   <td><?php echo isset($product['note']) ? remove_junk($product['note']) : ''; ?></td>

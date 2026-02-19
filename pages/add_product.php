@@ -7,19 +7,36 @@ page_require_level(2);
 
 
 if (isset($_POST['add_product'])) {
-  $req_fields = array('product-title', 'product-shelf', 'product-quantity');
+  $req_fields = array('product-title', 'product-quantity');
   validate_fields($req_fields);
 
   if (empty($errors)) {
     // Sanitizar datos de entrada para BD (sin remove_junk)
     $p_name = $db->escape(trim($_POST['product-title']));
-    $p_shelf = (int) $_POST['product-shelf'];
+    $p_shelf = isset($_POST['product-shelf']) && $_POST['product-shelf'] !== '' ? (int) $_POST['product-shelf'] : null;
     $p_qty = (int) $_POST['product-quantity'];
     $p_note = $db->escape(trim($_POST['product-note']));
+    $p_category_id = isset($_POST['catalog-category-id']) && $_POST['catalog-category-id'] !== '' ? (int) $_POST['catalog-category-id'] : null;
+    $p_category_name = $db->escape(trim($_POST['catalog-category-name'] ?? ''));
     $date = make_date();
 
-    $query = "INSERT INTO products (name, quantity, shelf_id, date, note) 
-                  VALUES ('{$p_name}', '{$p_qty}', '{$p_shelf}', '{$date}', '{$p_note}')";
+    if ($p_category_id === null && $p_category_name !== '' && tableExists('catalog_categories')) {
+      $exists = $db->query("SELECT id FROM catalog_categories WHERE name = '{$p_category_name}' LIMIT 1");
+      $rowCat = $db->fetch_assoc($exists);
+      if ($rowCat) {
+        $p_category_id = (int)$rowCat['id'];
+      } else {
+        $db->query("INSERT INTO catalog_categories (name, is_active) VALUES ('{$p_category_name}', 1)");
+        $p_category_id = (int)$db->insert_id();
+      }
+    }
+
+    $p_category_id_sql = $p_category_id ? (string)$p_category_id : "NULL";
+    $p_category_name_sql = $p_category_name !== '' ? "'{$p_category_name}'" : "NULL";
+    $p_shelf_sql = $p_shelf ? "'{$p_shelf}'" : "NULL";
+
+    $query = "INSERT INTO products (name, quantity, shelf_id, catalog_category_id, catalog_category, date, note) 
+                  VALUES ('{$p_name}', '{$p_qty}', {$p_shelf_sql}, {$p_category_id_sql}, {$p_category_name_sql}, '{$date}', '{$p_note}')";
 
     if ($db->query($query)) {
       $product_id = $db->insert_id();
@@ -73,6 +90,7 @@ if (isset($_POST['add_product'])) {
 }
 
 $all_shelves = find_all('shelves');
+$catalog_categories = tableExists('catalog_categories') ? find_all('catalog_categories') : [];
 
 // Lógica para filtrar anaqueles si viene del mapa
 if (isset($_GET['shelf_filter'])) {
@@ -127,23 +145,16 @@ if (isset($_SESSION['form_data'])) {
                   value="<?php echo isset($form_data['product-title']) ? htmlspecialchars($form_data['product-title'], ENT_QUOTES, 'UTF-8') : ''; ?>">
               </div>
 
-              <!-- Selecci??n de Anaquel -->
+              <!-- Categoría -->
               <div class="col-md-6 mb-3">
-                <label class="form-label">Shelf:</label>
-                <?php if(isset($_GET['shelf_filter'])): ?>
-                  <span class="badge bg-info text-dark mb-2">
-                    Filtered by: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
-                  </span>
-                <?php endif; ?>
-                <select class="form-control select2" name="product-shelf">
-                  <option value="">Select a Shelf</option>
-                  <?php foreach ($all_shelves as $shelf): ?>
-                    <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
-                    <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
-                      <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
-                    </option>
+                <label class="form-label">Category:</label>
+                <select class="form-control" name="catalog-category-id">
+                  <option value="">Select existing category (optional)</option>
+                  <?php foreach ($catalog_categories as $cat): ?>
+                    <option value="<?php echo (int)$cat['id']; ?>"><?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                   <?php endforeach; ?>
                 </select>
+                <input type="text" class="form-control mt-2" name="catalog-category-name" placeholder="Or type new category">
               </div>
             </div>
 
@@ -155,7 +166,20 @@ if (isset($_SESSION['form_data'])) {
                   value="<?php echo isset($form_data['product-quantity']) ? htmlspecialchars($form_data['product-quantity'], ENT_QUOTES, 'UTF-8') : ''; ?>">
               </div>
 
-              <!-- Formulario de subida de m??ltiples im??genes -->
+              <!-- Anaquel (Opcional) -->
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Shelf (optional):</label>
+                <select class="form-control select2" name="product-shelf">
+                  <option value="">No shelf assigned</option>
+                  <?php foreach ($all_shelves as $shelf): ?>
+                    <?php $selected = (isset($form_data['product-shelf']) && $form_data['product-shelf'] == $shelf['id']) ? 'selected' : ''; ?>
+                    <option value="<?php echo (int) $shelf['id']; ?>" <?php echo $selected; ?>>
+                      <?php echo htmlspecialchars($shelf['name'], ENT_QUOTES, 'UTF-8'); ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <!-- Formulario de subida de múltiples imágenes -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Upload images:</label>
                 <input type="file" name="product-images[]" multiple class="form-control">
@@ -171,6 +195,7 @@ if (isset($_SESSION['form_data'])) {
 
 
 
+            <small class="text-muted d-block mb-2">Tip: category is required for catalog flow. Shelf is optional.</small>
             <button type="submit" name="add_product" class="btn btn-primary">Add item</button>
           </form>
         </div>

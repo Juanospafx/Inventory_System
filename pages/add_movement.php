@@ -9,6 +9,7 @@ page_require_level(3);
 
 // Listado de productos
 $all_products = join_product_table();
+$catalog_categories = tableExists('catalog_categories') ? find_all('catalog_categories') : [];
 
 // Filtrar productos si se especifica un anaquel
 if (isset($_GET['shelf_filter'])) {
@@ -158,20 +159,28 @@ if (isset($_SESSION['form_data'])) {
             <div class="mb-3">
               <div class="row">
                 <div class="col-md-6">
+                  <label for="catalog_search">Find item (by name/code)</label>
+                  <input type="text" id="catalog_search" class="form-control mb-2" placeholder="Type to filter items...">
+
+                  <label for="catalog_category_filter">Filter by category</label>
+                  <select id="catalog_category_filter" class="form-control mb-2">
+                    <option value="">All categories</option>
+                    <?php foreach ($catalog_categories as $cat): ?>
+                      <option value="<?php echo htmlspecialchars($cat['name']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+
                   <label for="product_id">Select item</label>
-                  <?php if(isset($_GET['shelf_filter'])): ?>
-                    <span class="badge bg-info text-dark mb-2">
-                      Filtered by Shelf: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
-                    </span>
-                  <?php endif; ?>
                   <select class="form-control select2" name="product_id" id="product_id" required>
                     <option value="">Select an item</option>
                     <?php foreach ($all_products as $product): ?>
-                      <option value="<?php echo (int) $product['id']; ?>">
-                        <?php echo $product['name']; ?>
+                      <?php $catName = $product['category_name'] ?: $product['catalog_category']; ?>
+                      <option value="<?php echo (int) $product['id']; ?>" data-category="<?php echo htmlspecialchars((string)$catName, ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo $product['name']; ?><?php echo $catName ? ' — [' . $catName . ']' : ''; ?>
                       </option>
                     <?php endforeach; ?>
                   </select>
+                  <a href="add_product.php" class="btn btn-outline-info btn-sm mt-2">+ Create new item</a>
                 </div>
                 <div class="col-md-6">
                   <label for="project_id">Select Project (Optional for Inputs)</label>
@@ -338,6 +347,52 @@ if (isset($_SESSION['form_data'])) {
         });
     }
   });
+
+  // Category/name filter for product select
+  (function() {
+    const searchEl = document.getElementById('catalog_search');
+    const catEl = document.getElementById('catalog_category_filter');
+    const selectEl = document.getElementById('product_id');
+    if (!searchEl || !catEl || !selectEl) return;
+
+    const originalOptions = Array.from(selectEl.options).map(opt => ({
+      value: opt.value,
+      text: opt.text,
+      category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : ''
+    }));
+
+    function applyFilter() {
+      const q = (searchEl.value || '').toLowerCase();
+      const cat = (catEl.value || '').toLowerCase();
+      const current = selectEl.value;
+
+      selectEl.innerHTML = '';
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.text = 'Select an item';
+      selectEl.appendChild(placeholder);
+
+      originalOptions.forEach(o => {
+        if (!o.value) return;
+        const text = (o.text || '').toLowerCase();
+        const oc = (o.category || '').toLowerCase();
+        if (q && text.indexOf(q) === -1) return;
+        if (cat && oc !== cat) return;
+        const el = document.createElement('option');
+        el.value = o.value;
+        el.text = o.text;
+        el.dataset.category = o.category;
+        selectEl.appendChild(el);
+      });
+
+      if (Array.from(selectEl.options).some(x => x.value === current)) {
+        selectEl.value = current;
+      }
+    }
+
+    searchEl.addEventListener('input', applyFilter);
+    catEl.addEventListener('change', applyFilter);
+  })();
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>

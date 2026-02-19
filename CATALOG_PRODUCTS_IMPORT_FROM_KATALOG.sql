@@ -14,7 +14,13 @@ SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';
 START TRANSACTION;
 
 -- Shelf por defecto para productos importados (si no existe, abortar manualmente)
-SET @default_shelf_id := (SELECT MIN(id) FROM brightro_brightronix_inv.shelves);
+-- No shelf assignment required for catalog items
+SET @default_shelf_id := NULL;
+
+INSERT IGNORE INTO brightro_brightronix_inv.catalog_categories (name, is_active)
+SELECT DISTINCT c.name, 1
+FROM brightro_katalog.category c
+WHERE c.name IS NOT NULL AND c.name <> '';
 
 -- 1) Registrar imágenes en media (solo si no existen por file_name)
 INSERT INTO brightro_brightronix_inv.media (file_name, file_type, description, uploaded_at)
@@ -43,6 +49,7 @@ INSERT INTO brightro_brightronix_inv.products (
   name,
   catalog_code,
   catalog_category,
+  catalog_category_id,
   catalog_description,
   catalog_unit,
   catalog_brand,
@@ -59,6 +66,7 @@ SELECT
   p.name,
   p.code,
   c.name AS catalog_category,
+  cc.id AS catalog_category_id,
   p.description,
   'ea' AS catalog_unit,
   NULL AS catalog_brand,
@@ -66,13 +74,15 @@ SELECT
   CASE WHEN p.is_public = 1 THEN 1 ELSE 0 END AS catalog_is_active,
   NULL AS qr_code,
   '0' AS quantity,
-  @default_shelf_id AS shelf_id,
+  NULL AS shelf_id,
   m.id AS media_id,
   COALESCE(p.created_at, NOW()) AS date,
   CONCAT('Imported from katalog post_id=', p.id) AS note
 FROM brightro_katalog.post p
 LEFT JOIN brightro_katalog.category c
   ON c.id = p.category_id
+LEFT JOIN brightro_brightronix_inv.catalog_categories cc
+  ON cc.name = c.name
 LEFT JOIN brightro_brightronix_inv.media m
   ON m.file_name = p.image
 WHERE p.code IS NOT NULL
@@ -80,6 +90,7 @@ WHERE p.code IS NOT NULL
 ON DUPLICATE KEY UPDATE
   name = VALUES(name),
   catalog_category = VALUES(catalog_category),
+  catalog_category_id = VALUES(catalog_category_id),
   catalog_description = VALUES(catalog_description),
   catalog_unit = VALUES(catalog_unit),
   catalog_is_active = VALUES(catalog_is_active),

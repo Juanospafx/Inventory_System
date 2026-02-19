@@ -116,6 +116,9 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
   <div class="col-md-8">
     <div class="catalog-card p-3 mb-3">
       <h5 class="card-title mb-3"><i class="fa-solid fa-boxes-stacked"></i> Catalog Items</h5>
+      <div class="mb-2">
+        <a class="btn btn-sm btn-outline-info" href="add_product.php">+ Create New Catalog Item</a>
+      </div>
       <div class="table-responsive">
         <table class="table table-sm catalog-table">
           <thead>

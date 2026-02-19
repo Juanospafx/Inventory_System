@@ -331,7 +331,13 @@ INSERT INTO tmp_katalog_post (`id`, `short_name`, `name`, `code`, `description`,
 (313, 'Kh1IHTYPfLJ', 'Conduit Hub, 3\", Insulated, Raintight, Zinc Die Cast', '12456667', 'Conduit Hub, 3 Inch, Insulated, Raintight, Zinc Die Cast, Threaded, Use With Rigid/IMC Conduit\r\nUsed to connect rigid metal conduit or IMC to a threadless opening in an enclosure. May be used in wet or dry locations, indoors or outdoors.', NULL, '11301image2a_1.jpg', '', 0, 1, '2025-12-03 11:03:11', NULL, 15);
 
 
-SET @default_shelf_id := (SELECT MIN(id) FROM shelves);
+-- No shelf assignment required for catalog items
+SET @default_shelf_id := NULL;
+
+INSERT IGNORE INTO catalog_categories (name, is_active)
+SELECT DISTINCT c.name, 1
+FROM tmp_katalog_category c
+WHERE c.name IS NOT NULL AND c.name <> '';
 
 
 -- media from image filenames
@@ -353,12 +359,13 @@ WHERE p.image IS NOT NULL AND p.image <> ""
 
 
 INSERT INTO products (
-  name,catalog_code,catalog_category,catalog_description,catalog_unit,catalog_brand,catalog_model,catalog_is_active,qr_code,quantity,shelf_id,media_id,date,note
+  name,catalog_code,catalog_category,catalog_category_id,catalog_description,catalog_unit,catalog_brand,catalog_model,catalog_is_active,qr_code,quantity,shelf_id,media_id,date,note
 )
 SELECT
   p.name,
   p.code,
   c.name,
+  cc.id,
   p.description,
   "ea",
   NULL,
@@ -366,17 +373,19 @@ SELECT
   CASE WHEN p.is_public=1 THEN 1 ELSE 0 END,
   NULL,
   "0",
-  @default_shelf_id,
+  NULL,
   m.id,
   COALESCE(p.created_at,NOW()),
   CONCAT("Imported from hosting katalog post_id=", p.id)
 FROM tmp_katalog_post p
 LEFT JOIN tmp_katalog_category c ON c.id=p.category_id
+LEFT JOIN catalog_categories cc ON cc.name = c.name
 LEFT JOIN media m ON m.file_name=p.image
 WHERE p.code IS NOT NULL AND p.code <> ""
 ON DUPLICATE KEY UPDATE
   name=VALUES(name),
   catalog_category=VALUES(catalog_category),
+  catalog_category_id=VALUES(catalog_category_id),
   catalog_description=VALUES(catalog_description),
   catalog_unit=VALUES(catalog_unit),
   catalog_is_active=VALUES(catalog_is_active),
