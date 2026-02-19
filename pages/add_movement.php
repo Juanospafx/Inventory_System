@@ -175,12 +175,20 @@ if (isset($_SESSION['form_data'])) {
                     <option value="">Select an item</option>
                     <?php foreach ($all_products as $product): ?>
                       <?php $catName = $product['category_name'] ?: $product['catalog_category']; ?>
-                      <option value="<?php echo (int) $product['id']; ?>" data-category="<?php echo htmlspecialchars((string)$catName, ENT_QUOTES, 'UTF-8'); ?>">
+                      <option value="<?php echo (int) $product['id']; ?>" data-category="<?php echo htmlspecialchars((string)$catName, ENT_QUOTES, 'UTF-8'); ?>" data-image="<?php echo htmlspecialchars((string)($product['image'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
                         <?php echo $product['name']; ?><?php echo $catName ? ' — [' . $catName . ']' : ''; ?>
                       </option>
                     <?php endforeach; ?>
                   </select>
                   <a href="add_product.php" class="btn btn-outline-info btn-sm mt-2">+ Create new item</a>
+
+                  <div class="mt-3" id="product_preview_box" style="display:none;">
+                    <label class="form-label">Preview</label>
+                    <div class="card p-2" style="max-width: 260px;">
+                      <img id="product_preview_img" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Item preview" style="width:100%;height:160px;object-fit:contain;background:#f8f9fa;border-radius:8px;">
+                      <small id="product_preview_name" class="mt-2 text-muted"></small>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="project_id">Select Project (Optional for Inputs)</label>
@@ -358,8 +366,27 @@ if (isset($_SESSION['form_data'])) {
     const originalOptions = Array.from(selectEl.options).map(opt => ({
       value: opt.value,
       text: opt.text,
-      category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : ''
+      category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : '',
+      image: (opt.dataset && opt.dataset.image) ? opt.dataset.image : ''
     }));
+
+    function updatePreview() {
+      const selected = selectEl.options[selectEl.selectedIndex];
+      const box = document.getElementById('product_preview_box');
+      const img = document.getElementById('product_preview_img');
+      const name = document.getElementById('product_preview_name');
+      if (!selected || !selected.value) {
+        box.style.display = 'none';
+        return;
+      }
+
+      const imageFile = selected.dataset.image || '';
+      const base = document.body.getAttribute('data-base-url') || '';
+      const imageUrl = imageFile ? (base + '/uploads/products/' + imageFile) : (base + '/uploads/products/no_image.jpg');
+      img.src = imageUrl;
+      name.textContent = selected.text || '';
+      box.style.display = 'block';
+    }
 
     function applyFilter() {
       const q = (searchEl.value || '').toLowerCase();
@@ -382,16 +409,22 @@ if (isset($_SESSION['form_data'])) {
         el.value = o.value;
         el.text = o.text;
         el.dataset.category = o.category;
+        el.dataset.image = o.image || '';
         selectEl.appendChild(el);
       });
 
       if (Array.from(selectEl.options).some(x => x.value === current)) {
         selectEl.value = current;
       }
+
+      updatePreview();
     }
 
     searchEl.addEventListener('input', applyFilter);
     catEl.addEventListener('change', applyFilter);
+    selectEl.addEventListener('change', updatePreview);
+
+    updatePreview();
   })();
 </script>
 
