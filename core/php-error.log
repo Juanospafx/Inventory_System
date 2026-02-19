@@ -88,3 +88,12 @@ Stack trace:
 #5 C:\xampp\htdocs\Inventory_System\pages\index.php(2): require_once('C:\\xampp\\htdocs...')
 #6 {main}
   thrown in C:\xampp\htdocs\Inventory_System\core\database.php on line 18
+[19-Feb-2026 13:11:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_connect() in /home/admin/Inventory_System/core/database.php:18
+Stack trace:
+#0 /home/admin/Inventory_System/core/database.php(10): MySqli_DB->db_connect()
+#1 /home/admin/Inventory_System/core/database.php(109): MySqli_DB->__construct()
+#2 /home/admin/Inventory_System/core/bootstrap.php(40): require_once('...')
+#3 /home/admin/Inventory_System/api/integration/electroplan/index.php(3): require_once('...')
+#4 /tmp/inv_router.php(5): require('...')
+#5 {main}
+  thrown in /home/admin/Inventory_System/core/database.php on line 18
