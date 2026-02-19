@@ -1,60 +1,79 @@
 <?php
 $page_title = 'Catalog import';
 require_once(__DIR__ . '/../includes/load.php');
+require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   redirect('catalog.php', false);
 }
 
 if (!isset($_FILES['catalog_file']) || !is_uploaded_file($_FILES['catalog_file']['tmp_name'])) {
-  $session->msg('d', 'Please upload a CSV file.');
+  $session->msg('d', 'Please upload a CSV/XLSX file.');
   redirect('catalog.php', false);
 }
 
 $tmp = $_FILES['catalog_file']['tmp_name'];
-$fh = fopen($tmp, 'r');
-if (!$fh) {
-  $session->msg('d', 'Could not read uploaded file.');
+$originalName = strtolower((string)($_FILES['catalog_file']['name'] ?? ''));
+$ext = pathinfo($originalName, PATHINFO_EXTENSION);
+
+$rows = [];
+
+try {
+  if ($ext === 'xlsx' || $ext === 'xls') {
+    $spreadsheet = IOFactory::load($tmp);
+    $sheet = $spreadsheet->getActiveSheet();
+    $rows = $sheet->toArray(null, true, true, false);
+  } else {
+    $fh = fopen($tmp, 'r');
+    if (!$fh) {
+      throw new RuntimeException('Could not read uploaded file.');
+    }
+    while (($data = fgetcsv($fh)) !== false) {
+      $rows[] = $data;
+    }
+    fclose($fh);
+  }
+} catch (Throwable $e) {
+  $session->msg('d', 'Import read error: ' . $e->getMessage());
   redirect('catalog.php', false);
 }
 
-$header = fgetcsv($fh);
-if (!$header) {
-  fclose($fh);
-  $session->msg('d', 'CSV is empty.');
+if (count($rows) < 2) {
+  $session->msg('d', 'File has no data rows.');
   redirect('catalog.php', false);
 }
 
+$header = array_shift($rows);
 $headerMap = [];
 foreach ($header as $idx => $col) {
   $headerMap[strtolower(trim((string)$col))] = $idx;
 }
 
-$required = ['name'];
-foreach ($required as $req) {
-  if (!array_key_exists($req, $headerMap)) {
-    fclose($fh);
-    $session->msg('d', 'CSV must include column: ' . $req);
-    redirect('catalog.php', false);
-  }
+if (!array_key_exists('name', $headerMap)) {
+  $session->msg('d', 'File must include column: name');
+  redirect('catalog.php', false);
 }
 
 $shelves = find_all('shelves');
 $defaultShelfId = !empty($shelves) ? (int)$shelves[0]['id'] : 0;
 if ($defaultShelfId <= 0) {
-  fclose($fh);
   $session->msg('d', 'No shelf available. Create at least one shelf before importing.');
   redirect('catalog.php', false);
 }
 
 $created = 0;
 $updated = 0;
+$ignored = 0;
 $date = make_date();
 
-while (($row = fgetcsv($fh)) !== false) {
+foreach ($rows as $row) {
+  if (!is_array($row)) { $ignored++; continue; }
+
   $name = trim((string)($row[$headerMap['name']] ?? ''));
-  if ($name === '') { continue; }
+  if ($name === '') { $ignored++; continue; }
 
   $code = trim((string)($row[$headerMap['catalog_code']] ?? ($row[$headerMap['code']] ?? '')));
   $category = trim((string)($row[$headerMap['catalog_category']] ?? ($row[$headerMap['category']] ?? '')));
@@ -117,6 +136,5 @@ while (($row = fgetcsv($fh)) !== false) {
   }
 }
 
-fclose($fh);
-$session->msg('s', "Catalog import complete. Created: {$created}, Updated: {$updated}.");
+$session->msg('s', "Catalog import complete. Created: {$created}, Updated: {$updated}, Ignored: {$ignored}.");
 redirect('catalog.php', false);
