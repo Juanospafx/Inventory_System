@@ -232,13 +232,21 @@ function join_product_table($name = '')
   global $db;
 
   // Consulta base
+  $hasCatalogCategories = tableExists('catalog_categories');
+
   $sql = "SELECT p.id, p.name, p.quantity, p.shelf_id, p.date, p.qr_code, p.note, ";
-  $sql .= "p.catalog_category, cc.name AS category_name, ";
+  if ($hasCatalogCategories) {
+    $sql .= "p.catalog_category, cc.name AS category_name, ";
+  } else {
+    $sql .= "p.catalog_category, NULL AS category_name, ";
+  }
   $sql .= "c.name AS shelf, ";
   $sql .= "m.file_name AS image, p.media_id ";
   $sql .= "FROM products p ";
   $sql .= "LEFT JOIN shelves c ON p.shelf_id = c.id ";
-  $sql .= "LEFT JOIN catalog_categories cc ON p.catalog_category_id = cc.id ";
+  if ($hasCatalogCategories) {
+    $sql .= "LEFT JOIN catalog_categories cc ON p.catalog_category_id = cc.id ";
+  }
   $sql .= "LEFT JOIN media m ON p.media_id = m.id ";
 
   // Arreglo para condiciones WHERE
