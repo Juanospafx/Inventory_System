@@ -40,6 +40,12 @@
     </a>
   </li>
   <li>
+    <a href="<?php echo base_url('pages/catalog.php'); ?>">
+      <i class="fa-solid fa-cart-shopping text-green"></i>
+      <span>Catalog</span>
+    </a>
+  </li>
+  <li>
     <a href="<?php echo base_url('pages/media.php'); ?>">
       <i class="fa-solid fa-images text-blue"></i>
       <span>Media</span>
