@@ -186,6 +186,7 @@ if (isset($_POST['add_product'])) {
       <div class="panel-body">
         <form id="add-product-form" method="post" action="add_product.php" class="clearfix" enctype="multipart/form-data">
 
+          <h5 class="mb-3">1) Choose from catalog</h5>
           <div class="row">
             <div class="col-md-6 mb-3">
               <label class="form-label">Find item (by name/code)</label>
@@ -200,13 +201,10 @@ if (isset($_POST['add_product'])) {
                 <?php endforeach; ?>
               </select>
             </div>
-          </div>
-
-          <div class="row">
             <div class="col-md-12 mb-3">
               <label class="form-label">Select item from catalog (optional)</label>
               <select class="form-control" name="existing-product-id" id="existing_product_id">
-                <option value="">No product selected (create new below)</option>
+                <option value="">No product selected (use section 2 to create new)</option>
                 <?php foreach ($catalog_items as $item): ?>
                   <?php $cat = (string)($item['catalog_category'] ?? ''); ?>
                   <?php $code = (string)($item['catalog_code'] ?? ''); ?>
@@ -215,10 +213,37 @@ if (isset($_POST['add_product'])) {
                   </option>
                 <?php endforeach; ?>
               </select>
-              <small class="text-muted">If selected, quantity adds stock to that existing inventory/catalog item.</small>
             </div>
           </div>
 
+          <hr>
+          <h5 class="mb-3">2) Create new item (if not in catalog)</h5>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Item name</label>
+              <input type="text" class="form-control" name="product-title" id="product-title" placeholder="Name">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Category name</label>
+              <input type="text" class="form-control" name="catalog-category-name" id="catalog-category-name" placeholder="Type category name">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Choose existing category (optional)</label>
+              <input list="catalog-categories-list" class="form-control" id="catalog-category-picker" placeholder="Pick existing category">
+              <datalist id="catalog-categories-list">
+                <?php foreach ($catalog_categories as $cat): ?>
+                  <option value="<?php echo htmlspecialchars((string)$cat['name'], ENT_QUOTES, 'UTF-8'); ?>"></option>
+                <?php endforeach; ?>
+              </datalist>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Upload images (for new item)</label>
+              <input type="file" name="product-images[]" multiple class="form-control">
+            </div>
+          </div>
+
+          <hr>
+          <h5 class="mb-3">3) General info (applies to both flows)</h5>
           <div class="row">
             <div class="col-md-4 mb-3">
               <label class="form-label">Quantity (required)</label>
@@ -234,36 +259,11 @@ if (isset($_POST['add_product'])) {
               </select>
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Upload images (for new item)</label>
-              <input type="file" name="product-images[]" multiple class="form-control">
+              <label class="form-label">Note</label>
+              <textarea class="form-control" name="product-note" placeholder="Optional note" rows="1"></textarea>
             </div>
           </div>
 
-          <hr>
-          <h5>Or create new item (will be added to catalog)</h5>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Item name</label>
-              <input type="text" class="form-control" name="product-title" id="product-title" placeholder="Name">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Category</label>
-              <input list="catalog-categories-list" class="form-control" name="catalog-category-name" id="catalog-category-name" placeholder="Type or pick category">
-              <datalist id="catalog-categories-list">
-                <?php foreach ($catalog_categories as $cat): ?>
-                  <option value="<?php echo htmlspecialchars((string)$cat['name'], ENT_QUOTES, 'UTF-8'); ?>"></option>
-                <?php endforeach; ?>
-              </datalist>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Note</label>
-            <textarea class="form-control" name="product-note" placeholder="Optional note" rows="3"></textarea>
-          </div>
-
-          <small class="text-muted d-block mb-2">Quantity applies to BOTH flows: existing catalog item or brand-new item.</small>
           <button type="submit" name="add_product" class="btn btn-primary">Add item to inventory</button>
         </form>
       </div>
@@ -277,6 +277,8 @@ if (isset($_POST['add_product'])) {
   const catEl = document.getElementById('catalog_category_filter');
   const selectEl = document.getElementById('existing_product_id');
   const newNameEl = document.getElementById('product-title');
+  const categoryNameEl = document.getElementById('catalog-category-name');
+  const categoryPickerEl = document.getElementById('catalog-category-picker');
   if (!searchEl || !catEl || !selectEl || !newNameEl) return;
 
   const originalOptions = Array.from(selectEl.options).map(opt => ({
@@ -325,6 +327,12 @@ if (isset($_POST['add_product'])) {
   searchEl.addEventListener('input', applyFilter);
   catEl.addEventListener('change', applyFilter);
   selectEl.addEventListener('change', toggleNewItemInputs);
+
+  if (categoryPickerEl && categoryNameEl) {
+    categoryPickerEl.addEventListener('change', function(){
+      if (this.value) categoryNameEl.value = this.value;
+    });
+  }
 
   applyFilter();
 })();
