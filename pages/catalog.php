@@ -107,8 +107,9 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
     <div class="catalog-card p-3 h-100">
       <h5 class="card-title mb-3"><i class="fa-solid fa-file-export"></i> Export</h5>
       <div class="d-grid gap-2">
-        <a class="btn btn-success" href="catalog_export.php?scope=catalog&format=xlsx">Export Catalog XLSX</a>
+        <a class="btn btn-success" href="catalog_export.php?scope=catalog&format=xls">Export Catalog Excel</a>
         <a class="btn btn-outline-light" href="catalog_export.php?scope=catalog&format=csv">Export Catalog CSV</a>
+        <a class="btn btn-outline-warning" href="catalog_export.php?scope=catalog&format=pdf">Export Catalog PDF</a>
       </div>
     </div>
   </div>
@@ -234,8 +235,9 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
             <?php endforeach; ?>
           </select>
 
-          <button class="btn btn-info" name="format" value="xlsx" type="submit">Generate Purchase Order XLSX</button>
+          <button class="btn btn-info" name="format" value="xls" type="submit">Generate Purchase Order Excel</button>
           <button class="btn btn-outline-light" name="format" value="csv" type="submit">Generate Purchase Order CSV</button>
+          <button class="btn btn-outline-warning" name="format" value="pdf" type="submit">Generate Purchase Order PDF</button>
         </form>
       <?php endif; ?>
     </div>

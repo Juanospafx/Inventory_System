@@ -1,15 +1,13 @@
 <?php
 $page_title = 'Catalog export';
 require_once(__DIR__ . '/../includes/load.php');
-@require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
-
 ini_set('display_errors', '0');
 
 $scope = $_GET['scope'] ?? 'catalog';
-$format = strtolower(trim((string)($_GET['format'] ?? 'xlsx')));
-if (!in_array($format, ['xlsx', 'csv'], true)) {
-  $format = 'xlsx';
+$format = strtolower(trim((string)($_GET['format'] ?? 'xls')));
+if (!in_array($format, ['xls', 'xlsx', 'csv', 'pdf'], true)) {
+  $format = 'xls';
 }
 
 function clear_output_buffers(): void {
@@ -22,7 +20,6 @@ function out_csv(string $filename, array $headers, array $rows): void {
   clear_output_buffers();
   header('Content-Type: text/csv; charset=utf-8');
   header('Content-Disposition: attachment; filename=' . $filename);
-  header('Cache-Control: no-store, no-cache, must-revalidate');
   $out = fopen('php://output', 'w');
   fwrite($out, "\xEF\xBB\xBF");
   fputcsv($out, $headers, ';');
@@ -33,139 +30,89 @@ function out_csv(string $filename, array $headers, array $rows): void {
   exit;
 }
 
-function xlsx_col(int $n): string {
-  $s = '';
-  while ($n > 0) {
-    $m = ($n - 1) % 26;
-    $s = chr(65 + $m) . $s;
-    $n = intdiv($n - 1, 26);
+function out_excel_xls(string $filename, array $headers, array $rows): void {
+  clear_output_buffers();
+  if (!preg_match('/\.xls$/i', $filename)) {
+    $filename = preg_replace('/\.(xlsx|csv|pdf)$/i', '', $filename) . '.xls';
   }
+
+  header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+  header('Content-Disposition: attachment; filename=' . $filename);
+
+  echo "\xEF\xBB\xBF";
+  echo "<table border='1'>";
+  echo '<tr>';
+  foreach ($headers as $h) {
+    echo '<th>' . htmlspecialchars((string)$h, ENT_QUOTES, 'UTF-8') . '</th>';
+  }
+  echo '</tr>';
+
+  foreach ($rows as $row) {
+    echo '<tr>';
+    foreach ($row as $cell) {
+      echo '<td>' . htmlspecialchars((string)$cell, ENT_QUOTES, 'UTF-8') . '</td>';
+    }
+    echo '</tr>';
+  }
+  echo '</table>';
+  exit;
+}
+
+function pdf_escape(string $s): string {
+  $s = str_replace('\\', '\\\\', $s);
+  $s = str_replace('(', '\\(', $s);
+  $s = str_replace(')', '\\)', $s);
+  $s = preg_replace('/[\r\n\t]+/', ' ', $s);
   return $s;
 }
 
-function xlsx_escape(string $v): string {
-  return htmlspecialchars($v, ENT_XML1 | ENT_COMPAT, 'UTF-8');
-}
-
-function build_sheet_xml(array $headers, array $rows): string {
-  $all = array_merge([$headers], $rows);
-  $maxCols = count($headers);
-  $lastCol = xlsx_col(max(1, $maxCols));
-  $lastRow = max(1, count($all));
-
-  $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-  $xml .= '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
-  $xml .= '<dimension ref="A1:' . $lastCol . $lastRow . '"/>';
-  $xml .= '<sheetData>';
-
-  foreach ($all as $rIdx => $row) {
-    $r = $rIdx + 1;
-    $xml .= '<row r="' . $r . '">';
-    for ($c = 0; $c < $maxCols; $c++) {
-      $val = (string)($row[$c] ?? '');
-      $ref = xlsx_col($c + 1) . $r;
-      if ($r > 1 && is_numeric($val) && $val !== '') {
-        $xml .= '<c r="' . $ref . '"><v>' . $val . '</v></c>';
-      } else {
-        $xml .= '<c r="' . $ref . '" t="inlineStr"><is><t>' . xlsx_escape($val) . '</t></is></c>';
-      }
-    }
-    $xml .= '</row>';
+function out_pdf(string $filename, array $headers, array $rows): void {
+  clear_output_buffers();
+  if (!preg_match('/\.pdf$/i', $filename)) {
+    $filename = preg_replace('/\.(xlsx|xls|csv)$/i', '', $filename) . '.pdf';
   }
 
-  $xml .= '</sheetData></worksheet>';
-  return $xml;
-}
-
-function out_xlsx(string $filename, array $headers, array $rows): void {
-  if (!class_exists('ZipStream\\ZipStream')) {
-    $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
-    out_csv($csvName, $headers, $rows);
+  $lines = [];
+  $lines[] = implode(' | ', array_map('strval', $headers));
+  foreach ($rows as $row) {
+    $lines[] = implode(' | ', array_map(static fn($v) => (string)$v, $row));
   }
 
-  try {
-    $sheetXml = build_sheet_xml($headers, $rows);
+  // Keep file readable (single page text report)
+  $lines = array_slice($lines, 0, 50);
 
-    $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
-      . '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
-      . '<Default Extension="xml" ContentType="application/xml"/>'
-      . '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>'
-      . '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>'
-      . '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
-      . '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
-      . '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
-      . '</Types>';
-
-    $rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
-      . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
-      . '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>'
-      . '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>'
-      . '</Relationships>';
-
-    $workbook = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
-      . 'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
-      . '<workbookPr date1904="false"/>'
-      . '<bookViews><workbookView xWindow="0" yWindow="0" windowWidth="24000" windowHeight="12000"/></bookViews>'
-      . '<sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets>'
-      . '</workbook>';
-
-    $wbRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
-      . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'
-      . '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'
-      . '</Relationships>';
-
-    $styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
-      . '<fonts count="1"><font><sz val="11"/><name val="Calibri"/><family val="2"/></font></fonts>'
-      . '<fills count="1"><fill><patternFill patternType="none"/></fill></fills>'
-      . '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>'
-      . '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
-      . '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>'
-      . '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>'
-      . '</styleSheet>';
-
-    $core = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
-      . 'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" '
-      . 'xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-      . '<dc:creator>Inventory System</dc:creator>'
-      . '<cp:lastModifiedBy>Inventory System</cp:lastModifiedBy>'
-      . '<dcterms:created xsi:type="dcterms:W3CDTF">' . gmdate('Y-m-d\TH:i:s\Z') . '</dcterms:created>'
-      . '<dcterms:modified xsi:type="dcterms:W3CDTF">' . gmdate('Y-m-d\TH:i:s\Z') . '</dcterms:modified>'
-      . '</cp:coreProperties>';
-
-    $app = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-      . '<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" '
-      . 'xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">'
-      . '<Application>Inventory System</Application>'
-      . '</Properties>';
-
-    clear_output_buffers();
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment; filename=' . $filename);
-    header('Cache-Control: no-store, no-cache, must-revalidate');
-
-    $out = fopen('php://output', 'wb');
-    $zip = new ZipStream\ZipStream(outputName: $filename, sendHttpHeaders: false, outputStream: $out);
-    $zip->addFile(fileName: '[Content_Types].xml', data: $contentTypes);
-    $zip->addFile(fileName: '_rels/.rels', data: $rels);
-    $zip->addFile(fileName: 'docProps/core.xml', data: $core);
-    $zip->addFile(fileName: 'docProps/app.xml', data: $app);
-    $zip->addFile(fileName: 'xl/workbook.xml', data: $workbook);
-    $zip->addFile(fileName: 'xl/_rels/workbook.xml.rels', data: $wbRels);
-    $zip->addFile(fileName: 'xl/styles.xml', data: $styles);
-    $zip->addFile(fileName: 'xl/worksheets/sheet1.xml', data: $sheetXml);
-    $zip->finish();
-    fclose($out);
-    exit;
-  } catch (Throwable $e) {
-    $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
-    out_csv($csvName, $headers, $rows);
+  $content = "BT\n/F1 10 Tf\n50 800 Td\n";
+  foreach ($lines as $i => $line) {
+    $content .= '(' . pdf_escape($line) . ") Tj\n";
+    $content .= "0 -14 Td\n";
   }
+  $content .= "ET";
+
+  $obj1 = "1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n";
+  $obj2 = "2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n";
+  $obj3 = "3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 842] /Contents 5 0 R /Resources << /Font << /F1 4 0 R >> >> >>\nendobj\n";
+  $obj4 = "4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n";
+  $obj5 = "5 0 obj\n<< /Length " . strlen($content) . " >>\nstream\n" . $content . "\nendstream\nendobj\n";
+
+  $pdf = "%PDF-1.4\n";
+  $offsets = [0];
+  foreach ([$obj1, $obj2, $obj3, $obj4, $obj5] as $obj) {
+    $offsets[] = strlen($pdf);
+    $pdf .= $obj;
+  }
+
+  $xrefPos = strlen($pdf);
+  $pdf .= "xref\n0 6\n";
+  $pdf .= "0000000000 65535 f \n";
+  for ($i = 1; $i <= 5; $i++) {
+    $pdf .= sprintf('%010d 00000 n ', $offsets[$i]) . "\n";
+  }
+  $pdf .= "trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" . $xrefPos . "\n%%EOF";
+
+  header('Content-Type: application/pdf');
+  header('Content-Disposition: attachment; filename=' . $filename);
+  echo $pdf;
+  exit;
 }
 
 if ($scope === 'cart') {
@@ -181,7 +128,6 @@ if ($scope === 'cart') {
   $orderNumber = 'PO-' . date('Ymd-His');
   $projectSlug = $projectName !== '' ? preg_replace('/[^a-zA-Z0-9_-]/', '_', $projectName) : 'NO_PROJECT';
   $baseName = $orderNumber . '_' . $projectSlug;
-  $filename = $baseName . ($format === 'csv' ? '.csv' : '.xlsx');
 
   $headers = ['Name', 'quantity'];
   $rows = [];
@@ -190,7 +136,9 @@ if ($scope === 'cart') {
   foreach ($cart as $productId => $item) {
     $pid = (int)$productId;
     $product = find_by_id('products', $pid);
-    if (!$product) { continue; }
+    if (!$product) {
+      continue;
+    }
 
     $rows[] = [
       $product['name'] ?? '',
@@ -203,9 +151,14 @@ if ($scope === 'cart') {
   $rows[] = ['Order', $orderNumber];
 
   if ($format === 'csv') {
-    out_csv($filename, $headers, $rows);
+    out_csv($baseName . '.csv', $headers, $rows);
   }
-  out_xlsx($filename, $headers, $rows);
+  if ($format === 'pdf') {
+    out_pdf($baseName . '.pdf', $headers, $rows);
+  }
+
+  // xls + xlsx both exported as stable Excel-compatible .xls
+  out_excel_xls($baseName . '.xls', $headers, $rows);
 }
 
 $headers = ['id', 'catalog_code', 'name', 'catalog_category', 'catalog_description', 'catalog_unit', 'catalog_brand', 'catalog_model', 'quantity', 'catalog_is_active'];
@@ -226,8 +179,11 @@ foreach ($dbRows as $row) {
   ];
 }
 
-$filename = 'catalog_export_' . date('Ymd_His') . ($format === 'csv' ? '.csv' : '.xlsx');
+$base = 'catalog_export_' . date('Ymd_His');
 if ($format === 'csv') {
-  out_csv($filename, $headers, $rows);
+  out_csv($base . '.csv', $headers, $rows);
 }
-out_xlsx($filename, $headers, $rows);
+if ($format === 'pdf') {
+  out_pdf($base . '.pdf', $headers, $rows);
+}
+out_excel_xls($base . '.xls', $headers, $rows);
