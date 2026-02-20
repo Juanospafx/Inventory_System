@@ -54,6 +54,8 @@ if ($search !== '') {
 
 $products = find_by_sql("SELECT p.id, p.name, p.quantity, p.catalog_code, p.catalog_category, p.catalog_description, p.catalog_unit, p.catalog_brand, p.catalog_model, p.catalog_is_active, COALESCE(m.file_name, m2.file_name) AS image FROM products p LEFT JOIN media m ON p.media_id = m.id LEFT JOIN product_media pm ON pm.product_id = p.id LEFT JOIN media m2 ON m2.id = pm.media_id {$where} GROUP BY p.id ORDER BY p.name ASC");
 
+$projectsForPO = find_all('projects');
+
 $cartRows = [];
 $totalQty = 0;
 foreach ($_SESSION['catalog_cart'] as $productId => $item) {
@@ -223,7 +225,15 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
 
         <form method="get" action="catalog_export.php" class="d-grid gap-2">
           <input type="hidden" name="scope" value="cart">
-          <input type="text" name="order_name" class="form-control" placeholder="Order name (optional)">
+
+          <label class="small mb-0">Project (optional)</label>
+          <select name="project_id" class="form-control">
+            <option value="">No project selected</option>
+            <?php foreach ($projectsForPO as $pr): ?>
+              <option value="<?php echo (int)$pr['id']; ?>"><?php echo htmlspecialchars((string)$pr['name']); ?></option>
+            <?php endforeach; ?>
+          </select>
+
           <button class="btn btn-info" name="format" value="xlsx" type="submit">Generate Purchase Order XLSX</button>
           <button class="btn btn-outline-light" name="format" value="csv" type="submit">Generate Purchase Order CSV</button>
         </form>

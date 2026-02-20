@@ -1,11 +1,14 @@
 <?php
 $page_title = 'Catalog export';
 require_once(__DIR__ . '/../includes/load.php');
-require_once(__DIR__ . '/../vendor/autoload.php');
+@require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+$xlsxAvailable = class_exists('PhpOffice\\PhpSpreadsheet\\Spreadsheet') && class_exists('PhpOffice\\PhpSpreadsheet\\Writer\\Xlsx');
+if ($xlsxAvailable) {
+  class_alias('PhpOffice\\PhpSpreadsheet\\Spreadsheet', 'LocalSpreadsheet');
+  class_alias('PhpOffice\\PhpSpreadsheet\\Writer\\Xlsx', 'LocalXlsxWriter');
+}
 
 $scope = $_GET['scope'] ?? 'catalog';
 $format = strtolower(trim((string)($_GET['format'] ?? 'xlsx')));
@@ -26,32 +29,55 @@ function out_csv(string $filename, array $headers, array $rows): void {
 }
 
 function out_xlsx(string $filename, array $headers, array $rows): void {
-  $spreadsheet = new Spreadsheet();
-  $sheet = $spreadsheet->getActiveSheet();
-  $sheet->fromArray($headers, null, 'A1');
-  $r = 2;
-  foreach ($rows as $row) {
-    $sheet->fromArray($row, null, 'A' . $r);
-    $r++;
+  global $xlsxAvailable;
+
+  // Fallback: if PhpSpreadsheet is not fully available on this host, export CSV directly.
+  if (!$xlsxAvailable) {
+    $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
+    out_csv($csvName, $headers, $rows);
   }
 
-  foreach (range('A', $sheet->getHighestColumn()) as $col) {
-    $sheet->getColumnDimension($col)->setAutoSize(true);
-  }
+  try {
+    $spreadsheet = new LocalSpreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->fromArray($headers, null, 'A1');
+    $r = 2;
+    foreach ($rows as $row) {
+      $sheet->fromArray($row, null, 'A' . $r);
+      $r++;
+    }
 
-  header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-  header('Content-Disposition: attachment; filename=' . $filename);
-  $writer = new Xlsx($spreadsheet);
-  $writer->save('php://output');
-  exit;
+    foreach (range('A', $sheet->getHighestColumn()) as $col) {
+      $sheet->getColumnDimension($col)->setAutoSize(true);
+    }
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=' . $filename);
+    $writer = new LocalXlsxWriter($spreadsheet);
+    $writer->save('php://output');
+    exit;
+  } catch (Throwable $e) {
+    $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
+    out_csv($csvName, $headers, $rows);
+  }
 }
 
 if ($scope === 'cart') {
-  $orderName = trim($_GET['order_name'] ?? 'purchase_order');
-  $orderName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $orderName);
-  $filename = $orderName . '_' . date('Ymd_His') . ($format === 'csv' ? '.csv' : '.xlsx');
+  $projectId = (int)($_GET['project_id'] ?? 0);
+  $projectName = '';
+  if ($projectId > 0) {
+    $project = find_by_id('projects', $projectId);
+    if ($project) {
+      $projectName = (string)($project['name'] ?? '');
+    }
+  }
 
-  $headers = ['catalog_code', 'name', 'quantity', 'unit', 'note'];
+  $orderNumber = 'PO-' . date('Ymd-His');
+  $baseName = $orderNumber;
+  $filename = $baseName . ($format === 'csv' ? '.csv' : '.xlsx');
+
+  // Required output: name + quantity + project (+ generated order number)
+  $headers = ['order_number', 'project', 'item_name', 'quantity'];
   $rows = [];
 
   $cart = $_SESSION['catalog_cart'] ?? [];
@@ -61,11 +87,10 @@ if ($scope === 'cart') {
     if (!$product) { continue; }
 
     $rows[] = [
-      $product['catalog_code'] ?? '',
+      $orderNumber,
+      $projectName,
       $product['name'] ?? '',
       $item['quantity'] ?? 1,
-      $item['unit'] ?? ($product['catalog_unit'] ?? 'ea'),
-      $item['note'] ?? '',
     ];
   }
 
