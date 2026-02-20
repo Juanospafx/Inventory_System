@@ -7,15 +7,21 @@ require_once(__DIR__ . '/../includes/load.php');
 // Verifica el nivel de usuario
 page_require_level(3);
 
-// Listado de productos
-$all_products = join_product_table();
-$catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
-  SELECT TRIM(name) AS name FROM catalog_categories
-  UNION
-  SELECT TRIM(catalog_category) AS name FROM products
-) t
-WHERE name IS NOT NULL AND name <> ''
-ORDER BY name ASC");
+// Listado de productos (solo inventario real con stock > 0)
+$all_products = array_values(array_filter(join_product_table(), function($p) {
+  return (int)($p['quantity'] ?? 0) > 0;
+}));
+$catalog_categories = [];
+foreach ($all_products as $p) {
+  $cn = trim((string)($p['category_name'] ?? $p['catalog_category'] ?? ''));
+  if ($cn !== '') {
+    $catalog_categories[$cn] = ['name' => $cn];
+  }
+}
+$catalog_categories = array_values($catalog_categories);
+usort($catalog_categories, function($a, $b) {
+  return strcmp($a['name'], $b['name']);
+});
 
 // Filtrar productos si se especifica un anaquel
 $activeShelfFilter = '';
@@ -57,17 +63,32 @@ if (isset($_POST['add_movement'])) {
     $s_note = $db->escape($_POST['note']);
 
     // Validaciones seg??n el tipo de movimiento
-    if ($s_status === 0) { // Output
-      // Verificar que no se retire m??s de lo que hay en stock
-      $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
-      $result_stock = $db->query($sql_check_stock);
-      $product_stock = $db->fetch_assoc($result_stock);
-      if ($s_qty > (int) $product_stock['quantity']) {
+    $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
+    $result_stock = $db->query($sql_check_stock);
+    $product_stock = $db->fetch_assoc($result_stock);
+    $current_stock = (int)($product_stock['quantity'] ?? 0);
+
+    if ($current_stock <= 0) {
+      $_SESSION['form_data'] = $_POST;
+      $session->msg('d', "Error: This item is not currently in inventory stock.");
+      redirect('add_movement.php', false);
+    }
+
+    if ($s_status === 1) { // Input
+      // Regla: no permitir una entrada mayor al stock base actual.
+      if ($s_qty > $current_stock) {
         $_SESSION['form_data'] = $_POST;
-        $session->msg('d', "Error: You cannot withdraw more than what is in stock. Available stock: " . $product_stock['quantity']);
+        $session->msg('d', "Error: Input quantity cannot be greater than current stock base ({$current_stock}).");
         redirect('add_movement.php', false);
       }
-    } elseif ($s_status === 2) { // Devoluci??n
+    } elseif ($s_status === 0) { // Output
+      // Verificar que no se retire más de lo que hay en stock
+      if ($s_qty > $current_stock) {
+        $_SESSION['form_data'] = $_POST;
+        $session->msg('d', "Error: You cannot withdraw more than what is in stock. Available stock: " . $current_stock);
+        redirect('add_movement.php', false);
+      }
+    } elseif ($s_status === 2) { // Devolución
       $sql_borrowed = "SELECT 
                               IFNULL(SUM(CASE WHEN status = 0 THEN quantity ELSE 0 END),0) as total_output,
                               IFNULL(SUM(CASE WHEN status = 2 THEN quantity ELSE 0 END),0) as total_return
