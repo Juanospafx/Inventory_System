@@ -163,7 +163,7 @@ if (isset($_SESSION['form_data'])) {
                   <?php endforeach; ?>
                 </select>
                 <input type="hidden" name="catalog-category-id" value="">
-                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="Or type new category" value="<?php echo htmlspecialchars($prefill_category, ENT_QUOTES, 'UTF-8'); ?>">
+                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="If new category, type it here" value="">
               </div>
             </div>
 
@@ -217,9 +217,21 @@ if (isset($_SESSION['form_data'])) {
   (function(){
     var sel = document.getElementById('catalog-category-select');
     var input = document.getElementById('catalog-category-name');
-    if(!sel || !input) return;
+    var form = document.getElementById('add-product-form');
+    if(!sel || !input || !form) return;
+
     sel.addEventListener('change', function(){
-      if (this.value) input.value = this.value;
+      // Keep input for truly new categories; don't duplicate existing ones visually
+      if (this.value && !input.value.trim()) {
+        input.value = this.value;
+      }
+    });
+
+    form.addEventListener('submit', function(){
+      // If user selected existing category and left input empty, submit selected category name
+      if (!input.value.trim() && sel.value) {
+        input.value = sel.value;
+      }
     });
   })();
 </script>
