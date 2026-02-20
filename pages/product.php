@@ -1,10 +1,13 @@
 ﻿﻿<?php
-$page_title = 'Items list';
+$page_title = 'Items in inventory';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
 
-// Cargamos todos los productos sin filtro (el filtrado se har?? en el cliente)
-$products = join_product_table();
+// Solo items realmente en inventario (con stock > 0)
+$products_all = join_product_table();
+$products = array_values(array_filter($products_all, function($p){
+  return (int)($p['quantity'] ?? 0) > 0;
+}));
 ?>
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
 
@@ -57,6 +60,7 @@ $products = join_product_table();
                       src="<?php echo $imgSrc; ?>"
                       alt="Product image"
                       style="cursor:pointer;"
+                      onerror="this.onerror=null;this.src='<?php echo base_url('uploads/products/no_image.jpg'); ?>';"
                       data-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
                       onclick="openItemPreview(this)">
                   </td>

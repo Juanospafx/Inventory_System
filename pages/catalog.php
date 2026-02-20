@@ -52,7 +52,7 @@ if ($search !== '') {
   $where = "WHERE (name LIKE '%{$s}%' OR catalog_code LIKE '%{$s}%' OR catalog_category LIKE '%{$s}%' OR catalog_brand LIKE '%{$s}%')";
 }
 
-$products = find_by_sql("SELECT p.id, p.name, p.quantity, p.catalog_code, p.catalog_category, p.catalog_description, p.catalog_unit, p.catalog_brand, p.catalog_model, p.catalog_is_active, m.file_name AS image FROM products p LEFT JOIN media m ON p.media_id = m.id {$where} ORDER BY p.name ASC");
+$products = find_by_sql("SELECT p.id, p.name, p.quantity, p.catalog_code, p.catalog_category, p.catalog_description, p.catalog_unit, p.catalog_brand, p.catalog_model, p.catalog_is_active, COALESCE(m.file_name, m2.file_name) AS image FROM products p LEFT JOIN media m ON p.media_id = m.id LEFT JOIN product_media pm ON pm.product_id = p.id LEFT JOIN media m2 ON m2.id = pm.media_id {$where} GROUP BY p.id ORDER BY p.name ASC");
 
 $cartRows = [];
 $totalQty = 0;
@@ -138,7 +138,7 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
               <tr>
                 <td>
                   <?php $cImg = !empty($p['image']) ? base_url('uploads/products/' . $p['image']) : base_url('uploads/products/no_image.jpg'); ?>
-                  <img src="<?php echo $cImg; ?>" alt="Catalog item" style="width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;" data-name="<?php echo htmlspecialchars($p['name'], ENT_QUOTES, 'UTF-8'); ?>" onclick="openCatalogImagePreview(this)">
+                  <img src="<?php echo $cImg; ?>" alt="Catalog item" style="width:52px;height:52px;object-fit:cover;border-radius:8px;cursor:pointer;" onerror="this.onerror=null;this.src='<?php echo base_url('uploads/products/no_image.jpg'); ?>';" data-name="<?php echo htmlspecialchars($p['name'], ENT_QUOTES, 'UTF-8'); ?>" onclick="openCatalogImagePreview(this)">
                 </td>
                 <td><?php echo htmlspecialchars($p['catalog_code'] ?? ''); ?></td>
                 <td>
