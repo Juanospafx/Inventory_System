@@ -20,9 +20,12 @@ function out_csv(string $filename, array $headers, array $rows): void {
   header('Content-Type: text/csv; charset=utf-8');
   header('Content-Disposition: attachment; filename=' . $filename);
   $out = fopen('php://output', 'w');
-  fputcsv($out, $headers);
+
+  // UTF-8 BOM + semicolon delimiter for better Excel compatibility in ES locales.
+  fwrite($out, "\xEF\xBB\xBF");
+  fputcsv($out, $headers, ';');
   foreach ($rows as $row) {
-    fputcsv($out, $row);
+    fputcsv($out, $row, ';');
   }
   fclose($out);
   exit;
@@ -76,8 +79,8 @@ if ($scope === 'cart') {
   $baseName = $orderNumber;
   $filename = $baseName . ($format === 'csv' ? '.csv' : '.xlsx');
 
-  // Required output: name + quantity + project (+ generated order number)
-  $headers = ['order_number', 'project', 'item_name', 'quantity'];
+  // Purchase order simple columns
+  $headers = ['Name', 'Cantidad'];
   $rows = [];
 
   $cart = $_SESSION['catalog_cart'] ?? [];
@@ -87,8 +90,6 @@ if ($scope === 'cart') {
     if (!$product) { continue; }
 
     $rows[] = [
-      $orderNumber,
-      $projectName,
       $product['name'] ?? '',
       $item['quantity'] ?? 1,
     ];
