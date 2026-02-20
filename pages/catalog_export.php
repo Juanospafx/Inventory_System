@@ -76,11 +76,12 @@ if ($scope === 'cart') {
   }
 
   $orderNumber = 'PO-' . date('Ymd-His');
-  $baseName = $orderNumber;
+  $projectSlug = $projectName !== '' ? preg_replace('/[^a-zA-Z0-9_-]/', '_', $projectName) : 'NO_PROJECT';
+  $baseName = $orderNumber . '_' . $projectSlug;
   $filename = $baseName . ($format === 'csv' ? '.csv' : '.xlsx');
 
-  // Purchase order simple columns
-  $headers = ['Name', 'Cantidad'];
+  // Required layout: A1=Name, B1=quantity
+  $headers = ['Name', 'quantity'];
   $rows = [];
 
   $cart = $_SESSION['catalog_cart'] ?? [];
@@ -94,6 +95,11 @@ if ($scope === 'cart') {
       $item['quantity'] ?? 1,
     ];
   }
+
+  // Include selected project inside file (without breaking A/B headers).
+  $rows[] = ['', ''];
+  $rows[] = ['Project', $projectName !== '' ? $projectName : 'No project selected'];
+  $rows[] = ['Order', $orderNumber];
 
   if ($format === 'csv') {
     out_csv($filename, $headers, $rows);
