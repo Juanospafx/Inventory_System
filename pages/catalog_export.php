@@ -4,12 +4,6 @@ require_once(__DIR__ . '/../includes/load.php');
 @require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
 
-$xlsxAvailable = class_exists('PhpOffice\\PhpSpreadsheet\\Spreadsheet') && class_exists('PhpOffice\\PhpSpreadsheet\\Writer\\Xlsx');
-if ($xlsxAvailable) {
-  class_alias('PhpOffice\\PhpSpreadsheet\\Spreadsheet', 'LocalSpreadsheet');
-  class_alias('PhpOffice\\PhpSpreadsheet\\Writer\\Xlsx', 'LocalXlsxWriter');
-}
-
 $scope = $_GET['scope'] ?? 'catalog';
 $format = strtolower(trim((string)($_GET['format'] ?? 'xlsx')));
 if (!in_array($format, ['xlsx', 'csv'], true)) {
@@ -20,8 +14,6 @@ function out_csv(string $filename, array $headers, array $rows): void {
   header('Content-Type: text/csv; charset=utf-8');
   header('Content-Disposition: attachment; filename=' . $filename);
   $out = fopen('php://output', 'w');
-
-  // UTF-8 BOM + semicolon delimiter for better Excel compatibility in ES locales.
   fwrite($out, "\xEF\xBB\xBF");
   fputcsv($out, $headers, ';');
   foreach ($rows as $row) {
@@ -31,33 +23,102 @@ function out_csv(string $filename, array $headers, array $rows): void {
   exit;
 }
 
-function out_xlsx(string $filename, array $headers, array $rows): void {
-  global $xlsxAvailable;
+function xlsx_col(int $n): string {
+  $s = '';
+  while ($n > 0) {
+    $m = ($n - 1) % 26;
+    $s = chr(65 + $m) . $s;
+    $n = intdiv($n - 1, 26);
+  }
+  return $s;
+}
 
-  // Fallback: if PhpSpreadsheet is not fully available on this host, export CSV directly.
-  if (!$xlsxAvailable) {
+function xlsx_escape(string $v): string {
+  return htmlspecialchars($v, ENT_XML1 | ENT_COMPAT, 'UTF-8');
+}
+
+function build_sheet_xml(array $headers, array $rows): string {
+  $all = array_merge([$headers], $rows);
+  $maxCols = count($headers);
+  $lastCol = xlsx_col(max(1, $maxCols));
+  $lastRow = max(1, count($all));
+
+  $xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  $xml .= '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+  $xml .= '<dimension ref="A1:' . $lastCol . $lastRow . '"/>';
+  $xml .= '<sheetData>';
+
+  foreach ($all as $rIdx => $row) {
+    $r = $rIdx + 1;
+    $xml .= '<row r="' . $r . '">';
+    for ($c = 0; $c < $maxCols; $c++) {
+      $val = (string)($row[$c] ?? '');
+      $ref = xlsx_col($c + 1) . $r;
+      if ($r > 1 && is_numeric($val) && $val !== '') {
+        $xml .= '<c r="' . $ref . '"><v>' . $val . '</v></c>';
+      } else {
+        $xml .= '<c r="' . $ref . '" t="inlineStr"><is><t>' . xlsx_escape($val) . '</t></is></c>';
+      }
+    }
+    $xml .= '</row>';
+  }
+
+  $xml .= '</sheetData></worksheet>';
+  return $xml;
+}
+
+function out_xlsx(string $filename, array $headers, array $rows): void {
+  if (!class_exists('ZipStream\\ZipStream')) {
     $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
     out_csv($csvName, $headers, $rows);
   }
 
   try {
-    $spreadsheet = new LocalSpreadsheet();
-    $sheet = $spreadsheet->getActiveSheet();
-    $sheet->fromArray($headers, null, 'A1');
-    $r = 2;
-    foreach ($rows as $row) {
-      $sheet->fromArray($row, null, 'A' . $r);
-      $r++;
-    }
+    $sheetXml = build_sheet_xml($headers, $rows);
 
-    foreach (range('A', $sheet->getHighestColumn()) as $col) {
-      $sheet->getColumnDimension($col)->setAutoSize(true);
-    }
+    $contentTypes = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      . '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+      . '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+      . '<Default Extension="xml" ContentType="application/xml"/>'
+      . '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+      . '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+      . '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+      . '</Types>';
 
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment; filename=' . $filename);
-    $writer = new LocalXlsxWriter($spreadsheet);
-    $writer->save('php://output');
+    $rels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+      . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
+      . '</Relationships>';
+
+    $workbook = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      . '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+      . 'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+      . '<sheets><sheet name="Sheet1" sheetId="1" r:id="rId1"/></sheets>'
+      . '</workbook>';
+
+    $wbRels = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      . '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+      . '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'
+      . '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'
+      . '</Relationships>';
+
+    $styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+      . '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+      . '<fonts count="1"><font><sz val="11"/><name val="Calibri"/></font></fonts>'
+      . '<fills count="1"><fill><patternFill patternType="none"/></fill></fills>'
+      . '<borders count="1"><border/></borders>'
+      . '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
+      . '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>'
+      . '</styleSheet>';
+
+    $zip = new ZipStream\ZipStream(outputName: $filename, sendHttpHeaders: true);
+    $zip->addFile(fileName: '[Content_Types].xml', data: $contentTypes);
+    $zip->addFile(fileName: '_rels/.rels', data: $rels);
+    $zip->addFile(fileName: 'xl/workbook.xml', data: $workbook);
+    $zip->addFile(fileName: 'xl/_rels/workbook.xml.rels', data: $wbRels);
+    $zip->addFile(fileName: 'xl/styles.xml', data: $styles);
+    $zip->addFile(fileName: 'xl/worksheets/sheet1.xml', data: $sheetXml);
+    $zip->finish();
     exit;
   } catch (Throwable $e) {
     $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
@@ -80,7 +141,6 @@ if ($scope === 'cart') {
   $baseName = $orderNumber . '_' . $projectSlug;
   $filename = $baseName . ($format === 'csv' ? '.csv' : '.xlsx');
 
-  // Required layout: A1=Name, B1=quantity
   $headers = ['Name', 'quantity'];
   $rows = [];
 
@@ -96,7 +156,6 @@ if ($scope === 'cart') {
     ];
   }
 
-  // Include selected project inside file (without breaking A/B headers).
   $rows[] = ['', ''];
   $rows[] = ['Project', $projectName !== '' ? $projectName : 'No project selected'];
   $rows[] = ['Order', $orderNumber];
