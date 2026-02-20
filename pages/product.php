@@ -5,6 +5,15 @@ page_require_level(2);
 
 // Solo items realmente en inventario (con stock > 0)
 $products_all = join_product_table();
+
+if (isset($_GET['shelf_filter']) && $_GET['shelf_filter'] !== '') {
+  $sf = strtoupper(trim((string)$_GET['shelf_filter']));
+  $products_all = array_values(array_filter($products_all, function($p) use ($sf){
+    $shelfName = strtoupper((string)($p['shelf'] ?? ''));
+    return $shelfName !== '' && strpos($shelfName, $sf) === 0;
+  }));
+}
+
 $products = array_values(array_filter($products_all, function($p){
   return (int)($p['quantity'] ?? 0) > 0;
 }));

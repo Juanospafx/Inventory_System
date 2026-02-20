@@ -5,6 +5,17 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
 
 $all_shelves = find_all('shelves');
+$prefill_shelf_filter = isset($_GET['shelf_filter']) ? strtoupper(trim((string)$_GET['shelf_filter'])) : '';
+$prefill_shelf_id = '';
+if ($prefill_shelf_filter !== '') {
+  foreach ($all_shelves as $s) {
+    $sn = strtoupper((string)$s['name']);
+    if (strpos($sn, $prefill_shelf_filter) === 0) {
+      $prefill_shelf_id = (string)$s['id'];
+      break;
+    }
+  }
+}
 
 if (tableExists('catalog_categories')) {
   $catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
@@ -258,10 +269,14 @@ if (isset($_POST['add_product'])) {
             </div>
             <div class="col-md-4 mb-3">
               <label class="form-label">Shelf (optional)</label>
+              <?php if ($prefill_shelf_filter !== ''): ?>
+                <div class="mb-1"><span class="badge bg-info text-dark">Preselected from map: <?php echo htmlspecialchars($prefill_shelf_filter); ?></span></div>
+              <?php endif; ?>
               <select class="form-control" name="product-shelf">
                 <option value="">No shelf assigned</option>
                 <?php foreach ($all_shelves as $shelf): ?>
-                  <option value="<?php echo (int)$shelf['id']; ?>"><?php echo htmlspecialchars($shelf['name']); ?></option>
+                  <?php $sel = ($prefill_shelf_id !== '' && $prefill_shelf_id == (string)$shelf['id']) ? 'selected' : ''; ?>
+                  <option value="<?php echo (int)$shelf['id']; ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($shelf['name']); ?></option>
                 <?php endforeach; ?>
               </select>
             </div>

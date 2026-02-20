@@ -18,11 +18,12 @@ WHERE name IS NOT NULL AND name <> ''
 ORDER BY name ASC");
 
 // Filtrar productos si se especifica un anaquel
+$activeShelfFilter = '';
 if (isset($_GET['shelf_filter'])) {
-    $filter = strtoupper($_GET['shelf_filter']);
+    $activeShelfFilter = strtoupper(trim((string)$_GET['shelf_filter']));
     $filtered_products = [];
     foreach ($all_products as $product) {
-        if (isset($product['shelf']) && strpos(strtoupper($product['shelf']), $filter) === 0) {
+        if (isset($product['shelf']) && strpos(strtoupper((string)$product['shelf']), $activeShelfFilter) === 0) {
             $filtered_products[] = $product;
         }
     }
@@ -166,6 +167,9 @@ if (isset($_SESSION['form_data'])) {
               <div class="row">
                 <div class="col-md-6">
                   <label for="catalog_search">Find item (by name/code)</label>
+                  <?php if ($activeShelfFilter !== ''): ?>
+                    <div class="mb-2"><span class="badge bg-info text-dark">Shelf preselected: <?php echo htmlspecialchars($activeShelfFilter); ?></span></div>
+                  <?php endif; ?>
                   <input type="text" id="catalog_search" class="form-control mb-2" placeholder="Type to filter items...">
 
                   <label for="catalog_category_filter">Filter by category</label>
