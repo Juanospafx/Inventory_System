@@ -51,12 +51,14 @@ $products = join_product_table();
                 <tr>
                   <td class="text-center"><?php echo $i++; ?></td>
                   <td>
-                    <?php if (empty($product['image'])): ?>
-                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="No image">
-                    <?php else: ?>
-                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/' . $product['image']); ?>"
-                        alt="Product image">
-                    <?php endif; ?>
+                    <?php $imgSrc = empty($product['image']) ? base_url('uploads/products/no_image.jpg') : base_url('uploads/products/' . $product['image']); ?>
+                    <img
+                      class="img-avatar img-circle item-preview-thumb"
+                      src="<?php echo $imgSrc; ?>"
+                      alt="Product image"
+                      style="cursor:pointer;"
+                      data-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                      onclick="openItemPreview(this)">
                   </td>
                   <td><?php echo remove_junk($product['name']); ?></td>
                   <td class="text-center"><?php echo remove_junk($product['category_name'] ?: $product['catalog_category']); ?></td>
@@ -91,5 +93,29 @@ $products = join_product_table();
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="itemPreviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="itemPreviewTitle">Item preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="itemPreviewImage" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Preview" style="max-width:100%;max-height:70vh;object-fit:contain;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openItemPreview(el) {
+    var img = document.getElementById('itemPreviewImage');
+    var title = document.getElementById('itemPreviewTitle');
+    img.src = el.src;
+    title.textContent = el.dataset.name || 'Item preview';
+    new bootstrap.Modal(document.getElementById('itemPreviewModal')).show();
+  }
+</script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
