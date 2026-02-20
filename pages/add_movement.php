@@ -186,7 +186,7 @@ if (isset($_SESSION['form_data'])) {
                       </option>
                     <?php endforeach; ?>
                   </select>
-                  <a href="add_product.php" class="btn btn-outline-info btn-sm mt-2">+ Create new item</a>
+                  <a href="add_product.php" id="create_item_link" class="btn btn-outline-info btn-sm mt-2">+ Create new item</a>
 
                   <div class="mt-3" id="product_preview_box" style="display:none;">
                     <label class="form-label">Preview</label>
@@ -409,8 +409,14 @@ if (isset($_SESSION['form_data'])) {
         if (!o.value) return;
         const text = (o.text || '').toLowerCase();
         const oc = (o.category || '').toLowerCase();
+
+        // Name search should always work, with or without category selected
         if (q && text.indexOf(q) === -1) return;
-        if (cat && oc !== cat) return;
+
+        // If there is no text query, filter by category normally.
+        // If there is text query, do not block by category to allow flexible find-by-name.
+        if (!q && cat && oc !== cat) return;
+
         const el = document.createElement('option');
         el.value = o.value;
         el.text = o.text;
@@ -426,10 +432,22 @@ if (isset($_SESSION['form_data'])) {
       updatePreview();
     }
 
+    function updateCreateItemLink() {
+      const link = document.getElementById('create_item_link');
+      if (!link) return;
+      const selectedCategory = (catEl.value || '').trim();
+      if (selectedCategory) {
+        link.href = 'add_product.php?category=' + encodeURIComponent(selectedCategory);
+      } else {
+        link.href = 'add_product.php';
+      }
+    }
+
     searchEl.addEventListener('input', applyFilter);
-    catEl.addEventListener('change', applyFilter);
+    catEl.addEventListener('change', function(){ applyFilter(); updateCreateItemLink(); });
     selectEl.addEventListener('change', updatePreview);
 
+    updateCreateItemLink();
     updatePreview();
   })();
 </script>

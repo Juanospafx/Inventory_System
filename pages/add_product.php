@@ -97,6 +97,7 @@ $catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
 ) t
 WHERE name IS NOT NULL AND name <> ''
 ORDER BY name ASC");
+$prefill_category = trim((string)($_GET['category'] ?? ''));
 
 // Lógica para filtrar anaqueles si viene del mapa
 if (isset($_GET['shelf_filter'])) {
@@ -157,11 +158,12 @@ if (isset($_SESSION['form_data'])) {
                 <select class="form-control" id="catalog-category-select">
                   <option value="">Select existing category (optional)</option>
                   <?php foreach ($catalog_categories as $cat): ?>
-                    <option value="<?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?></option>
+                    <?php $catName = (string)$cat['name']; ?>
+                    <option value="<?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?>" <?php echo ($prefill_category !== '' && strcasecmp($prefill_category, $catName) === 0) ? 'selected' : ''; ?>><?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?></option>
                   <?php endforeach; ?>
                 </select>
                 <input type="hidden" name="catalog-category-id" value="">
-                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="Or type new category">
+                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="Or type new category" value="<?php echo htmlspecialchars($prefill_category, ENT_QUOTES, 'UTF-8'); ?>">
               </div>
             </div>
 
