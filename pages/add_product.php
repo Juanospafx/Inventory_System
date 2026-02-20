@@ -224,18 +224,25 @@ if (isset($_POST['add_product'])) {
               <input type="text" class="form-control" name="product-title" id="product-title" placeholder="Name">
             </div>
             <div class="col-md-4 mb-3">
-              <label class="form-label">Category name</label>
-              <input type="text" class="form-control" name="catalog-category-name" id="catalog-category-name" placeholder="Type category name">
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Choose existing category (optional)</label>
-              <input list="catalog-categories-list" class="form-control" id="catalog-category-picker" placeholder="Pick existing category">
-              <datalist id="catalog-categories-list">
+              <label class="form-label">Choose existing category</label>
+              <select class="form-control" id="catalog-category-select-existing">
+                <option value="">Select category...</option>
                 <?php foreach ($catalog_categories as $cat): ?>
-                  <option value="<?php echo htmlspecialchars((string)$cat['name'], ENT_QUOTES, 'UTF-8'); ?>"></option>
+                  <option value="<?php echo htmlspecialchars((string)$cat['name'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars((string)$cat['name']); ?></option>
                 <?php endforeach; ?>
-              </datalist>
+              </select>
             </div>
+            <div class="col-md-4 mb-3 d-flex align-items-end">
+              <button type="button" class="btn btn-outline-info w-100" id="toggle-new-category-btn">Crear categoría nueva</button>
+            </div>
+
+            <div class="col-md-6 mb-3" id="new-category-wrapper" style="display:none;">
+              <label class="form-label">New category name</label>
+              <input type="text" class="form-control" id="new-category-input" placeholder="Type new category name">
+            </div>
+
+            <input type="hidden" name="catalog-category-name" id="catalog-category-name" value="">
+
             <div class="col-md-6 mb-3">
               <label class="form-label">Upload images (for new item)</label>
               <input type="file" name="product-images[]" multiple class="form-control">
@@ -278,8 +285,11 @@ if (isset($_POST['add_product'])) {
   const selectEl = document.getElementById('existing_product_id');
   const newNameEl = document.getElementById('product-title');
   const categoryNameEl = document.getElementById('catalog-category-name');
-  const categoryPickerEl = document.getElementById('catalog-category-picker');
-  if (!searchEl || !catEl || !selectEl || !newNameEl) return;
+  const categorySelectExistingEl = document.getElementById('catalog-category-select-existing');
+  const toggleNewCategoryBtn = document.getElementById('toggle-new-category-btn');
+  const newCategoryWrapper = document.getElementById('new-category-wrapper');
+  const newCategoryInput = document.getElementById('new-category-input');
+  if (!searchEl || !catEl || !selectEl || !newNameEl || !categoryNameEl) return;
 
   const originalOptions = Array.from(selectEl.options).map(opt => ({
     value: opt.value,
@@ -324,16 +334,44 @@ if (isset($_POST['add_product'])) {
     toggleNewItemInputs();
   }
 
+  function syncCategoryTarget() {
+    const usingNew = newCategoryWrapper && newCategoryWrapper.style.display !== 'none';
+    if (usingNew && newCategoryInput) {
+      categoryNameEl.value = (newCategoryInput.value || '').trim();
+    } else if (categorySelectExistingEl) {
+      categoryNameEl.value = (categorySelectExistingEl.value || '').trim();
+    }
+  }
+
   searchEl.addEventListener('input', applyFilter);
   catEl.addEventListener('change', applyFilter);
   selectEl.addEventListener('change', toggleNewItemInputs);
 
-  if (categoryPickerEl && categoryNameEl) {
-    categoryPickerEl.addEventListener('change', function(){
-      if (this.value) categoryNameEl.value = this.value;
+  if (categorySelectExistingEl) {
+    categorySelectExistingEl.addEventListener('change', syncCategoryTarget);
+  }
+
+  if (toggleNewCategoryBtn && newCategoryWrapper) {
+    toggleNewCategoryBtn.addEventListener('click', function(){
+      const isHidden = newCategoryWrapper.style.display === 'none';
+      newCategoryWrapper.style.display = isHidden ? 'block' : 'none';
+      toggleNewCategoryBtn.textContent = isHidden ? 'Usar categoría existente' : 'Crear categoría nueva';
+      syncCategoryTarget();
     });
   }
 
+  if (newCategoryInput) {
+    newCategoryInput.addEventListener('input', syncCategoryTarget);
+  }
+
+  const form = document.getElementById('add-product-form');
+  if (form) {
+    form.addEventListener('submit', function(){
+      syncCategoryTarget();
+    });
+  }
+
+  syncCategoryTarget();
   applyFilter();
 })();
 </script>
