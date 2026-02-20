@@ -7,15 +7,29 @@ require_once(__DIR__ . '/../includes/load.php');
 // Verifica el nivel de usuario
 page_require_level(3);
 
-// Listado de productos
-$all_products = join_product_table();
+// Listado de productos (solo inventario real con stock > 0)
+$all_products = array_values(array_filter(join_product_table(), function($p) {
+  return (int)($p['quantity'] ?? 0) > 0;
+}));
+$catalog_categories = [];
+foreach ($all_products as $p) {
+  $cn = trim((string)($p['category_name'] ?? $p['catalog_category'] ?? ''));
+  if ($cn !== '') {
+    $catalog_categories[$cn] = ['name' => $cn];
+  }
+}
+$catalog_categories = array_values($catalog_categories);
+usort($catalog_categories, function($a, $b) {
+  return strcmp($a['name'], $b['name']);
+});
 
 // Filtrar productos si se especifica un anaquel
+$activeShelfFilter = '';
 if (isset($_GET['shelf_filter'])) {
-    $filter = strtoupper($_GET['shelf_filter']);
+    $activeShelfFilter = strtoupper(trim((string)$_GET['shelf_filter']));
     $filtered_products = [];
     foreach ($all_products as $product) {
-        if (isset($product['shelf']) && strpos(strtoupper($product['shelf']), $filter) === 0) {
+        if (isset($product['shelf']) && strpos(strtoupper((string)$product['shelf']), $activeShelfFilter) === 0) {
             $filtered_products[] = $product;
         }
     }
@@ -49,17 +63,32 @@ if (isset($_POST['add_movement'])) {
     $s_note = $db->escape($_POST['note']);
 
     // Validaciones seg??n el tipo de movimiento
-    if ($s_status === 0) { // Output
-      // Verificar que no se retire m??s de lo que hay en stock
-      $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
-      $result_stock = $db->query($sql_check_stock);
-      $product_stock = $db->fetch_assoc($result_stock);
-      if ($s_qty > (int) $product_stock['quantity']) {
+    $sql_check_stock = "SELECT quantity FROM products WHERE id = '{$p_id}' LIMIT 1";
+    $result_stock = $db->query($sql_check_stock);
+    $product_stock = $db->fetch_assoc($result_stock);
+    $current_stock = (int)($product_stock['quantity'] ?? 0);
+
+    if ($current_stock <= 0) {
+      $_SESSION['form_data'] = $_POST;
+      $session->msg('d', "Error: This item is not currently in inventory stock.");
+      redirect('add_movement.php', false);
+    }
+
+    if ($s_status === 1) { // Input
+      // Regla: no permitir una entrada mayor al stock base actual.
+      if ($s_qty > $current_stock) {
         $_SESSION['form_data'] = $_POST;
-        $session->msg('d', "Error: You cannot withdraw more than what is in stock. Available stock: " . $product_stock['quantity']);
+        $session->msg('d', "Error: Input quantity cannot be greater than current stock base ({$current_stock}).");
         redirect('add_movement.php', false);
       }
-    } elseif ($s_status === 2) { // Devoluci??n
+    } elseif ($s_status === 0) { // Output
+      // Verificar que no se retire más de lo que hay en stock
+      if ($s_qty > $current_stock) {
+        $_SESSION['form_data'] = $_POST;
+        $session->msg('d', "Error: You cannot withdraw more than what is in stock. Available stock: " . $current_stock);
+        redirect('add_movement.php', false);
+      }
+    } elseif ($s_status === 2) { // Devolución
       $sql_borrowed = "SELECT 
                               IFNULL(SUM(CASE WHEN status = 0 THEN quantity ELSE 0 END),0) as total_output,
                               IFNULL(SUM(CASE WHEN status = 2 THEN quantity ELSE 0 END),0) as total_return
@@ -158,20 +187,39 @@ if (isset($_SESSION['form_data'])) {
             <div class="mb-3">
               <div class="row">
                 <div class="col-md-6">
-                  <label for="product_id">Select item</label>
-                  <?php if(isset($_GET['shelf_filter'])): ?>
-                    <span class="badge bg-info text-dark mb-2">
-                      Filtered by Shelf: <?php echo htmlspecialchars($_GET['shelf_filter']); ?>
-                    </span>
+                  <label for="catalog_search">Find item (by name/code)</label>
+                  <?php if ($activeShelfFilter !== ''): ?>
+                    <div class="mb-2"><span class="badge bg-info text-dark">Shelf preselected: <?php echo htmlspecialchars($activeShelfFilter); ?></span></div>
                   <?php endif; ?>
+                  <input type="text" id="catalog_search" class="form-control mb-2" placeholder="Type to filter items...">
+
+                  <label for="catalog_category_filter">Filter by category</label>
+                  <select id="catalog_category_filter" class="form-control mb-2">
+                    <option value="">All categories</option>
+                    <?php foreach ($catalog_categories as $cat): ?>
+                      <option value="<?php echo htmlspecialchars($cat['name']); ?>"><?php echo htmlspecialchars($cat['name']); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+
+                  <label for="product_id">Select item</label>
                   <select class="form-control select2" name="product_id" id="product_id" required>
                     <option value="">Select an item</option>
                     <?php foreach ($all_products as $product): ?>
-                      <option value="<?php echo (int) $product['id']; ?>">
-                        <?php echo $product['name']; ?>
+                      <?php $catName = $product['category_name'] ?: $product['catalog_category']; ?>
+                      <option value="<?php echo (int) $product['id']; ?>" data-category="<?php echo htmlspecialchars((string)$catName, ENT_QUOTES, 'UTF-8'); ?>" data-image="<?php echo htmlspecialchars((string)($product['image'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
+                        <?php echo $product['name']; ?><?php echo $catName ? ' — [' . $catName . ']' : ''; ?>
                       </option>
                     <?php endforeach; ?>
                   </select>
+                  <a href="add_product.php" id="create_item_link" class="btn btn-outline-info btn-sm mt-2">+ Create new item</a>
+
+                  <div class="mt-3" id="product_preview_box" style="display:none;">
+                    <label class="form-label">Preview</label>
+                    <div class="card p-2" style="max-width: 260px;">
+                      <img id="product_preview_img" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Item preview" style="width:100%;height:160px;object-fit:contain;background:#f8f9fa;border-radius:8px;">
+                      <small id="product_preview_name" class="mt-2 text-muted"></small>
+                    </div>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <label for="project_id">Select Project (Optional for Inputs)</label>
@@ -338,6 +386,95 @@ if (isset($_SESSION['form_data'])) {
         });
     }
   });
+
+  // Category/name filter for product select
+  (function() {
+    const searchEl = document.getElementById('catalog_search');
+    const catEl = document.getElementById('catalog_category_filter');
+    const selectEl = document.getElementById('product_id');
+    if (!searchEl || !catEl || !selectEl) return;
+
+    const originalOptions = Array.from(selectEl.options).map(opt => ({
+      value: opt.value,
+      text: opt.text,
+      category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : '',
+      image: (opt.dataset && opt.dataset.image) ? opt.dataset.image : ''
+    }));
+
+    function updatePreview() {
+      const selected = selectEl.options[selectEl.selectedIndex];
+      const box = document.getElementById('product_preview_box');
+      const img = document.getElementById('product_preview_img');
+      const name = document.getElementById('product_preview_name');
+      if (!selected || !selected.value) {
+        box.style.display = 'none';
+        return;
+      }
+
+      const imageFile = selected.dataset.image || '';
+      const base = document.body.getAttribute('data-base-url') || '';
+      const imageUrl = imageFile ? (base + '/uploads/products/' + imageFile) : (base + '/uploads/products/no_image.jpg');
+      img.src = imageUrl;
+      name.textContent = selected.text || '';
+      box.style.display = 'block';
+    }
+
+    function applyFilter() {
+      const q = (searchEl.value || '').toLowerCase();
+      const cat = (catEl.value || '').toLowerCase();
+      const current = selectEl.value;
+
+      selectEl.innerHTML = '';
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.text = 'Select an item';
+      selectEl.appendChild(placeholder);
+
+      originalOptions.forEach(o => {
+        if (!o.value) return;
+        const text = (o.text || '').toLowerCase();
+        const oc = (o.category || '').toLowerCase();
+
+        // Name search should always work, with or without category selected
+        if (q && text.indexOf(q) === -1) return;
+
+        // If there is no text query, filter by category normally.
+        // If there is text query, do not block by category to allow flexible find-by-name.
+        if (!q && cat && oc !== cat) return;
+
+        const el = document.createElement('option');
+        el.value = o.value;
+        el.text = o.text;
+        el.dataset.category = o.category;
+        el.dataset.image = o.image || '';
+        selectEl.appendChild(el);
+      });
+
+      if (Array.from(selectEl.options).some(x => x.value === current)) {
+        selectEl.value = current;
+      }
+
+      updatePreview();
+    }
+
+    function updateCreateItemLink() {
+      const link = document.getElementById('create_item_link');
+      if (!link) return;
+      const selectedCategory = (catEl.value || '').trim();
+      if (selectedCategory) {
+        link.href = 'add_product.php?category=' + encodeURIComponent(selectedCategory);
+      } else {
+        link.href = 'add_product.php';
+      }
+    }
+
+    searchEl.addEventListener('input', applyFilter);
+    catEl.addEventListener('change', function(){ applyFilter(); updateCreateItemLink(); });
+    selectEl.addEventListener('change', updatePreview);
+
+    updateCreateItemLink();
+    updatePreview();
+  })();
 </script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>

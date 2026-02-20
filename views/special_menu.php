@@ -17,8 +17,9 @@
       <span>Items</span>
     </a>
     <ul class="nav submenu">
-      <li><a href="<?php echo base_url('pages/product.php'); ?>">Manage Items</a> </li>
+      <li><a href="<?php echo base_url('pages/product.php'); ?>">Items in inventory</a> </li>
       <li><a href="<?php echo base_url('pages/add_product.php'); ?>">Add Items</a> </li>
+      <li><a href="<?php echo base_url('pages/catalog.php'); ?>">Catalog</a> </li>
     </ul>
   </li>
   <li>

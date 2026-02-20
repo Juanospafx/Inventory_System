@@ -1,10 +1,22 @@
 ﻿﻿<?php
-$page_title = 'Items list';
+$page_title = 'Items in inventory';
 require_once(__DIR__ . '/../includes/load.php');
 page_require_level(2);
 
-// Cargamos todos los productos sin filtro (el filtrado se har?? en el cliente)
-$products = join_product_table();
+// Solo items realmente en inventario (con stock > 0)
+$products_all = join_product_table();
+
+if (isset($_GET['shelf_filter']) && $_GET['shelf_filter'] !== '') {
+  $sf = strtoupper(trim((string)$_GET['shelf_filter']));
+  $products_all = array_values(array_filter($products_all, function($p) use ($sf){
+    $shelfName = strtoupper((string)($p['shelf'] ?? ''));
+    return $shelfName !== '' && strpos($shelfName, $sf) === 0;
+  }));
+}
+
+$products = array_values(array_filter($products_all, function($p){
+  return (int)($p['quantity'] ?? 0) > 0;
+}));
 ?>
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
 
@@ -34,6 +46,7 @@ $products = join_product_table();
                 <th class="text-center" style="width: 50px;">#</th>
                 <th>Image</th>
                 <th>Name</th>
+                <th class="text-center" style="width: 12%;">Category</th>
                 <th class="text-center" style="width: 10%;">Shelf</th>
                 <th class="text-center" style="width: 10%;">Stock</th>
                 <th class="text-center" style="width: 10%;">Attache</th>
@@ -50,15 +63,19 @@ $products = join_product_table();
                 <tr>
                   <td class="text-center"><?php echo $i++; ?></td>
                   <td>
-                    <?php if (empty($product['image'])): ?>
-                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="No image">
-                    <?php else: ?>
-                      <img class="img-avatar img-circle" src="<?php echo base_url('uploads/products/' . $product['image']); ?>"
-                        alt="Product image">
-                    <?php endif; ?>
+                    <?php $imgSrc = empty($product['image']) ? base_url('uploads/products/no_image.jpg') : base_url('uploads/products/' . $product['image']); ?>
+                    <img
+                      class="img-avatar img-circle item-preview-thumb"
+                      src="<?php echo $imgSrc; ?>"
+                      alt="Product image"
+                      style="cursor:pointer;"
+                      onerror="this.onerror=null;this.src='<?php echo base_url('uploads/products/no_image.jpg'); ?>';"
+                      data-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                      onclick="openItemPreview(this)">
                   </td>
                   <td><?php echo remove_junk($product['name']); ?></td>
-                  <td class="text-center"><?php echo remove_junk($product['shelf']); ?></td>
+                  <td class="text-center"><?php echo remove_junk($product['category_name'] ?: $product['catalog_category']); ?></td>
+                  <td class="text-center"><?php echo remove_junk($product['shelf'] ?: '—'); ?></td>
                   <td class="text-center"><?php echo remove_junk($product['quantity']); ?></td>
                   <td class="text-center"><?php echo read_date($product['date']); ?></td>
                   <td><?php echo isset($product['note']) ? remove_junk($product['note']) : ''; ?></td>
@@ -89,5 +106,29 @@ $products = join_product_table();
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="itemPreviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="itemPreviewTitle">Item preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="itemPreviewImage" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Preview" style="max-width:100%;max-height:70vh;object-fit:contain;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openItemPreview(el) {
+    var img = document.getElementById('itemPreviewImage');
+    var title = document.getElementById('itemPreviewTitle');
+    img.src = el.src;
+    title.textContent = el.dataset.name || 'Item preview';
+    new bootstrap.Modal(document.getElementById('itemPreviewModal')).show();
+  }
+</script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>

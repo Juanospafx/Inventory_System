@@ -88,3 +88,343 @@ Stack trace:
 #5 C:\xampp\htdocs\Inventory_System\pages\index.php(2): require_once('C:\\xampp\\htdocs...')
 #6 {main}
   thrown in C:\xampp\htdocs\Inventory_System\core\database.php on line 18
+[19-Feb-2026 13:11:31 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_connect() in /home/admin/Inventory_System/core/database.php:18
+Stack trace:
+#0 /home/admin/Inventory_System/core/database.php(10): MySqli_DB->db_connect()
+#1 /home/admin/Inventory_System/core/database.php(109): MySqli_DB->__construct()
+#2 /home/admin/Inventory_System/core/bootstrap.php(40): require_once('...')
+#3 /home/admin/Inventory_System/api/integration/electroplan/index.php(3): require_once('...')
+#4 /tmp/inv_router.php(5): require('...')
+#5 {main}
+  thrown in /home/admin/Inventory_System/core/database.php on line 18
+[20-Feb-2026 00:16:47 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Access denied for user 'brightro_brightronix_inv'@'localhost' (using password: YES) in C:\xampp\htdocs\inventory_system\core\database.php:18
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(18): mysqli_connect('localhost', 'brightro_bright...', Object(SensitiveParameterValue))
+#1 C:\xampp\htdocs\inventory_system\core\database.php(10): MySqli_DB->db_connect()
+#2 C:\xampp\htdocs\inventory_system\core\database.php(109): MySqli_DB->__construct()
+#3 C:\xampp\htdocs\inventory_system\core\bootstrap.php(40): require_once('C:\\xampp\\htdocs...')
+#4 C:\xampp\htdocs\inventory_system\includes\load.php(2): require_once('C:\\xampp\\htdocs...')
+#5 C:\xampp\htdocs\inventory_system\pages\index.php(2): require_once('C:\\xampp\\htdocs...')
+#6 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 18
+[19-Feb-2026 23:44:34 UTC] PHP Warning:  session_start(): Session cannot be started after headers have already been sent in /home/admin/Inventory_System/core/session.php on line 2
+[19-Feb-2026 23:44:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function mysqli_connect() in /home/admin/Inventory_System/core/database.php:18
+Stack trace:
+#0 /home/admin/Inventory_System/core/database.php(10): MySqli_DB->db_connect()
+#1 /home/admin/Inventory_System/core/database.php(109): MySqli_DB->__construct()
+#2 /home/admin/Inventory_System/core/bootstrap.php(40): require_once('...')
+#3 Command line code(1): require('...')
+#4 {main}
+  thrown in /home/admin/Inventory_System/core/database.php on line 18
+[20-Feb-2026 00:48:14 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:48:35 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:49 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:50 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:51 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:49:52 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:36 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:36 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:37 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:50:38 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:51:02 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:05 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:06 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:06 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:06 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:06 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:07 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:08 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:08 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49
+[20-Feb-2026 00:55:31 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: Table 'brightro_brightronix_inv.catalog_categories' doesn't exist in C:\xampp\htdocs\inventory_system\core\database.php:49
+Stack trace:
+#0 C:\xampp\htdocs\inventory_system\core\database.php(49): mysqli->query('SELECT p.id, p....')
+#1 C:\xampp\htdocs\inventory_system\core\sql.php(19): MySqli_DB->query('SELECT p.id, p....')
+#2 C:\xampp\htdocs\inventory_system\core\sql.php(261): find_by_sql('SELECT p.id, p....')
+#3 C:\xampp\htdocs\inventory_system\pages\product.php(7): join_product_table()
+#4 {main}
+  thrown in C:\xampp\htdocs\inventory_system\core\database.php on line 49

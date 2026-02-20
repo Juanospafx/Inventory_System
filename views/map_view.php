@@ -103,6 +103,9 @@
                     <a href="#" id="btnOutputItem" class="btn btn-warning text-white">
                         <i class="fa-solid fa-dolly me-2"></i> Output / Move
                     </a>
+                    <a href="#" id="btnViewShelfItems" class="btn btn-info text-white">
+                        <i class="fa-solid fa-eye me-2"></i> View Shelf Items
+                    </a>
                 </div>
             </div>
         </div>
@@ -114,6 +117,7 @@
         document.getElementById('modalShelfName').textContent = shelfName;
         document.getElementById('btnAddItem').href = 'add_product.php?shelf_filter=' + shelfName;
         document.getElementById('btnOutputItem').href = 'add_movement.php?shelf_filter=' + shelfName;
+        document.getElementById('btnViewShelfItems').href = 'product.php?shelf_filter=' + shelfName;
 
         var myModal = new bootstrap.Modal(document.getElementById('shelfActionModal'));
         myModal.show();

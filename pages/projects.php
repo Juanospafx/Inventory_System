@@ -98,11 +98,17 @@ if (isset($_POST['add_project'])) {
 </div>
 
 <script>
-  $(document).ready(function () {
-    $("#projectSearch").on("keyup", function () {
-      var value = $(this).val().toLowerCase();
-      $("#projectTable tbody tr").filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  document.addEventListener('DOMContentLoaded', function () {
+    var searchInput = document.getElementById('projectSearch');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('keyup', function () {
+      var value = (this.value || '').toLowerCase();
+      var rows = document.querySelectorAll('#projectTable tbody tr');
+
+      rows.forEach(function (row) {
+        var rowText = (row.textContent || '').toLowerCase();
+        row.style.display = rowText.indexOf(value) > -1 ? '' : 'none';
       });
     });
   });

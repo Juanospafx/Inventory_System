@@ -1,0 +1,3 @@
+catalog_code,name,catalog_category,catalog_description,catalog_unit,catalog_brand,catalog_model,quantity,note
+CAT-0001,Sample Item A,Lighting,Demo description,ea,BrandX,Model-01,25,Imported from legacy catalog
+CAT-0002,Sample Item B,Electrical,Another description,box,BrandY,Model-02,10,

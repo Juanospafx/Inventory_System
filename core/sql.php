@@ -231,12 +231,45 @@ function join_product_table($name = '')
 {
   global $db;
 
-  // Consulta base
+  // Compatibilidad con esquemas viejos/nuevos
+  $hasCatalogCategories = tableExists('catalog_categories');
+
+  $hasCatalogCategoryCol = false;
+  $hasCatalogCategoryIdCol = false;
+
+  $chk1 = $db->query("SHOW COLUMNS FROM products LIKE 'catalog_category'");
+  if ($chk1 && $db->num_rows($chk1) > 0) {
+    $hasCatalogCategoryCol = true;
+  }
+
+  $chk2 = $db->query("SHOW COLUMNS FROM products LIKE 'catalog_category_id'");
+  if ($chk2 && $db->num_rows($chk2) > 0) {
+    $hasCatalogCategoryIdCol = true;
+  }
+
   $sql = "SELECT p.id, p.name, p.quantity, p.shelf_id, p.date, p.qr_code, p.note, ";
+
+  if ($hasCatalogCategoryCol) {
+    $sql .= "p.catalog_category, ";
+  } else {
+    $sql .= "NULL AS catalog_category, ";
+  }
+
+  if ($hasCatalogCategories && $hasCatalogCategoryIdCol) {
+    $sql .= "cc.name AS category_name, ";
+  } else {
+    $sql .= "NULL AS category_name, ";
+  }
+
   $sql .= "c.name AS shelf, ";
   $sql .= "m.file_name AS image, p.media_id ";
   $sql .= "FROM products p ";
   $sql .= "LEFT JOIN shelves c ON p.shelf_id = c.id ";
+
+  if ($hasCatalogCategories && $hasCatalogCategoryIdCol) {
+    $sql .= "LEFT JOIN catalog_categories cc ON p.catalog_category_id = cc.id ";
+  }
+
   $sql .= "LEFT JOIN media m ON p.media_id = m.id ";
 
   // Arreglo para condiciones WHERE
