@@ -16,11 +16,12 @@ if (isset($_POST['add_product'])) {
     $p_shelf = isset($_POST['product-shelf']) && $_POST['product-shelf'] !== '' ? (int) $_POST['product-shelf'] : null;
     $p_qty = (int) $_POST['product-quantity'];
     $p_note = $db->escape(trim($_POST['product-note']));
-    $p_category_id = isset($_POST['catalog-category-id']) && $_POST['catalog-category-id'] !== '' ? (int) $_POST['catalog-category-id'] : null;
-    $p_category_name = $db->escape(trim($_POST['catalog-category-name'] ?? ''));
+    $p_category_name_raw = trim($_POST['catalog-category-name'] ?? '');
+    $p_category_name = $db->escape($p_category_name_raw);
     $date = make_date();
 
-    if ($p_category_id === null && $p_category_name !== '' && tableExists('catalog_categories')) {
+    $p_category_id = null;
+    if ($p_category_name !== '' && tableExists('catalog_categories')) {
       $exists = $db->query("SELECT id FROM catalog_categories WHERE name = '{$p_category_name}' LIMIT 1");
       $rowCat = $db->fetch_assoc($exists);
       if ($rowCat) {
@@ -97,7 +98,6 @@ $catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
 ) t
 WHERE name IS NOT NULL AND name <> ''
 ORDER BY name ASC");
-$prefill_category = trim((string)($_GET['category'] ?? ''));
 
 // Lógica para filtrar anaqueles si viene del mapa
 if (isset($_GET['shelf_filter'])) {
@@ -155,15 +155,12 @@ if (isset($_SESSION['form_data'])) {
               <!-- Categoría -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Category:</label>
-                <select class="form-control" id="catalog-category-select">
-                  <option value="">Select existing category (optional)</option>
+                <input list="catalog-categories-list" class="form-control" name="catalog-category-name" id="catalog-category-name" placeholder="Type or pick category">
+                <datalist id="catalog-categories-list">
                   <?php foreach ($catalog_categories as $cat): ?>
-                    <?php $catName = (string)$cat['name']; ?>
-                    <option value="<?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?>" <?php echo ($prefill_category !== '' && strcasecmp($prefill_category, $catName) === 0) ? 'selected' : ''; ?>><?php echo htmlspecialchars($catName, ENT_QUOTES, 'UTF-8'); ?></option>
+                    <option value="<?php echo htmlspecialchars((string)$cat['name'], ENT_QUOTES, 'UTF-8'); ?>"></option>
                   <?php endforeach; ?>
-                </select>
-                <input type="hidden" name="catalog-category-id" value="">
-                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="If new category, type it here" value="">
+                </datalist>
               </div>
             </div>
 
@@ -212,28 +209,5 @@ if (isset($_SESSION['form_data'])) {
     </div>
   </div>
 </div>
-
-<script>
-  (function(){
-    var sel = document.getElementById('catalog-category-select');
-    var input = document.getElementById('catalog-category-name');
-    var form = document.getElementById('add-product-form');
-    if(!sel || !input || !form) return;
-
-    sel.addEventListener('change', function(){
-      // Keep input for truly new categories; don't duplicate existing ones visually
-      if (this.value && !input.value.trim()) {
-        input.value = this.value;
-      }
-    });
-
-    form.addEventListener('submit', function(){
-      // If user selected existing category and left input empty, submit selected category name
-      if (!input.value.trim() && sel.value) {
-        input.value = sel.value;
-      }
-    });
-  })();
-</script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>
