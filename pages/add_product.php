@@ -18,7 +18,59 @@ if (tableExists('catalog_categories')) {
   $catalog_categories = find_by_sql("SELECT DISTINCT TRIM(catalog_category) AS name FROM products WHERE catalog_category IS NOT NULL AND catalog_category <> '' ORDER BY catalog_category ASC");
 }
 
-$catalog_items = find_by_sql("SELECT id, name, catalog_code, catalog_category, quantity FROM products ORDER BY name ASC");
+$catalog_items = find_by_sql("SELECT id, name, catalog_code, catalog_category, quantity, qr_code FROM products ORDER BY name ASC");
+
+function ensure_product_qr($productId)
+{
+  global $db;
+  $productId = (int)$productId;
+  if ($productId <= 0) return;
+
+  $res = $db->query("SELECT qr_code FROM products WHERE id = '{$productId}' LIMIT 1");
+  $row = $db->fetch_assoc($res);
+  $current = isset($row['qr_code']) ? trim((string)$row['qr_code']) : '';
+
+  $qr_rel_path = 'uploads/qrcodes/qrcode-' . $productId . '.png';
+  $qr_path = APP_ROOT . DS . 'uploads' . DS . 'qrcodes' . DS . 'qrcode-' . $productId . '.png';
+
+  if ($current !== '' && file_exists(APP_ROOT . DS . $current)) {
+    return;
+  }
+
+  $qr_content = 'PROD-' . str_pad((string)$productId, 8, '0', STR_PAD_LEFT);
+  $qr_api_url = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qr_content);
+
+  if (!is_dir(dirname($qr_path))) {
+    @mkdir(dirname($qr_path), 0777, true);
+  }
+
+  $qr_image = false;
+  if (function_exists('curl_init')) {
+    $ch = curl_init($qr_api_url);
+    if ($ch) {
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+      $resp = curl_exec($ch);
+      $http = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      curl_close($ch);
+      if ($http >= 200 && $http < 300 && $resp !== false) {
+        $qr_image = $resp;
+      }
+    }
+  }
+
+  if ($qr_image === false) {
+    $fg = @file_get_contents($qr_api_url);
+    if ($fg !== false) {
+      $qr_image = $fg;
+    }
+  }
+
+  if ($qr_image !== false) {
+    @file_put_contents($qr_path, $qr_image);
+    $db->query("UPDATE products SET qr_code='" . $db->escape($qr_rel_path) . "' WHERE id='{$productId}' LIMIT 1");
+  }
+}
 
 if (isset($_POST['add_product'])) {
   $existingProductId = (int)($_POST['existing-product-id'] ?? 0);
@@ -50,6 +102,7 @@ if (isset($_POST['add_product'])) {
     $sql .= " WHERE id = '{$existingProductId}' LIMIT 1";
 
     if ($db->query($sql)) {
+      ensure_product_qr($existingProductId);
       $session->msg('s', 'Inventory updated from catalog item successfully.');
       redirect('add_product.php', false);
     }
@@ -93,22 +146,7 @@ if (isset($_POST['add_product'])) {
   if ($db->query($query)) {
     $product_id = $db->insert_id();
 
-    // Generate QR Code
-    $qr_content = 'PROD-' . str_pad($product_id, 8, '0', STR_PAD_LEFT);
-    $qr_api_url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($qr_content);
-    $qr_image = @file_get_contents($qr_api_url);
-
-    if ($qr_image !== false) {
-      $qr_dir_fs = APP_ROOT . DS . 'uploads' . DS . 'qrcodes' . DS;
-      if (!is_dir($qr_dir_fs)) {
-        @mkdir($qr_dir_fs, 0777, true);
-      }
-      $qr_rel_path = 'uploads/qrcodes/qrcode-' . $product_id . '.png';
-      $qr_path = $qr_dir_fs . 'qrcode-' . $product_id . '.png';
-      @file_put_contents($qr_path, $qr_image);
-      $update_query = "UPDATE products SET qr_code='" . $db->escape($qr_rel_path) . "' WHERE id='{$product_id}'";
-      $db->query($update_query);
-    }
+    ensure_product_qr($product_id);
 
     if (isset($_FILES['product-images']) && !empty(array_filter($_FILES['product-images']['name']))) {
       $media = new Media();
@@ -181,6 +219,26 @@ if (isset($_POST['add_product'])) {
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Quantity (required)</label>
+              <input type="number" class="form-control" name="product-quantity" min="1" placeholder="123..." required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Shelf (optional)</label>
+              <select class="form-control" name="product-shelf">
+                <option value="">No shelf assigned</option>
+                <?php foreach ($all_shelves as $shelf): ?>
+                  <option value="<?php echo (int)$shelf['id']; ?>"><?php echo htmlspecialchars($shelf['name']); ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Upload images (for new item)</label>
+              <input type="file" name="product-images[]" multiple class="form-control">
+            </div>
+          </div>
+
           <hr>
           <h5>Or create new item (will be added to catalog)</h5>
 
@@ -200,32 +258,12 @@ if (isset($_POST['add_product'])) {
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Quantity</label>
-              <input type="number" class="form-control" name="product-quantity" min="1" placeholder="123..." required>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Shelf (optional)</label>
-              <select class="form-control" name="product-shelf">
-                <option value="">No shelf assigned</option>
-                <?php foreach ($all_shelves as $shelf): ?>
-                  <option value="<?php echo (int)$shelf['id']; ?>"><?php echo htmlspecialchars($shelf['name']); ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label">Upload images (for new item)</label>
-              <input type="file" name="product-images[]" multiple class="form-control">
-            </div>
-          </div>
-
           <div class="mb-3">
             <label class="form-label">Note</label>
             <textarea class="form-control" name="product-note" placeholder="Optional note" rows="3"></textarea>
           </div>
 
-          <small class="text-muted d-block mb-2">Use catalog selector for existing items; leave it empty to create a brand-new item.</small>
+          <small class="text-muted d-block mb-2">Quantity applies to BOTH flows: existing catalog item or brand-new item.</small>
           <button type="submit" name="add_product" class="btn btn-primary">Add item to inventory</button>
         </form>
       </div>
