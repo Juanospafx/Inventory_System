@@ -90,7 +90,13 @@ if (isset($_POST['add_product'])) {
 }
 
 $all_shelves = find_all('shelves');
-$catalog_categories = tableExists('catalog_categories') ? find_all('catalog_categories') : [];
+$catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
+  SELECT TRIM(name) AS name FROM catalog_categories
+  UNION
+  SELECT TRIM(catalog_category) AS name FROM products
+) t
+WHERE name IS NOT NULL AND name <> ''
+ORDER BY name ASC");
 
 // Lógica para filtrar anaqueles si viene del mapa
 if (isset($_GET['shelf_filter'])) {
@@ -148,13 +154,14 @@ if (isset($_SESSION['form_data'])) {
               <!-- Categoría -->
               <div class="col-md-6 mb-3">
                 <label class="form-label">Category:</label>
-                <select class="form-control" name="catalog-category-id">
+                <select class="form-control" id="catalog-category-select">
                   <option value="">Select existing category (optional)</option>
                   <?php foreach ($catalog_categories as $cat): ?>
-                    <option value="<?php echo (int)$cat['id']; ?>"><?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?></option>
+                    <option value="<?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?></option>
                   <?php endforeach; ?>
                 </select>
-                <input type="text" class="form-control mt-2" name="catalog-category-name" placeholder="Or type new category">
+                <input type="hidden" name="catalog-category-id" value="">
+                <input type="text" class="form-control mt-2" name="catalog-category-name" id="catalog-category-name" placeholder="Or type new category">
               </div>
             </div>
 
@@ -203,5 +210,16 @@ if (isset($_SESSION['form_data'])) {
     </div>
   </div>
 </div>
+
+<script>
+  (function(){
+    var sel = document.getElementById('catalog-category-select');
+    var input = document.getElementById('catalog-category-name');
+    if(!sel || !input) return;
+    sel.addEventListener('change', function(){
+      if (this.value) input.value = this.value;
+    });
+  })();
+</script>
 
 <?php include_once(__DIR__ . '/../views/footer.php'); ?>

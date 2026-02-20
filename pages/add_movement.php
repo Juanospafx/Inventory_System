@@ -9,13 +9,13 @@ page_require_level(3);
 
 // Listado de productos
 $all_products = join_product_table();
-$catalog_categories = [];
-if (tableExists('catalog_categories')) {
-  $catalog_categories = find_all('catalog_categories');
-}
-if (empty($catalog_categories)) {
-  $catalog_categories = find_by_sql("SELECT DISTINCT catalog_category AS name FROM products WHERE catalog_category IS NOT NULL AND catalog_category <> '' ORDER BY catalog_category ASC");
-}
+$catalog_categories = find_by_sql("SELECT DISTINCT name FROM (
+  SELECT TRIM(name) AS name FROM catalog_categories
+  UNION
+  SELECT TRIM(catalog_category) AS name FROM products
+) t
+WHERE name IS NOT NULL AND name <> ''
+ORDER BY name ASC");
 
 // Filtrar productos si se especifica un anaquel
 if (isset($_GET['shelf_filter'])) {
