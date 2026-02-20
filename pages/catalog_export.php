@@ -4,15 +4,25 @@ require_once(__DIR__ . '/../includes/load.php');
 @require_once(__DIR__ . '/../vendor/autoload.php');
 page_require_level(2);
 
+ini_set('display_errors', '0');
+
 $scope = $_GET['scope'] ?? 'catalog';
 $format = strtolower(trim((string)($_GET['format'] ?? 'xlsx')));
 if (!in_array($format, ['xlsx', 'csv'], true)) {
   $format = 'xlsx';
 }
 
+function clear_output_buffers(): void {
+  while (ob_get_level() > 0) {
+    @ob_end_clean();
+  }
+}
+
 function out_csv(string $filename, array $headers, array $rows): void {
+  clear_output_buffers();
   header('Content-Type: text/csv; charset=utf-8');
   header('Content-Disposition: attachment; filename=' . $filename);
+  header('Cache-Control: no-store, no-cache, must-revalidate');
   $out = fopen('php://output', 'w');
   fwrite($out, "\xEF\xBB\xBF");
   fputcsv($out, $headers, ';');
@@ -111,7 +121,13 @@ function out_xlsx(string $filename, array $headers, array $rows): void {
       . '<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>'
       . '</styleSheet>';
 
-    $zip = new ZipStream\ZipStream(outputName: $filename, sendHttpHeaders: true);
+    clear_output_buffers();
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename=' . $filename);
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+
+    $out = fopen('php://output', 'wb');
+    $zip = new ZipStream\ZipStream(outputName: $filename, sendHttpHeaders: false, outputStream: $out);
     $zip->addFile(fileName: '[Content_Types].xml', data: $contentTypes);
     $zip->addFile(fileName: '_rels/.rels', data: $rels);
     $zip->addFile(fileName: 'xl/workbook.xml', data: $workbook);
@@ -119,6 +135,7 @@ function out_xlsx(string $filename, array $headers, array $rows): void {
     $zip->addFile(fileName: 'xl/styles.xml', data: $styles);
     $zip->addFile(fileName: 'xl/worksheets/sheet1.xml', data: $sheetXml);
     $zip->finish();
+    fclose($out);
     exit;
   } catch (Throwable $e) {
     $csvName = preg_replace('/\.xlsx$/i', '.csv', $filename);
