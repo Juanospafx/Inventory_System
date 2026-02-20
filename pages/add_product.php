@@ -29,7 +29,10 @@ if (tableExists('catalog_categories')) {
   $catalog_categories = find_by_sql("SELECT DISTINCT TRIM(catalog_category) AS name FROM products WHERE catalog_category IS NOT NULL AND catalog_category <> '' ORDER BY catalog_category ASC");
 }
 
-$catalog_items = find_by_sql("SELECT id, name, catalog_code, catalog_category, quantity, qr_code FROM products ORDER BY name ASC");
+$catalog_items = find_by_sql("SELECT p.id, p.name, p.catalog_code, p.catalog_category, p.quantity, p.qr_code, m.file_name AS image
+  FROM products p
+  LEFT JOIN media m ON p.media_id = m.id
+  ORDER BY p.name ASC");
 
 function ensure_product_qr($productId)
 {
@@ -219,11 +222,18 @@ if (isset($_POST['add_product'])) {
                 <?php foreach ($catalog_items as $item): ?>
                   <?php $cat = (string)($item['catalog_category'] ?? ''); ?>
                   <?php $code = (string)($item['catalog_code'] ?? ''); ?>
-                  <option value="<?php echo (int)$item['id']; ?>" data-category="<?php echo htmlspecialchars($cat, ENT_QUOTES, 'UTF-8'); ?>">
+                  <?php $imgName = (string)($item['image'] ?? ''); ?>
+                  <?php $imgUrl = $imgName !== '' ? base_url('uploads/products/' . $imgName) : base_url('uploads/products/no_image.jpg'); ?>
+                  <option value="<?php echo (int)$item['id']; ?>" data-category="<?php echo htmlspecialchars($cat, ENT_QUOTES, 'UTF-8'); ?>" data-image-url="<?php echo htmlspecialchars($imgUrl, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php echo htmlspecialchars($item['name']); ?><?php echo $code !== '' ? ' (' . htmlspecialchars($code) . ')' : ''; ?><?php echo $cat !== '' ? ' — [' . htmlspecialchars($cat) . ']' : ''; ?>
                   </option>
                 <?php endforeach; ?>
               </select>
+              <div id="catalog-item-preview" class="well" style="display:none;margin-top:10px;">
+                <div style="font-weight:600;margin-bottom:6px;">Preview del item del catálogo</div>
+                <img id="catalog-item-preview-image" src="<?php echo base_url('uploads/products/no_image.jpg'); ?>" alt="Catalog item preview" style="max-width:180px;max-height:180px;object-fit:contain;border:1px solid #ddd;border-radius:6px;padding:4px;background:#fff;">
+                <div id="catalog-item-preview-name" style="margin-top:6px;color:#555;"></div>
+              </div>
             </div>
           </div>
 
@@ -256,7 +266,11 @@ if (isset($_POST['add_product'])) {
 
             <div class="col-md-6 mb-3">
               <label class="form-label">Upload images (for new item)</label>
-              <input type="file" name="product-images[]" multiple class="form-control">
+              <input type="file" name="product-images[]" id="product-images" multiple class="form-control" accept="image/*">
+              <div id="new-item-images-preview" style="display:none;margin-top:10px;">
+                <div style="font-weight:600;margin-bottom:6px;">Preview de imágenes nuevas</div>
+                <div id="new-item-images-preview-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+              </div>
             </div>
           </div>
 
@@ -304,18 +318,76 @@ if (isset($_POST['add_product'])) {
   const toggleNewCategoryBtn = document.getElementById('toggle-new-category-btn');
   const newCategoryWrapper = document.getElementById('new-category-wrapper');
   const newCategoryInput = document.getElementById('new-category-input');
+  const catalogPreviewWrap = document.getElementById('catalog-item-preview');
+  const catalogPreviewImage = document.getElementById('catalog-item-preview-image');
+  const catalogPreviewName = document.getElementById('catalog-item-preview-name');
+  const productImagesInput = document.getElementById('product-images');
+  const newImagesPreviewWrap = document.getElementById('new-item-images-preview');
+  const newImagesPreviewGrid = document.getElementById('new-item-images-preview-grid');
   if (!searchEl || !catEl || !selectEl || !newNameEl || !categoryNameEl) return;
 
   const originalOptions = Array.from(selectEl.options).map(opt => ({
     value: opt.value,
     text: opt.text,
-    category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : ''
+    category: (opt.dataset && opt.dataset.category) ? opt.dataset.category : '',
+    imageUrl: (opt.dataset && opt.dataset.imageUrl) ? opt.dataset.imageUrl : ''
   }));
 
   function toggleNewItemInputs() {
     const hasExisting = !!selectEl.value;
     newNameEl.disabled = hasExisting;
     if (hasExisting) newNameEl.value = '';
+  }
+
+  function updateCatalogPreview() {
+    if (!catalogPreviewWrap || !catalogPreviewImage || !catalogPreviewName) return;
+    const opt = selectEl.options[selectEl.selectedIndex];
+    if (!opt || !opt.value) {
+      catalogPreviewWrap.style.display = 'none';
+      return;
+    }
+    catalogPreviewWrap.style.display = 'block';
+    catalogPreviewImage.src = opt.dataset.imageUrl || '<?php echo base_url('uploads/products/no_image.jpg'); ?>';
+    catalogPreviewImage.onerror = function() {
+      this.onerror = null;
+      this.src = '<?php echo base_url('uploads/products/no_image.jpg'); ?>';
+    };
+    catalogPreviewName.textContent = opt.text || '';
+  }
+
+  function renderNewImagesPreview() {
+    if (!productImagesInput || !newImagesPreviewWrap || !newImagesPreviewGrid) return;
+    const files = Array.from(productImagesInput.files || []);
+    newImagesPreviewGrid.innerHTML = '';
+    if (!files.length) {
+      newImagesPreviewWrap.style.display = 'none';
+      return;
+    }
+
+    newImagesPreviewWrap.style.display = 'block';
+    files.forEach(function(file){
+      if (!file.type || file.type.indexOf('image/') !== 0) return;
+      const item = document.createElement('div');
+      item.style.width = '110px';
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.style.width = '110px';
+      img.style.height = '110px';
+      img.style.objectFit = 'cover';
+      img.style.border = '1px solid #ddd';
+      img.style.borderRadius = '6px';
+      img.onload = function(){ URL.revokeObjectURL(this.src); };
+
+      const cap = document.createElement('div');
+      cap.style.fontSize = '11px';
+      cap.style.marginTop = '4px';
+      cap.style.wordBreak = 'break-word';
+      cap.textContent = file.name;
+
+      item.appendChild(img);
+      item.appendChild(cap);
+      newImagesPreviewGrid.appendChild(item);
+    });
   }
 
   function applyFilter() {
@@ -339,6 +411,9 @@ if (isset($_POST['add_product'])) {
       el.value = o.value;
       el.text = o.text;
       el.dataset.category = o.category;
+      if (o.imageUrl) {
+        el.dataset.imageUrl = o.imageUrl;
+      }
       selectEl.appendChild(el);
     });
 
@@ -347,6 +422,7 @@ if (isset($_POST['add_product'])) {
     }
 
     toggleNewItemInputs();
+    updateCatalogPreview();
   }
 
   function syncCategoryTarget() {
@@ -360,7 +436,10 @@ if (isset($_POST['add_product'])) {
 
   searchEl.addEventListener('input', applyFilter);
   catEl.addEventListener('change', applyFilter);
-  selectEl.addEventListener('change', toggleNewItemInputs);
+  selectEl.addEventListener('change', function(){
+    toggleNewItemInputs();
+    updateCatalogPreview();
+  });
 
   if (categorySelectExistingEl) {
     categorySelectExistingEl.addEventListener('change', syncCategoryTarget);
@@ -379,6 +458,10 @@ if (isset($_POST['add_product'])) {
     newCategoryInput.addEventListener('input', syncCategoryTarget);
   }
 
+  if (productImagesInput) {
+    productImagesInput.addEventListener('change', renderNewImagesPreview);
+  }
+
   const form = document.getElementById('add-product-form');
   if (form) {
     form.addEventListener('submit', function(){
@@ -388,6 +471,8 @@ if (isset($_POST['add_product'])) {
 
   syncCategoryTarget();
   applyFilter();
+  updateCatalogPreview();
+  renderNewImagesPreview();
 })();
 </script>
 
