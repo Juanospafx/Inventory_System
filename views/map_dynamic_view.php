@@ -209,7 +209,7 @@ $defaultShelves = [
       const start={x:shelf.x,y:shelf.y,w:shelf.width,l:shelf.length,rotation:shelf.rotation,centerX:shelf.x+(baseRect.w/2),centerY:shelf.y+(baseRect.h/2)};
       const handle=target.dataset.handle||null;
       const dragType = handle==='rotate' ? 'rotate' : (handle ? 'resize' : 'move');
-      dragState={id:shelf.id,type:dragType,handle,startX,startY,start,el,pointerId:ev.pointerId};
+      dragState={id:shelf.id,type:dragType,handle,startX,startY,start,el,pointerId:ev.pointerId,moved:false,startTs:Date.now()};
       el.setPointerCapture(ev.pointerId);
       if(dragType==='rotate') el.classList.add('rotating');
       else if(dragType==='resize') el.classList.add('resizing');
@@ -222,6 +222,7 @@ $defaultShelves = [
       const stageRect=stage.getBoundingClientRect();
       const cx=ev.clientX-stageRect.left, cy=ev.clientY-stageRect.top;
       const dx=cx-dragState.startX, dy=cy-dragState.startY;
+      if(Math.abs(dx)>4 || Math.abs(dy)>4) dragState.moved=true;
 
       if(dragState.type==='move'){
         shelf.x=Math.round(dragState.start.x+dx);
@@ -259,7 +260,15 @@ $defaultShelves = [
       syncEl(el,shelf);
     });
 
-    el.addEventListener('pointerup',()=>{ if(dragState && dragState.id===shelf.id){ dragState=null; el.classList.remove('dragging','resizing','rotating'); scheduleAutoSave(); } });
+    el.addEventListener('pointerup',()=>{
+      if(dragState && dragState.id===shelf.id){
+        const wasTap = dragState.type==='move' && !dragState.moved && (Date.now()-dragState.startTs)<300;
+        dragState=null;
+        el.classList.remove('dragging','resizing','rotating');
+        scheduleAutoSave();
+        if(wasTap){ openConfig(shelf.id); }
+      }
+    });
     el.addEventListener('dblclick',(ev)=>{ ev.stopPropagation(); openConfig(shelf.id); });
     return el;
   }
