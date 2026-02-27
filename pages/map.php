@@ -21,9 +21,7 @@ page_require_level(2);
         </strong>
       </div>
       <div class="card-body" style="position: relative; overflow-x: auto;">
-        
-        <?php include_once(__DIR__ . '/../views/map_view.php'); ?>
-
+        <?php include_once(__DIR__ . '/../views/map_dynamic_view.php'); ?>
       </div>
     </div>
   </div>
