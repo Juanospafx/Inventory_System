@@ -62,10 +62,11 @@ $defaultShelves = [
 
   #shelfConfigModal{z-index:20000}
   .modal-backdrop.show{z-index:19990}
-  #shelfConfigModal .modal-content{color:#eaf2ff;background:#1e293b}
+  #shelfConfigModal .modal-content{color:#eaf2ff;background:#1e293b;border:1px solid #334155}
+  #shelfConfigModal .modal-header,#shelfConfigModal .modal-body,#shelfConfigModal .modal-footer{background:#1e293b;color:#eaf2ff}
   #shelfConfigModal .form-label,#shelfConfigModal .modal-title{color:#eaf2ff!important;font-weight:600}
-  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155;font-size:16px}
-  #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220;color:#fff;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
+  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a!important;color:#f8fafc!important;border:1px solid #334155;font-size:16px;pointer-events:auto}
+  #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220!important;color:#fff!important;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
   #shelfConfigModal .modal-body{overflow-y:auto;padding-bottom:1rem}
   #shelfConfigModal .modal-footer{background:#1e293b}
 
