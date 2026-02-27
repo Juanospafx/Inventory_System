@@ -48,15 +48,22 @@ $defaultShelves = [
   .fixed-office{background:rgba(180,210,240,.45)!important;font-weight:700}
 
   .shelf-item{position:absolute;border:1px solid rgba(0,0,0,.18);border-radius:8px;cursor:grab;z-index:5;color:#212121;font-size:14px;display:flex;align-items:center;justify-content:center;font-weight:700;user-select:none;touch-action:none;transition:box-shadow .12s ease}
-  .shelf-item.dragging,.shelf-item.resizing{cursor:grabbing;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .shelf-item.dragging,.shelf-item.resizing,.shelf-item.rotating{cursor:grabbing;box-shadow:0 8px 24px rgba(0,0,0,.25)}
   .shelf-item.selected{box-shadow:0 0 0 3px rgba(255,193,7,.45)}
   .shelf-item .label{pointer-events:none}
-  .resize-handle{position:absolute;width:10px;height:10px;background:#1565c0;border:1px solid #fff;border-radius:50%;display:none;z-index:6}
-  .shelf-item.selected .resize-handle{display:block}
+  .resize-handle,.rotate-handle{position:absolute;background:#1565c0;border:1px solid #fff;border-radius:50%;display:none;z-index:6}
+  .resize-handle{width:10px;height:10px}
+  .rotate-handle{width:12px;height:12px;top:-24px;left:calc(50% - 6px);cursor:grab;background:#ff7043}
+  .shelf-item.selected .resize-handle,.shelf-item.selected .rotate-handle{display:block}
   .resize-handle.nw{left:-6px;top:-6px;cursor:nwse-resize}
   .resize-handle.ne{right:-6px;top:-6px;cursor:nesw-resize}
   .resize-handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}
   .resize-handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
+
+  #shelfConfigModal .modal-content{color:#eaf2ff}
+  #shelfConfigModal .form-label,#shelfConfigModal .modal-title{color:#eaf2ff!important;font-weight:600}
+  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155}
+  #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220;color:#fff;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
 
   .place-mode{outline:3px dashed rgba(255,193,7,.45);outline-offset:-8px;cursor:crosshair}
 </style>
@@ -160,7 +167,7 @@ $defaultShelves = [
     const el=document.createElement('div');
     el.className='shelf-item'+(selectedId===shelf.id?' selected':'');
     el.dataset.id=shelf.id;
-    el.innerHTML='<span class="label"></span><span class="resize-handle nw" data-handle="nw"></span><span class="resize-handle ne" data-handle="ne"></span><span class="resize-handle sw" data-handle="sw"></span><span class="resize-handle se" data-handle="se"></span>';
+    el.innerHTML='<span class="label"></span><span class="resize-handle nw" data-handle="nw"></span><span class="resize-handle ne" data-handle="ne"></span><span class="resize-handle sw" data-handle="sw"></span><span class="resize-handle se" data-handle="se"></span><span class="rotate-handle" data-handle="rotate" title="Rotar"></span>';
     syncEl(el,shelf);
 
     el.addEventListener('pointerdown',(ev)=>{
@@ -168,11 +175,15 @@ $defaultShelves = [
       selectedId=shelf.id; highlightSelection();
       const stageRect=stage.getBoundingClientRect();
       const startX=ev.clientX-stageRect.left, startY=ev.clientY-stageRect.top;
-      const start={x:shelf.x,y:shelf.y,w:shelf.width,l:shelf.length};
+      const baseRect=rect(shelf);
+      const start={x:shelf.x,y:shelf.y,w:shelf.width,l:shelf.length,rotation:shelf.rotation,centerX:shelf.x+(baseRect.w/2),centerY:shelf.y+(baseRect.h/2)};
       const handle=target.dataset.handle||null;
-      dragState={id:shelf.id,type:handle?'resize':'move',handle,startX,startY,start,el,pointerId:ev.pointerId};
+      const dragType = handle==='rotate' ? 'rotate' : (handle ? 'resize' : 'move');
+      dragState={id:shelf.id,type:dragType,handle,startX,startY,start,el,pointerId:ev.pointerId};
       el.setPointerCapture(ev.pointerId);
-      el.classList.add(handle?'resizing':'dragging');
+      if(dragType==='rotate') el.classList.add('rotating');
+      else if(dragType==='resize') el.classList.add('resizing');
+      else el.classList.add('dragging');
       ev.preventDefault();
     });
 
@@ -185,14 +196,19 @@ $defaultShelves = [
       if(dragState.type==='move'){
         shelf.x=Math.round(dragState.start.x+dx);
         shelf.y=Math.round(dragState.start.y+dy);
+      }else if(dragState.type==='rotate'){
+        const angleRad = Math.atan2(cy - dragState.start.centerY, cx - dragState.start.centerX);
+        let angleDeg = (angleRad * 180 / Math.PI) + 90;
+        if (ev.shiftKey) { angleDeg = Math.round(angleDeg / 15) * 15; }
+        shelf.rotation = ((angleDeg % 360) + 360) % 360;
       }else{
         const mpp=1/pxPerMeter;
         const dir = dragState.handle;
         let w=dragState.start.w, l=dragState.start.l, x=dragState.start.x, y=dragState.start.y;
 
         const rad=(shelf.rotation||0)*Math.PI/180;
-        const ux={x:Math.cos(rad), y:Math.sin(rad)};          // eje ancho
-        const uy={x:-Math.sin(rad), y:Math.cos(rad)};         // eje largo
+        const ux={x:Math.cos(rad), y:Math.sin(rad)};
+        const uy={x:-Math.sin(rad), y:Math.cos(rad)};
         const projW=(dx*ux.x + dy*ux.y)*mpp;
         const projL=(dx*uy.x + dy*uy.y)*mpp;
 
@@ -213,7 +229,7 @@ $defaultShelves = [
       syncEl(el,shelf);
     });
 
-    el.addEventListener('pointerup',()=>{ if(dragState && dragState.id===shelf.id){ dragState=null; el.classList.remove('dragging','resizing'); } });
+    el.addEventListener('pointerup',()=>{ if(dragState && dragState.id===shelf.id){ dragState=null; el.classList.remove('dragging','resizing','rotating'); } });
     el.addEventListener('dblclick',(ev)=>{ ev.stopPropagation(); openConfig(shelf.id); });
     return el;
   }
