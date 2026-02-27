@@ -62,8 +62,19 @@ $defaultShelves = [
 
   #shelfConfigModal .modal-content{color:#eaf2ff}
   #shelfConfigModal .form-label,#shelfConfigModal .modal-title{color:#eaf2ff!important;font-weight:600}
-  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155}
+  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155;font-size:16px}
   #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220;color:#fff;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
+  #shelfConfigModal .modal-body{overflow-y:auto}
+
+  @media (max-width: 768px){
+    .warehouse-map-shell{min-width:100%}
+    .warehouse-stage{width:1220px;height:860px}
+    #shelfConfigModal .modal-dialog{margin:.35rem;max-width:calc(100vw - .7rem)}
+    #shelfConfigModal .modal-content{max-height:calc(100vh - .7rem)}
+    #shelfConfigModal .modal-body{padding:.75rem;max-height:calc(100vh - 190px)}
+    #shelfConfigModal .modal-footer{position:sticky;bottom:0;background:inherit;z-index:2;padding:.6rem}
+    #shelfConfigModal .btn{min-height:44px}
+  }
 
   .place-mode{outline:3px dashed rgba(255,193,7,.45);outline-offset:-8px;cursor:crosshair}
 </style>
