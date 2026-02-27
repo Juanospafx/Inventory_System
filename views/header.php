@@ -80,7 +80,7 @@
         <div class="float-end clearfix me-3">
           <ul class="info-menu list-inline list-unstyled mb-0 d-flex align-items-center">
             <li class="me-2">
-              <button type="button" class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema" onclick="window.__toggleTheme && window.__toggleTheme()">☀️</button>
+              <button type="button" class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">☀️</button>
             </li>
             <li class="profile">
               <!-- Actualizado para el dropdown de Bootstrap 5 -->
