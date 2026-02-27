@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Restaurar estado de la barra lateral al cargar la página
-    const collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+    const isMobile = window.innerWidth <= 767;
+    const collapsed = !isMobile && localStorage.getItem('sidebar-collapsed') === '1';
     setSidebarState(collapsed);
 
     // Manejador del botón para colapsar/mostrar la barra lateral
@@ -150,6 +151,10 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', function () {
         if (window.innerWidth > 767) {
             setMobileSidebar(false);
+            const wantCollapsed = localStorage.getItem('sidebar-collapsed') === '1';
+            setSidebarState(wantCollapsed);
+        } else {
+            setSidebarState(false);
         }
     });
 });
