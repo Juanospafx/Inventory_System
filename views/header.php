@@ -38,7 +38,7 @@
       </div>
       <div class="header-content">
         <div class="sidebar-toggle">
-          <a href="#" class="sidebar-toggle-btn"><i class="fa fa-b<!--  -->ars"></i></a>
+          <a href="#" class="sidebar-toggle-btn" aria-label="Abrir menú"><i class="fa fa-bars"></i></a>
         </div>
         <div class="header-date float-start">
           <strong><span id="time"></span></strong>

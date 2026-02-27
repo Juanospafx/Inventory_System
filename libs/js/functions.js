@@ -124,7 +124,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Restaurar estado de la barra lateral al cargar la página
-    const collapsed = localStorage.getItem('sidebar-collapsed') === '1';
+    const isMobile = window.innerWidth <= 767;
+    const collapsed = !isMobile && localStorage.getItem('sidebar-collapsed') === '1';
     setSidebarState(collapsed);
 
     // Manejador del botón para colapsar/mostrar la barra lateral
@@ -146,10 +147,31 @@ document.addEventListener('DOMContentLoaded', function () {
         overlay.addEventListener('click', () => setMobileSidebar(false));
     }
 
+    // Cerrar sidebar móvil al seleccionar opción
+    document.querySelectorAll('.sidebar a').forEach(link => {
+        link.addEventListener('click', function () {
+            if (window.innerWidth <= 767) {
+                setMobileSidebar(false);
+            }
+        });
+    });
+
+    // Cerrar con tecla Escape en móvil
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && window.innerWidth <= 767) {
+            setMobileSidebar(false);
+        }
+    });
+
     // Ajustar la barra lateral en cambios de tamaño de ventana
     window.addEventListener('resize', function () {
         if (window.innerWidth > 767) {
             setMobileSidebar(false);
+            const wantCollapsed = localStorage.getItem('sidebar-collapsed') === '1';
+            setSidebarState(wantCollapsed);
+        } else {
+            document.body.classList.remove('sidebar-collapsed');
+            setSidebarState(false);
         }
     });
 });
