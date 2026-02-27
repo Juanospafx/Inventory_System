@@ -50,9 +50,10 @@ if ($action === 'save') {
       continue;
     }
 
-    $rotation = isset($item['rotation']) ? (int)$item['rotation'] : 0;
-    if (!in_array($rotation, [0, 90, 180, 270], true)) {
-      $rotation = 0;
+    $rotation = isset($item['rotation']) ? (float)$item['rotation'] : 0;
+    $rotation = fmod($rotation, 360.0);
+    if ($rotation < 0) {
+      $rotation += 360.0;
     }
 
     $cleanShelves[] = [

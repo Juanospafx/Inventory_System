@@ -88,7 +88,7 @@ $defaultShelves = [
           <div class="col-md-4"><label class="form-label">Niveles</label><input type="number" min="1" step="1" class="form-control" id="cfgLevels"></div>
           <div class="col-md-4"><label class="form-label">Capacidad</label><input type="number" min="1" step="1" class="form-control" id="cfgCapacity"></div>
           <div class="col-md-4"><label class="form-label">Unidad</label><select class="form-select" id="cfgUnit"><option value="kg">kg</option><option value="lbs">lbs</option></select></div>
-          <div class="col-md-6"><label class="form-label">Rotación</label><select class="form-select" id="cfgRotation"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></div>
+          <div class="col-md-6"><label class="form-label">Rotación (°)</label><input type="number" min="0" max="359" step="1" class="form-control" id="cfgRotation"></div>
         </div>
         <hr>
         <div class="d-grid gap-2">
@@ -126,8 +126,9 @@ $defaultShelves = [
   let dragState = null;
 
   function msg(type, text){ const d=document.createElement('div'); d.className=`alert alert-${type} py-2 px-3 mt-2`; d.textContent=text; stage.parentElement.appendChild(d); setTimeout(()=>d.remove(),2200); }
-  function normalize(raw){ return { id:String(raw.id||'').trim(), x:Number(raw.x)||40, y:Number(raw.y)||40, width:Math.max(0.2,Number(raw.width)||1.8), length:Math.max(0.2,Number(raw.length)||1.8), depth:Math.max(0.1,Number(raw.depth)||1), levels:Math.max(1,parseInt(raw.levels||1,10)), capacity:Math.max(1,parseInt(raw.capacity||100,10)), unit:raw.unit==='lbs'?'lbs':'kg', color:raw.color||'#b0bec5', rotation:[0,90,180,270].includes(Number(raw.rotation))?Number(raw.rotation):0}; }
-  function rect(s){ const w=s.width*pxPerMeter, h=s.length*pxPerMeter; return (s.rotation===90||s.rotation===270)?{w:h,h:w}:{w,h}; }
+  function normalize(raw){ return { id:String(raw.id||'').trim(), x:Number(raw.x)||40, y:Number(raw.y)||40, width:Math.max(0.2,Number(raw.width)||1.8), length:Math.max(0.2,Number(raw.length)||1.8), depth:Math.max(0.1,Number(raw.depth)||1), levels:Math.max(1,parseInt(raw.levels||1,10)), capacity:Math.max(1,parseInt(raw.capacity||100,10)), unit:raw.unit==='lbs'?'lbs':'kg', color:raw.color||'#b0bec5', rotation:((Number(raw.rotation)%360)+360)%360 }; }
+  function rect(s){ return {w:s.width*pxPerMeter,h:s.length*pxPerMeter}; }
+  function aabb(s){ const r=rect(s); const rad=(s.rotation||0)*Math.PI/180; const cw=Math.abs(Math.cos(rad)), sw=Math.abs(Math.sin(rad)); return {w:(r.w*cw+r.h*sw), h:(r.w*sw+r.h*cw)}; }
   function shelfById(id){ return shelves.find(s=>s.id===id); }
 
   function updateActionLinks(shelf){
@@ -139,14 +140,20 @@ $defaultShelves = [
   function syncEl(el, shelf){
     const r=rect(shelf);
     el.style.left=shelf.x+'px'; el.style.top=shelf.y+'px'; el.style.width=r.w+'px'; el.style.height=r.h+'px'; el.style.background=shelf.color;
-    el.title=`${shelf.id} | ${shelf.width}x${shelf.length}x${shelf.depth} ${shelf.unit} | Niveles:${shelf.levels} | Cap:${shelf.capacity} ${shelf.unit}`;
+    el.style.transformOrigin='center center';
+    el.style.transform=`rotate(${shelf.rotation||0}deg)`;
+    el.title=`${shelf.id} | ${shelf.width}x${shelf.length}x${shelf.depth} ${shelf.unit} | Rot:${Math.round(shelf.rotation||0)}° | Niveles:${shelf.levels} | Cap:${shelf.capacity} ${shelf.unit}`;
     el.querySelector('.label').textContent=shelf.id;
   }
 
   function clampShelf(shelf){
+    const box=aabb(shelf);
     const r=rect(shelf);
-    shelf.x=Math.max(0,Math.min(stage.clientWidth-r.w,shelf.x));
-    shelf.y=Math.max(0,Math.min(stage.clientHeight-r.h,shelf.y));
+    const dx=(box.w-r.w)/2, dy=(box.h-r.h)/2;
+    const minX=-dx, minY=-dy;
+    const maxX=stage.clientWidth-r.w+dx, maxY=stage.clientHeight-r.h+dy;
+    shelf.x=Math.max(minX,Math.min(maxX,shelf.x));
+    shelf.y=Math.max(minY,Math.min(maxY,shelf.y));
   }
 
   function buildShelfEl(shelf){
@@ -182,22 +189,25 @@ $defaultShelves = [
         const mpp=1/pxPerMeter;
         const dir = dragState.handle;
         let w=dragState.start.w, l=dragState.start.l, x=dragState.start.x, y=dragState.start.y;
-        const horizontal = (shelf.rotation===0||shelf.rotation===180);
-        const dw = (dir.includes('e')?dx:-dx)*mpp;
-        const dl = (dir.includes('s')?dy:-dy)*mpp;
 
-        if(horizontal){
-          w=Math.max(0.2,dragState.start.w+dw);
-          l=Math.max(0.2,dragState.start.l+dl);
-          if(dir.includes('w')) x=Math.round(dragState.start.x+dx);
-          if(dir.includes('n')) y=Math.round(dragState.start.y+dy);
-        }else{
-          l=Math.max(0.2,dragState.start.l+dw);
-          w=Math.max(0.2,dragState.start.w+dl);
-          if(dir.includes('w')) x=Math.round(dragState.start.x+dx);
-          if(dir.includes('n')) y=Math.round(dragState.start.y+dy);
-        }
-        shelf.width=Number(w.toFixed(2)); shelf.length=Number(l.toFixed(2)); shelf.x=x; shelf.y=y;
+        const rad=(shelf.rotation||0)*Math.PI/180;
+        const ux={x:Math.cos(rad), y:Math.sin(rad)};          // eje ancho
+        const uy={x:-Math.sin(rad), y:Math.cos(rad)};         // eje largo
+        const projW=(dx*ux.x + dy*ux.y)*mpp;
+        const projL=(dx*uy.x + dy*uy.y)*mpp;
+
+        const dw = dir.includes('e') ? projW : -projW;
+        const dl = dir.includes('s') ? projL : -projL;
+
+        w=Math.max(0.2,dragState.start.w+dw);
+        l=Math.max(0.2,dragState.start.l+dl);
+
+        if(dir.includes('w')) { x=Math.round(dragState.start.x+dx); }
+        if(dir.includes('n')) { y=Math.round(dragState.start.y+dy); }
+
+        shelf.width=Number(w.toFixed(2));
+        shelf.length=Number(l.toFixed(2));
+        shelf.x=x; shelf.y=y;
       }
       clampShelf(shelf);
       syncEl(el,shelf);
@@ -250,7 +260,7 @@ $defaultShelves = [
     shelf.levels=Math.max(1,parseInt(document.getElementById('cfgLevels').value||1,10));
     shelf.capacity=Math.max(1,parseInt(document.getElementById('cfgCapacity').value||1,10));
     shelf.unit=document.getElementById('cfgUnit').value==='lbs'?'lbs':'kg';
-    shelf.rotation=Number(document.getElementById('cfgRotation').value)||0;
+    shelf.rotation=((Number(document.getElementById('cfgRotation').value)||0)%360+360)%360;
     selectedId=shelf.id; clampShelf(shelf); render(); updateActionLinks(shelf);
     msg('success','Anaquel actualizado');
   }
