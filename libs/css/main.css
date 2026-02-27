@@ -1,24 +1,7 @@
 /* --- SISTEMA DE COLOR (VARIABLES) --- */
 :root {
-    /* Paleta Base (Dark Mode Definitivo - Restaurado) */
-    --bg-app: #1b212d;       /* Fondo general: Azul grisáceo profundo */
-    --bg-panel: #242a38;     /* Paneles: Un tono ligeramente más claro para contraste */
-    --bg-input: #151a23;     /* Inputs: Más oscuros para profundidad */
-    
-    --text-primary: #ffffff; /* Blanco puro para máxima legibilidad */
-    --text-secondary: #94a3b8; /* Slate-400 */
-    --text-muted: #8696af;   /* Gris medio */
-    
-    --border-subtle: #2f384a; /* Gris azulado sutil */
-    --border-focus: #fb5a3a;  /* Naranja al enfocar */
-
     --accent-primary: #fb5a3a;
-    /* Brigtronix Orange */
-    --accent-bg: #3a1d18;      /* Fondo naranja muy oscuro y transparente */
-
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra más ligera y difusa */
-
-    /* Colores auxiliares para iconos */
+    --border-focus: #fb5a3a;
     --blue-500: #3b82f6;
     --emerald-500: #10b981;
     --amber-500: #f59e0b;
@@ -26,9 +9,41 @@
     --orange-500: var(--accent-primary);
 }
 
-/* Eliminado bloque [data-theme="dark"] ya que ahora es el defecto */
+html[data-theme="dark"] {
+    --bg-app: #1b212d;
+    --bg-panel: #242a38;
+    --bg-input: #151a23;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #8696af;
+    --border-subtle: #2f384a;
+    --accent-bg: #3a1d18;
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --overlay-bg: rgba(15, 23, 42, 0.5);
+    --table-stripe: rgba(255, 255, 255, 0.03);
+}
+
+html[data-theme="light"] {
+    --bg-app: #f4f6fb;
+    --bg-panel: #ffffff;
+    --bg-input: #eef2f7;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --border-subtle: #d9e1ec;
+    --accent-bg: #ffe9e2;
+    --shadow-card: 0 6px 18px rgba(15, 23, 42, 0.08);
+    --overlay-bg: rgba(15, 23, 42, 0.25);
+    --table-stripe: rgba(2, 6, 23, 0.03);
+}
 
 * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
 
 body {
     font-family: 'Poppins', 'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -123,8 +138,9 @@ header>.logo {
     display: block;
     object-fit: contain;
     margin-bottom: -5px;
-    filter: brightness(0) invert(1); /* Tinta el logo de blanco puro */
 }
+html[data-theme="dark"] .logo-full { filter: brightness(0) invert(1); }
+html[data-theme="light"] .logo-full { filter: none; }
 
 .app-subtitle {
     font-size: 0.75rem;
@@ -362,7 +378,7 @@ table {
 }
 
 .table-striped>tbody>tr:nth-of-type(odd) {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--table-stripe);
     color: var(--text-primary);
 }
 
@@ -678,7 +694,7 @@ table {
 .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.5);
+    background: var(--overlay-bg);
     z-index: 1020;
     opacity: 0;
     pointer-events: none;
