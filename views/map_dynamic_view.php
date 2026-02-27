@@ -79,7 +79,7 @@ $defaultShelves = [
 </div>
 
 <div class="modal fade" id="shelfConfigModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content bg-panel border-subtle shadow-card">
       <div class="modal-header">
         <h5 class="modal-title">Anaquel <span id="cfgShelfName"></span></h5>
