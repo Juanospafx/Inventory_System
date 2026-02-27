@@ -6,6 +6,7 @@
   <meta charset="UTF-8">
   <script>
     (function () {
+      document.documentElement.classList.add('theme-preload');
       function pickTheme() {
         try {
           var stored = localStorage.getItem('app-theme');
@@ -16,6 +17,7 @@
       function applyTheme(theme, persist) {
         var root = document.documentElement;
         root.setAttribute('data-theme', theme);
+        root.style.colorScheme = theme;
         root.classList.remove('theme-dark', 'theme-light');
         root.classList.add(theme === 'light' ? 'theme-light' : 'theme-dark');
         if (document.body) {
@@ -34,9 +36,8 @@
         var current = document.documentElement.getAttribute('data-theme') || pickTheme();
         applyTheme(current === 'dark' ? 'light' : 'dark', true);
       };
-      var initial = pickTheme();
-      applyTheme(initial, false);
-      document.addEventListener('DOMContentLoaded', function(){ applyTheme(document.documentElement.getAttribute('data-theme') || initial, false); });
+      applyTheme(pickTheme(), false);
+      window.addEventListener('load', function(){ document.documentElement.classList.remove('theme-preload'); });
     })();
   </script>
   <style>html[data-theme="dark"], html[data-theme="dark"] body { background-color: #1b212d !important; } html[data-theme="light"], html[data-theme="light"] body { background-color: #f4f6fb !important; }</style>
