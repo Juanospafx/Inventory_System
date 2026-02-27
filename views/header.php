@@ -6,13 +6,30 @@
   <meta charset="UTF-8">
   <script>
     (function () {
-      try {
-        var stored = localStorage.getItem('app-theme');
-        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'dark');
+      function pickTheme() {
+        try {
+          var stored = localStorage.getItem('app-theme');
+          if (stored === 'light' || stored === 'dark') return stored;
+        } catch (e) {}
+        return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
       }
+      function applyTheme(theme, persist) {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (document.body) document.body.setAttribute('data-theme', theme);
+        var meta = document.getElementById('metaThemeColor');
+        if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f6fb' : '#1b212d');
+        var btn = document.getElementById('themeToggle');
+        if (btn) btn.textContent = (theme === 'dark' ? '☀️' : '🌙');
+        try { if (persist) localStorage.setItem('app-theme', theme); } catch (e) {}
+      }
+      window.__applyTheme = applyTheme;
+      window.__toggleTheme = function(){
+        var current = document.documentElement.getAttribute('data-theme') || pickTheme();
+        applyTheme(current === 'dark' ? 'light' : 'dark', true);
+      };
+      var initial = pickTheme();
+      applyTheme(initial, false);
+      document.addEventListener('DOMContentLoaded', function(){ applyTheme(document.documentElement.getAttribute('data-theme') || initial, false); });
     })();
   </script>
   <style>html[data-theme="dark"], html[data-theme="dark"] body { background-color: #1b212d !important; } html[data-theme="light"], html[data-theme="light"] body { background-color: #f4f6fb !important; }</style>
@@ -56,7 +73,7 @@
         <div class="float-end clearfix me-3">
           <ul class="info-menu list-inline list-unstyled mb-0 d-flex align-items-center">
             <li class="me-2">
-              <button type="button" class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">☀️</button>
+              <button type="button" class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema" onclick="window.__toggleTheme && window.__toggleTheme()">☀️</button>
             </li>
             <li class="profile">
               <!-- Actualizado para el dropdown de Bootstrap 5 -->
