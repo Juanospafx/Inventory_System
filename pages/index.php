@@ -7,19 +7,54 @@ require_once(__DIR__ . '/../includes/load.php');
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1b212d">
+  <meta name="theme-color" content="#1b212d" id="metaThemeColor">
   <title>Login</title>
+  <script>
+    (function(){
+      function pick(){
+        try {
+          var s = localStorage.getItem('app-theme');
+          if (s === 'light' || s === 'dark') return s;
+        } catch(e){}
+        return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      var t = pick();
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.style.colorScheme = t;
+    })();
+  </script>
   <style>
     /* 
       1) Reset b??sico para ocupar toda la pantalla 
          y quitar m??rgenes del body.
     */
-    html,
-    body {
+    :root {
+      --bg-app:#1b212d;
+      --bg-panel:#242a38;
+      --bg-input:#151a23;
+      --text-primary:#ffffff;
+      --text-secondary:#8696af;
+      --border-subtle:#2f384a;
+      --accent:#fb5a3a;
+      --accent-hover:#e0482b;
+    }
+    html[data-theme="light"] {
+      --bg-app:#f4f6fb;
+      --bg-panel:#ffffff;
+      --bg-input:#eef2f7;
+      --text-primary:#0f172a;
+      --text-secondary:#64748b;
+      --border-subtle:#d9e1ec;
+      --accent:#fb5a3a;
+      --accent-hover:#e0482b;
+    }
+
+    html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #1b212d; /* Fondo oscuro */
+      background: var(--bg-app);
+      color: var(--text-primary);
       font-family: Arial, sans-serif;
     }
 
@@ -41,9 +76,9 @@ require_once(__DIR__ . '/../includes/load.php');
     .login-page {
       width: 350px;
       padding: 20px;
-      background-color: #242a38; /* Panel oscuro */
-      border: 1px solid #2f384a; /* Borde sutil oscuro */
-      color: #ffffff;
+      background-color: var(--bg-panel);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
       
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
       /* Sombra ligera */
@@ -61,13 +96,13 @@ require_once(__DIR__ . '/../includes/load.php');
       margin-top: 0;
       margin-bottom: 5px;
       font-size: 28px;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .login-page p {
       margin: 0 0 20px 0;
       font-size: 16px;
-      color: #8696af;
+      color: var(--text-secondary);
     }
 
     /*
@@ -84,7 +119,7 @@ require_once(__DIR__ . '/../includes/load.php');
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
     .form-control {
@@ -92,9 +127,9 @@ require_once(__DIR__ . '/../includes/load.php');
       width: 100%;
       padding: 8px 12px;
       font-size: 14px;
-      color: #ffffff;
-      background-color: #151a23;
-      border: 1px solid #2f384a;
+      color: var(--text-primary);
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
       border-radius: 4px;
       box-sizing: border-box;
     }
@@ -109,9 +144,8 @@ require_once(__DIR__ . '/../includes/load.php');
       padding: 10px 0;
       font-size: 16px;
       color: #fff;
-      background-color: #fb5a3a; /* Naranja Brigtronix (fallback) */
-      /* Azul claro tipo "info" */
-      border: 1px solid #fb5a3a; 
+      background-color: var(--accent);
+      border: 1px solid var(--accent);
       border-radius: 4px;
       cursor: pointer;
       text-decoration: none;
@@ -120,9 +154,22 @@ require_once(__DIR__ . '/../includes/load.php');
     }
 
     .btn-info:hover {
-      background-color: #e0482b;
-      /* Efecto hover m??s oscuro */
-      border-color: #e0482b;
+      background-color: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .theme-toggle-login {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-panel);
+      color: var(--text-primary);
+      cursor: pointer;
+      z-index: 5;
     }
 
     /* Media query for mobile */
@@ -136,6 +183,7 @@ require_once(__DIR__ . '/../includes/load.php');
 </head>
 
 <body>
+  <button class="theme-toggle-login" id="themeToggleLogin" aria-label="Cambiar tema">☀️</button>
   <div class="login-container">
     <div class="login-page">
       <div class="text-center">
@@ -159,6 +207,28 @@ require_once(__DIR__ . '/../includes/load.php');
       </form>
     </div>
   </div>
+<script>
+  (function(){
+    function currentTheme(){ return document.documentElement.getAttribute('data-theme') || 'dark'; }
+    function apply(theme, persist){
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.style.colorScheme = theme;
+      var meta=document.getElementById('metaThemeColor');
+      if(meta) meta.setAttribute('content', theme==='light' ? '#f4f6fb' : '#1b212d');
+      var btn=document.getElementById('themeToggleLogin');
+      if(btn) btn.textContent = (theme==='dark' ? '☀️' : '🌙');
+      try{ if(persist) localStorage.setItem('app-theme', theme); }catch(e){}
+    }
+    apply(currentTheme(), false);
+    var btn=document.getElementById('themeToggleLogin');
+    if(btn){
+      btn.addEventListener('click', function(){
+        var next = currentTheme()==='dark' ? 'light' : 'dark';
+        apply(next, true);
+      });
+    }
+  })();
+</script>
 </body>
 
 </html>
