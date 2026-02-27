@@ -4,10 +4,20 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- CSS Crítico: Define el fondo oscuro inmediatamente para evitar el parpadeo blanco -->
-  <style>html, body { background-color: #1b212d !important; }</style>
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('app-theme');
+        var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <style>html[data-theme="dark"], html[data-theme="dark"] body { background-color: #1b212d !important; } html[data-theme="light"], html[data-theme="light"] body { background-color: #f4f6fb !important; }</style>
   <!-- Meta etiqueta para colorear la barra del navegador en móviles -->
-  <meta name="theme-color" content="#1b212d">
+  <meta name="theme-color" content="#1b212d" id="metaThemeColor">
   <title><?php if (!empty($page_title))
     echo remove_junk($page_title);
   elseif (!empty($user))
@@ -45,6 +55,9 @@
         </div>
         <div class="float-end clearfix me-3">
           <ul class="info-menu list-inline list-unstyled mb-0 d-flex align-items-center">
+            <li class="me-2">
+              <button type="button" class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">☀️</button>
+            </li>
             <li class="profile">
               <!-- Actualizado para el dropdown de Bootstrap 5 -->
               <a href="#" data-bs-toggle="dropdown" class="toggle" aria-expanded="false">
