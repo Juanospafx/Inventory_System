@@ -9,7 +9,7 @@
     --orange-500: var(--accent-primary);
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark"], body[data-theme="dark"], .theme-dark {
     --bg-app: #1b212d;
     --bg-panel: #242a38;
     --bg-input: #151a23;
@@ -23,7 +23,7 @@ html[data-theme="dark"] {
     --table-stripe: rgba(255, 255, 255, 0.03);
 }
 
-html[data-theme="light"] {
+html[data-theme="light"], body[data-theme="light"], .theme-light {
     --bg-app: #f4f6fb;
     --bg-panel: #ffffff;
     --bg-input: #eef2f7;
