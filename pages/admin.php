@@ -94,7 +94,7 @@ $recent_movements = find_recent_movements('5'); // Cambiado de recent_sales a re
       </div>
       <div class="card-body" style="position: relative; overflow-x: auto;">
         
-        <?php include_once(__DIR__ . '/../views/map_view.php'); ?>
+        <?php include_once(__DIR__ . '/../views/map_dynamic_view.php'); ?>
 
       </div>
     </div>
