@@ -39,10 +39,24 @@ html[data-theme="light"], body[data-theme="light"], .theme-light {
 
 * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
 
-html.theme-transition *,
-html.theme-transition *::before,
-html.theme-transition *::after {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+html.theme-preload *,
+html.theme-preload *::before,
+html.theme-preload *::after {
+    transition: none !important;
+}
+
+html.theme-transition body,
+html.theme-transition #header,
+html.theme-transition .sidebar,
+html.theme-transition .card,
+html.theme-transition .panel,
+html.theme-transition .modal-content,
+html.theme-transition .dropdown-menu,
+html.theme-transition .table,
+html.theme-transition .form-control,
+html.theme-transition .form-select,
+html.theme-transition .btn {
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
 
 body {
