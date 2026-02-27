@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Tema global (dark/light)
     const themeToggleBtn = document.getElementById('themeToggle');
     if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function () {
+        themeToggleBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             document.documentElement.classList.add('theme-transition');
             if (window.__toggleTheme) window.__toggleTheme();
             setTimeout(() => document.documentElement.classList.remove('theme-transition'), 350);
