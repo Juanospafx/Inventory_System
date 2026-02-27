@@ -60,19 +60,22 @@ $defaultShelves = [
   .resize-handle.sw{left:-6px;bottom:-6px;cursor:nesw-resize}
   .resize-handle.se{right:-6px;bottom:-6px;cursor:nwse-resize}
 
-  #shelfConfigModal .modal-content{color:#eaf2ff}
+  #shelfConfigModal{z-index:20000}
+  .modal-backdrop.show{z-index:19990}
+  #shelfConfigModal .modal-content{color:#eaf2ff;background:#1e293b}
   #shelfConfigModal .form-label,#shelfConfigModal .modal-title{color:#eaf2ff!important;font-weight:600}
   #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155;font-size:16px}
   #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220;color:#fff;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
-  #shelfConfigModal .modal-body{overflow-y:auto}
+  #shelfConfigModal .modal-body{overflow-y:auto;padding-bottom:1rem}
+  #shelfConfigModal .modal-footer{background:#1e293b}
 
-  @media (max-width: 768px){
+  @media (max-width: 1200px){
     .warehouse-map-shell{min-width:100%}
     .warehouse-stage{width:1220px;height:860px}
-    #shelfConfigModal .modal-dialog{margin:.35rem;max-width:calc(100vw - .7rem)}
-    #shelfConfigModal .modal-content{max-height:calc(100vh - .7rem)}
-    #shelfConfigModal .modal-body{padding:.75rem;max-height:calc(100vh - 190px)}
-    #shelfConfigModal .modal-footer{position:sticky;bottom:0;background:inherit;z-index:2;padding:.6rem}
+    #shelfConfigModal .modal-dialog{margin:0;max-width:100vw}
+    #shelfConfigModal .modal-content{min-height:100vh;max-height:100vh;border-radius:0}
+    #shelfConfigModal .modal-body{padding:.8rem;max-height:calc(100vh - 190px)}
+    #shelfConfigModal .modal-footer{position:sticky;bottom:0;z-index:2;padding:.6rem}
     #shelfConfigModal .btn{min-height:44px}
   }
 
@@ -90,7 +93,7 @@ $defaultShelves = [
 </div>
 
 <div class="modal fade" id="shelfConfigModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-lg-down">
     <div class="modal-content bg-panel border-subtle shadow-card">
       <div class="modal-header">
         <h5 class="modal-title">Anaquel <span id="cfgShelfName"></span></h5>
@@ -363,6 +366,10 @@ $defaultShelves = [
     const shelf=normalize({id:id.trim(),x:Math.round(ev.clientX-r.left),y:Math.round(ev.clientY-r.top),width:2,length:2,depth:1,levels:3,capacity:500,unit:'kg',color:'#90a4ae',rotation:0});
     shelves.push(shelf); selectedId=shelf.id; addMode=false; render(); scheduleAutoSave(); openConfig(shelf.id);
   });
+
+  const shelfModalEl = document.getElementById('shelfConfigModal');
+  shelfModalEl.addEventListener('shown.bs.modal',()=>{ stage.style.pointerEvents='none'; });
+  shelfModalEl.addEventListener('hidden.bs.modal',()=>{ stage.style.pointerEvents='auto'; });
 
   document.getElementById('btnApplyShelf').addEventListener('click',applyConfig);
   document.getElementById('btnSaveLayout').addEventListener('click',saveLayout);
