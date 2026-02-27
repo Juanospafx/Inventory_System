@@ -62,8 +62,19 @@ $defaultShelves = [
 
   #shelfConfigModal .modal-content{color:#eaf2ff}
   #shelfConfigModal .form-label,#shelfConfigModal .modal-title{color:#eaf2ff!important;font-weight:600}
-  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155}
+  #shelfConfigModal .form-control,#shelfConfigModal .form-select{background:#0f172a;color:#f8fafc;border:1px solid #334155;font-size:16px}
   #shelfConfigModal .form-control:focus,#shelfConfigModal .form-select:focus{background:#0b1220;color:#fff;border-color:#60a5fa;box-shadow:0 0 0 .2rem rgba(96,165,250,.2)}
+  #shelfConfigModal .modal-body{overflow-y:auto}
+
+  @media (max-width: 768px){
+    .warehouse-map-shell{min-width:100%}
+    .warehouse-stage{width:1220px;height:860px}
+    #shelfConfigModal .modal-dialog{margin:.35rem;max-width:calc(100vw - .7rem)}
+    #shelfConfigModal .modal-content{max-height:calc(100vh - .7rem)}
+    #shelfConfigModal .modal-body{padding:.75rem;max-height:calc(100vh - 190px)}
+    #shelfConfigModal .modal-footer{position:sticky;bottom:0;background:inherit;z-index:2;padding:.6rem}
+    #shelfConfigModal .btn{min-height:44px}
+  }
 
   .place-mode{outline:3px dashed rgba(255,193,7,.45);outline-offset:-8px;cursor:crosshair}
 </style>
@@ -79,7 +90,7 @@ $defaultShelves = [
 </div>
 
 <div class="modal fade" id="shelfConfigModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content bg-panel border-subtle shadow-card">
       <div class="modal-header">
         <h5 class="modal-title">Anaquel <span id="cfgShelfName"></span></h5>
@@ -117,6 +128,7 @@ $defaultShelves = [
   const stage = document.getElementById('warehouseStage');
   const pxPerMeter = 40;
   const apiUrl = 'map_layout_api.php';
+  const localKey = 'warehouse_layout_v1';
   const defaultShelves = <?php echo json_encode($defaultShelves, JSON_UNESCAPED_UNICODE); ?>;
   const fixedZones = [
     { label:'Baños', x:8, y:65, w:110, h:150 },
@@ -131,12 +143,27 @@ $defaultShelves = [
   let selectedId = null;
   let addMode = false;
   let dragState = null;
+  let autoSaveTimer = null;
 
   function msg(type, text){ const d=document.createElement('div'); d.className=`alert alert-${type} py-2 px-3 mt-2`; d.textContent=text; stage.parentElement.appendChild(d); setTimeout(()=>d.remove(),2200); }
   function normalize(raw){ return { id:String(raw.id||'').trim(), x:Number(raw.x)||40, y:Number(raw.y)||40, width:Math.max(0.2,Number(raw.width)||1.8), length:Math.max(0.2,Number(raw.length)||1.8), depth:Math.max(0.1,Number(raw.depth)||1), levels:Math.max(1,parseInt(raw.levels||1,10)), capacity:Math.max(1,parseInt(raw.capacity||100,10)), unit:raw.unit==='lbs'?'lbs':'kg', color:raw.color||'#b0bec5', rotation:((Number(raw.rotation)%360)+360)%360 }; }
   function rect(s){ return {w:s.width*pxPerMeter,h:s.length*pxPerMeter}; }
   function aabb(s){ const r=rect(s); const rad=(s.rotation||0)*Math.PI/180; const cw=Math.abs(Math.cos(rad)), sw=Math.abs(Math.sin(rad)); return {w:(r.w*cw+r.h*sw), h:(r.w*sw+r.h*cw)}; }
   function shelfById(id){ return shelves.find(s=>s.id===id); }
+  function persistLocal(){
+    try{ localStorage.setItem(localKey, JSON.stringify({shelves,pxPerMeter,updatedAt:new Date().toISOString()})); }catch(e){}
+  }
+  function loadLocal(){
+    try{
+      const raw=localStorage.getItem(localKey);
+      if(!raw) return null;
+      const parsed=JSON.parse(raw);
+      if(parsed && Array.isArray(parsed.shelves) && parsed.shelves.length){
+        return parsed.shelves.map(normalize);
+      }
+    }catch(e){}
+    return null;
+  }
 
   function updateActionLinks(shelf){
     document.getElementById('cfgAddItem').href='add_product.php?shelf_filter='+encodeURIComponent(shelf.id);
@@ -229,7 +256,7 @@ $defaultShelves = [
       syncEl(el,shelf);
     });
 
-    el.addEventListener('pointerup',()=>{ if(dragState && dragState.id===shelf.id){ dragState=null; el.classList.remove('dragging','resizing','rotating'); } });
+    el.addEventListener('pointerup',()=>{ if(dragState && dragState.id===shelf.id){ dragState=null; el.classList.remove('dragging','resizing','rotating'); scheduleAutoSave(); } });
     el.addEventListener('dblclick',(ev)=>{ ev.stopPropagation(); openConfig(shelf.id); });
     return el;
   }
@@ -278,24 +305,47 @@ $defaultShelves = [
     shelf.unit=document.getElementById('cfgUnit').value==='lbs'?'lbs':'kg';
     shelf.rotation=((Number(document.getElementById('cfgRotation').value)||0)%360+360)%360;
     selectedId=shelf.id; clampShelf(shelf); render(); updateActionLinks(shelf);
+    scheduleAutoSave();
     msg('success','Anaquel actualizado');
   }
 
   async function loadLayout(){
+    const localLayout = loadLocal();
     try{
       const res=await fetch(apiUrl+'?action=load',{credentials:'same-origin'});
       const json=await res.json();
-      const incoming=(json && json.success && Array.isArray(json.layout?.shelves) && json.layout.shelves.length)?json.layout.shelves:defaultShelves;
-      shelves=incoming.map(normalize);
-    }catch{ shelves=defaultShelves.map(normalize); }
+      if(json && json.success && Array.isArray(json.layout?.shelves) && json.layout.shelves.length){
+        shelves=json.layout.shelves.map(normalize);
+      }else if(localLayout){
+        shelves=localLayout;
+      }else{
+        shelves=defaultShelves.map(normalize);
+      }
+    }catch{
+      shelves = localLayout || defaultShelves.map(normalize);
+    }
+    persistLocal();
     render();
   }
 
-  async function saveLayout(){
+  async function saveLayout(silent=false){
     const payload={shelves,pxPerMeter,updatedAt:new Date().toISOString()};
-    const res=await fetch(apiUrl+'?action=save',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const json=await res.json();
-    if(json.success) msg('success','Layout guardado'); else msg('danger',json.message||'Error al guardar');
+    persistLocal();
+    try{
+      const res=await fetch(apiUrl+'?action=save',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      const json=await res.json();
+      if(!json.success){ if(!silent) msg('warning',json.message||'Guardado local OK, servidor no disponible'); return false; }
+      if(!silent) msg('success','Layout guardado');
+      return true;
+    }catch(e){
+      if(!silent) msg('warning','Guardado local OK (sin persistencia en servidor).');
+      return false;
+    }
+  }
+
+  function scheduleAutoSave(){
+    if(autoSaveTimer) clearTimeout(autoSaveTimer);
+    autoSaveTimer=setTimeout(()=>saveLayout(true), 500);
   }
 
   function exportLayout(){
@@ -311,7 +361,7 @@ $defaultShelves = [
     if(shelves.some(s=>s.id.toLowerCase()===id.trim().toLowerCase())) return msg('danger','Ese ID ya existe');
     const r=stage.getBoundingClientRect();
     const shelf=normalize({id:id.trim(),x:Math.round(ev.clientX-r.left),y:Math.round(ev.clientY-r.top),width:2,length:2,depth:1,levels:3,capacity:500,unit:'kg',color:'#90a4ae',rotation:0});
-    shelves.push(shelf); selectedId=shelf.id; addMode=false; render(); openConfig(shelf.id);
+    shelves.push(shelf); selectedId=shelf.id; addMode=false; render(); scheduleAutoSave(); openConfig(shelf.id);
   });
 
   document.getElementById('btnApplyShelf').addEventListener('click',applyConfig);
@@ -320,7 +370,7 @@ $defaultShelves = [
   document.getElementById('btnDeleteShelf').addEventListener('click',()=>{
     if(!selectedId) return;
     if(!confirm('¿Eliminar este anaquel?')) return;
-    shelves=shelves.filter(s=>s.id!==selectedId); selectedId=null; render(); bootstrap.Modal.getInstance(document.getElementById('shelfConfigModal'))?.hide();
+    shelves=shelves.filter(s=>s.id!==selectedId); selectedId=null; render(); scheduleAutoSave(); bootstrap.Modal.getInstance(document.getElementById('shelfConfigModal'))?.hide();
   });
 
   loadLayout();
