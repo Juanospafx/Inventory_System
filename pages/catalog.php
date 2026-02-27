@@ -77,14 +77,21 @@ foreach ($_SESSION['catalog_cart'] as $productId => $item) {
 <?php include_once(__DIR__ . '/../views/header.php'); ?>
 
 <style>
-.catalog-card { background: #232c3d; border: 1px solid #37445e; border-radius: 16px; }
-.catalog-card .card-title { color: #f0f4ff; }
-.catalog-muted { color: #9fb0cc; }
-.catalog-table thead th { background: #1f2736; color: #dfe7f8; border-color: #334055; }
-.catalog-table td { border-color: #334055; vertical-align: middle; }
+.catalog-card { background: var(--bg-panel); border: 1px solid var(--border-subtle); border-radius: 16px; color: var(--text-primary); }
+.catalog-card .card-title { color: var(--text-primary); }
+.catalog-muted { color: var(--text-muted); }
+.catalog-table { --bs-table-bg: var(--bg-panel); --bs-table-color: var(--text-primary); --bs-table-border-color: var(--border-subtle); }
+.catalog-table thead th { background: var(--bg-input); color: var(--text-primary); border-color: var(--border-subtle); }
+.catalog-table td { border-color: var(--border-subtle); vertical-align: middle; color: var(--text-primary); }
 .catalog-pill { font-size: 12px; padding: 4px 10px; border-radius: 999px; }
 .catalog-badge-on { background: #1f5f43; color: #beffd8; }
 .catalog-badge-off { background: #5a2a35; color: #ffd3dc; }
+html[data-theme="light"] .catalog-badge-on { background: #d1fae5; color: #065f46; }
+html[data-theme="light"] .catalog-badge-off { background: #fee2e2; color: #991b1b; }
+#catalogImagePreviewModal .modal-content { background: var(--bg-panel); color: var(--text-primary); border: 1px solid var(--border-subtle); }
+#catalogImagePreviewModal .modal-header { border-bottom: 1px solid var(--border-subtle); }
+html[data-theme="light"] .catalog-card .btn-outline-light { color: #334155; border-color: #94a3b8; }
+html[data-theme="light"] .catalog-card .btn-outline-light:hover { background: #e2e8f0; color: #0f172a; }
 </style>
 
 <div class="row">
